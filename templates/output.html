@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ผลลัพธ์</title>
+</head>
+<body>
+  <h1>ผลลัพธ์</h1>
+  <p>{% for table in tables %}
+    {{titles[loop.index]}}
+    {{ table|safe }}
+{% endfor %}</p>
+</body>
+</html>
