@@ -104,9 +104,17 @@ html =  BeautifulSoup(browser.page_source, "html.parser")
 ## comment
 result = html.find_all('div',{"class":"xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs"})
 ## name
-name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x676frb x1nxh6w3 x1sibtaa x1s688f xzsf02u"})
+name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x676frb x1nxh6w3 x1sibtaa x1s688f xzsf02u"}, )
 ## like
-re_chat = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen x1s688f xi81zsa"})
+like_kk = []
+for i in range(len(comments)):
+    re_chat = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen x1s688f xi81zsa"}, limit=i+1)
+    for item in re_chat :
+        re_chat_all.append(re.findall(r'\b\d+\b',item.text))
+    if re_chat_all[-1] != []:
+        like_kk.append(re_chat[-1])
+    elif re_chat_all[-1] == []:
+        like_kk.append(0)
 # for i in range(len(name)):
 #     try:
 #         like = dom.xpath('//*[@id="mount_0_0_rV"]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[2]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span')[0].text
@@ -119,8 +127,6 @@ for item in result:
 FBcomments = comments
 for item in name :
     names.append(item.text)
-for item in re_chat :
-    re_chat_all.append(re.findall(r'\b\d+\b',item.text))
 data = pd.DataFrame()
 #เติมชื่อขาดหรือลบชื่อเกินโดยอิ้งจากcomment
 if len(FBcomments)>len(names):
@@ -132,7 +138,7 @@ elif len(FBcomments)<len(names):
     for i in range(differ):
         FBcomments.append('comments_miss')
 #เติมlikeที่ขาด
-re_chat_all = re_chat_all[4:]
+like_kk = like_kk[4:]
 if len(comments)>len(re_chat_all):
     differ = len(comments)-len(re_chat_all)
     for i in range(differ):
@@ -143,7 +149,7 @@ elif len(comments)<len(re_chat_all):
         FBcomments.append('comments_miss')
 data['name'] = names
 data['comments'] = FBcomments
-data['rechat']= re_chat_all
+data['rechat']= like_kk
 data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
 data = data[data['comments'] != 'comments_miss']
 
