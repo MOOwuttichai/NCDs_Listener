@@ -98,36 +98,71 @@ browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 comments=[]
 names=[]
 re_chat_all=[]
+like_kk = []
+count=[]
 xpath_like = '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[2]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span'
 html =  BeautifulSoup(browser.page_source, "html.parser")
-#ดึงข้อมูล
-## comment
+# #ดึงข้อมูล
+# ## comment
 result = html.find_all('div',{"class":"xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs"})
-## name
+# ## name
 name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x676frb x1nxh6w3 x1sibtaa x1s688f xzsf02u"}, )
-## like
-like_kk = []
-for i in range(len(comments)):
-    re_chat = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen x1s688f xi81zsa"}, limit=i+1)
-    for item in re_chat :
-        re_chat_all.append(re.findall(r'\b\d+\b',item.text))
-    if re_chat_all[-1] != []:
-        like_kk.append(re_chat[-1])
-    elif re_chat_all[-1] == []:
+# ## re_chat
+soup = BeautifulSoup(browser.page_source, 'lxml')
+dom = etree.HTML(str(soup))
+for i in range(len(result)):
+    x1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
+    y1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/div/div[4]/text()')
+    z1=x1+y1
+    try:
+        re_chat_all.append((re.findall(r'\b\d+\b',z1[0]))[0])
+    except:
+        re_chat_all.append(0)
+# like
+for i in range(len(result)):
+    x2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+    try:
+        like_kk.append(x2[0])
+    except:
         like_kk.append(0)
-# for i in range(len(name)):
-#     try:
-#         like = dom.xpath('//*[@id="mount_0_0_rV"]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[2]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span')[0].text
-#         like_FB.append(int(like))
-#     except:
-#         like_FB.append(0)
-# เริ่มทำตาราง
+#เริ่มเก็บข้อมูล
 for item in result:
     comments.append(item.text)
-FBcomments = comments
+FBcomments = comments[2:]
 for item in name :
     names.append(item.text)
 data = pd.DataFrame()
+#นับความยาว ความคิดเห็น
+for item in FBcomments:
+    count.append(len(item))
+
+#เติมlikeที่ขาด
+if len(FBcomments)>len(like_kk):
+    differ = len(FBcomments)-len(like_kk)
+    for i in range(differ):
+        like_kk.append(0)
+elif len(FBcomments)<len(like_kk):
+    differ = len(like_kk)-len(FBcomments)
+    for i in range(differ):
+        FBcomments.append('comments_miss')
+#เติมre_chatที่ขาด
+if len(FBcomments)>len(re_chat_all):
+    differ = len(FBcomments)-len(re_chat_all)
+    for i in range(differ):
+        re_chat_all.append(0)
+elif len(FBcomments)<len(re_chat_all):
+    differ = len(re_chat_all)-len(FBcomments)
+    for i in range(differ):
+        FBcomments.append('comments_miss')
+#เติมre_chatที่ขาด
+if len(FBcomments)>len(count):
+    differ = len(FBcomments)-len(count)
+    for i in range(differ):
+        count.append(0)
+elif len(FBcomments)<len(count):
+    differ = len(count)-len(FBcomments)
+    for i in range(differ):
+        FBcomments.append('comments_miss')
 #เติมชื่อขาดหรือลบชื่อเกินโดยอิ้งจากcomment
 if len(FBcomments)>len(names):
     differ = len(FBcomments)-len(names)
@@ -137,29 +172,18 @@ elif len(FBcomments)<len(names):
     differ = len(names)-len(FBcomments)
     for i in range(differ):
         FBcomments.append('comments_miss')
-#เติมlikeที่ขาด
-like_kk = like_kk[4:]
-if len(comments)>len(re_chat_all):
-    differ = len(comments)-len(re_chat_all)
-    for i in range(differ):
-        re_chat_all.append(0)
-elif len(comments)<len(re_chat_all):
-    differ = len(re_chat_all)-len(comments)
-    for i in range(differ):
-        FBcomments.append('comments_miss')
-data['name'] = names
-data['comments'] = FBcomments
-data['rechat']= like_kk
-data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
-data = data[data['comments'] != 'comments_miss']
+# ทำตาราง
+# data['name'] = names
+# data['comments'] = FBcommentss
+# data['rechat']= re_chat_all
+# data['like']=like_kk
+# data['count']=count
+# data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
+# data = data[data['comments'] != 'comments_miss']
+print(len(names))
+print(len(FBcomments))
+print(len(re_chat_all))
+print(len(like_kk))
+print(len(count))
+# data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
 
-
-# data['like']= like_FB
-print(data)
-data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
-# for i in range(len(FBcomments)):
-#     print(f'{FBcomments[i]}\n')
-# for i in range(len(name)):
-#     print(f'{names[i]}\n')
-# print(f'comments:{len(FBcomments)} , name:{len(names)}')
-# print('Done')
