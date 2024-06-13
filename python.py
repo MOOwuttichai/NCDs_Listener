@@ -131,6 +131,7 @@ def process():
         data['comments'] = FBcomments
         data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
         data = data[data['comments'] != 'comments_miss']
+        data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
     elif url_chack == 'www.reddit.com':
         names=[]
         comments=[]
@@ -172,6 +173,7 @@ def process():
         data['comments'] = comments
         data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
         data = data[data['comments'] != 'comments_miss']
+        data.to_csv('data_commentsred_docter.csv', index=False, encoding='utf-8-sig')
     return  render_template('output.html',  tables=[data.to_html(classes='data')], titles=data.columns.values)
 
 if __name__ == '__main__':
