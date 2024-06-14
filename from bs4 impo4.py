@@ -62,6 +62,7 @@ switch = True
 old_numReviews = 0
 specifiedNumber = 999 # number of reviews to get
 # เปิดความคิดเห็นเพิ่มเติม
+
 try: 
     while switch:
         count += 1
@@ -71,11 +72,29 @@ try:
         l.click()
         a+=50
         k = x[:162]+str(a)+x[164:]
-        time.sleep(5)
+        time.sleep(7)
         browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(10)
+        time.sleep(11)
 except:
     pass
+
+SCROLL_PAUSE_TIME = 4
+
+# Get scroll height
+last_height = browser.execute_script("return document.body.scrollHeight")
+while True:
+    # Scroll down to bottom
+    browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+    # Wait to load page
+    time.sleep(SCROLL_PAUSE_TIME)
+
+    # Calculate new scroll height and compare with last scroll height
+    new_height = browser.execute_script("return document.body.scrollHeight")
+    if new_height == last_height:
+        break
+    last_height = new_height
+
 
 # เปิดเพิ่มเติม
 r=int(aoa[-81:-80])
@@ -94,7 +113,10 @@ for i in range(2):
             pass
 time.sleep(5)
 browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+time.sleep(5)
+browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 #setup bs4 and data
+# #ดึงข้อมูล
 comments=[]
 names=[]
 re_chat_all=[]
@@ -102,14 +124,13 @@ like_kk = []
 count=[]
 xpath_like = '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[2]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span'
 html =  BeautifulSoup(browser.page_source, "html.parser")
-# #ดึงข้อมูล
+soup = BeautifulSoup(browser.page_source, 'lxml')
+dom = etree.HTML(str(soup))
 # ## comment
 result = html.find_all('div',{"class":"xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs"})
 # ## name
-name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x676frb x1nxh6w3 x1sibtaa x1s688f xzsf02u"}, )
+name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x676frb x1nxh6w3 x1sibtaa x1s688f xzsf02u"})
 # ## re_chat
-soup = BeautifulSoup(browser.page_source, 'lxml')
-dom = etree.HTML(str(soup))
 for i in range(len(result)):
     x1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
     y1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/div/div[4]/text()')
@@ -173,17 +194,12 @@ elif len(FBcomments)<len(names):
     for i in range(differ):
         FBcomments.append('comments_miss')
 # ทำตาราง
-# data['name'] = names
-# data['comments'] = FBcommentss
-# data['rechat']= re_chat_all
-# data['like']=like_kk
-# data['count']=count
+data['name'] = names
+data['comments'] = FBcomments
+data['rechat']= re_chat_all
+data['like']=like_kk
+data['count']=count
 # data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
-# data = data[data['comments'] != 'comments_miss']
-print(len(names))
-print(len(FBcomments))
-print(len(re_chat_all))
-print(len(like_kk))
-print(len(count))
-# data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
+data = data[data['comments'] != 'comments_miss']
+data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
 
