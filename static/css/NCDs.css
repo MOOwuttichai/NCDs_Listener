@@ -4,16 +4,44 @@ body {
   padding: 0;
 }
 
-header {
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-container {
+  overflow: auto;
+  max-width: 500px;
+  overflow-y: auto;
+  max-height: 80vh;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  text-align: left;
   background-color: #f1f1f1;
+}
+
+header {
+  background-color: #66CDAA;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  text-align: justify;
+
 }
 
 .logo {
-  width: 50px;
+  width: 20%;
+  height: 50px;
 }
 
 img {
@@ -26,36 +54,50 @@ h1 {
   margin: 0;
 }
 
-.timer {
-  display: flex;
-}
-
-.timer span {
-  font-size: 1.2em;
-  margin-right: 10px;
-}
-
 nav {
-  background-color: #ddd;
+  background-color: #99e8ce;
   padding: 10px;
+  width: 40%;
+  /* border: 1px solid #90EE90; */
 }
 
-nav ul {
+.sub {
+  width: 30%;
+  /* border: 2px solid #3b1ab3; */
+  letter-spacing: 2px;
+  text-align: end;
+
+}
+
+.sub ul {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 20;
   display: flex;
+  text-align: end;
+  cursor: pointer;
+
+}
+.sub ul :hover {
+  background-color: #99e8ce;
 }
 
-nav li {
+.sub li {
   margin-right: 20px;
+  text-align: center;
+
 }
 
-nav a {
+.sub a {
   text-decoration: none;
   color: black;
+  /* border: 1px solid #90EE90; */
 }
 
+.sub i {
+  font-size: 2em;
+
+}
 main {
   padding: 20px;
 }
@@ -72,6 +114,8 @@ main {
 
 .input-section {
   text-align: center;
+  width: 99%;
+
 }
 
 label {
@@ -98,4 +142,11 @@ button {
 
 button:hover {
   background-color: #3e8e41;
+}
+
+output {
+  padding: 20px;
+  align-items: stretch;
+  text-align: justify;
+
 }

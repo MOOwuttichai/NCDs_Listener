@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from bs4 import BeautifulSoup
+from lxml import etree 
+
 # other necessary ones
 import urllib.request
 import pandas as pd
@@ -20,7 +22,6 @@ from flask import Flask, request, render_template, session, redirect, url_for,js
 import numpy as np
 import pandas as pd
 import os
-from lxml import etree 
 
 app = Flask(__name__,static_folder=os.path.join(os.getcwd(),'static'))
 
@@ -67,10 +68,12 @@ def process():
         kok={'a_a':'div/div/div','b_a':'div[2]/div/div','b_b':'div/div[2]/div','b_c':'div/div/div[2]','c_a':'div[3]/div/div','c_b':'div/div[3]/div','c_c':'div/div/div[3]'}
         LOL=[]
         time.sleep(20)
-        browser.get('https://www.facebook.com/story.php?story_fbid=738492865098283&id=100068127288896&rdid=KSfcPd478i4jBurb')
+        browser.get(url)
         wait = WebDriverWait(browser, 120) # once logged in, free to open up any target page
         time.sleep(7)
 
+        switch = True
+        # เปิดความคิดเห็นเพิ่มเติม
         try: 
             while switch:
                 count += 1
@@ -85,7 +88,8 @@ def process():
                 time.sleep(11)
         except:
             pass
-
+        
+        # เช็กว่าลงสุดไหม
         SCROLL_PAUSE_TIME = 4
 
         # Get scroll height
@@ -103,7 +107,6 @@ def process():
                 break
             last_height = new_height
 
-
         # เปิดเพิ่มเติม
         r=int(aoa[-81:-80])
         for i in range(2):
@@ -119,12 +122,15 @@ def process():
                     time.sleep(1)
                 except:
                     pass
+
+        # เช็กว่าลงสุดไหมv.2
         time.sleep(5)
         browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(5)
         browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        
         #setup bs4 and data
-        # #ดึงข้อมูล
+        #ดึงข้อมูล
         comments=[]
         names=[]
         re_chat_all=[]
@@ -153,6 +159,7 @@ def process():
                 like_kk.append(x2[0])
             except:
                 like_kk.append(0)
+
         #เริ่มเก็บข้อมูล
         for item in result:
             comments.append(item.text)
@@ -160,6 +167,7 @@ def process():
         for item in name :
             names.append(item.text)
         data = pd.DataFrame()
+
         #นับความยาว ความคิดเห็น
         for item in FBcomments:
             count.append(len(item))
@@ -173,6 +181,7 @@ def process():
             differ = len(like_kk)-len(FBcomments)
             for i in range(differ):
                 FBcomments.append('comments_miss')
+        
         #เติมre_chatที่ขาด
         if len(FBcomments)>len(re_chat_all):
             differ = len(FBcomments)-len(re_chat_all)
@@ -182,7 +191,8 @@ def process():
             differ = len(re_chat_all)-len(FBcomments)
             for i in range(differ):
                 FBcomments.append('comments_miss')
-        #เติมre_chatที่ขาด
+        
+        #เติมcountที่ขาด
         if len(FBcomments)>len(count):
             differ = len(FBcomments)-len(count)
             for i in range(differ):
@@ -191,6 +201,7 @@ def process():
             differ = len(count)-len(FBcomments)
             for i in range(differ):
                 FBcomments.append('comments_miss')
+        
         #เติมชื่อขาดหรือลบชื่อเกินโดยอิ้งจากcomment
         if len(FBcomments)>len(names):
             differ = len(FBcomments)-len(names)
@@ -200,18 +211,17 @@ def process():
             differ = len(names)-len(FBcomments)
             for i in range(differ):
                 FBcomments.append('comments_miss')
+
         # ทำตาราง
         data['name'] = names
         data['comments'] = FBcomments
         data['rechat']= re_chat_all
         data['like']=like_kk
         data['count']=count
-        # data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
         data = data[data['comments'] != 'comments_miss']
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
         data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
-        tables = data.to_html(classes='table table-striped', index=False)
         browser.close() 
         
     # reddit
@@ -259,10 +269,32 @@ def process():
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
         data.to_csv('data_commentsred_docter.csv', index=False, encoding='utf-8-sig')
-        tables = data.to_html(classes='table table-striped', index=False)
         driver.close() 
-    return  render_template('output.html',  tables=tables, titles=data.columns.values, number_of_rows=number_of_rows, number_of_columns=number_of_columns)
+    tables = data.to_html(classes='table table-striped', index=False)
 
+    return  render_template('output.html',  tables=[tables], titles=data.columns.values, number_of_rows=number_of_rows, number_of_columns=number_of_columns)
+
+@app.route('/test.py', methods=['POST','GET'])
+def test():
+    max_v = []
+    min_v = []
+    avg_v = []
+    _ = ['like','จำนวนการตอบกลับ','ความยาว']
+    data = pd.read_csv("data_commentsFB_docter.csv", encoding='utf-8-sig')
+    for i in range(len(data.columns)):
+        if i >= 2:
+            max_v.append(max(data[data.columns[i]].tolist()))
+            min_v.append(min(data[data.columns[i]].tolist()))
+            avg_v.append(np.mean(data[data.columns[i]].tolist()))
+    descriptive = pd.DataFrame()
+    descriptive[' '] = _
+    descriptive['max'] = max_v
+    descriptive['min'] = min_v
+    descriptive['avg'] = avg_v
+    tables = descriptive.to_html(classes='table table-striped', index=False)
+
+    return render_template('output.html', tables=[tables], titles=data.columns.values, number_of_rows=data.shape[0], number_of_columns=data.shape[1])
 
 if __name__ == '__main__':
-  app.run()
+  app.debug=True
+  app.run(host='0.0.0.0', port=8001)
