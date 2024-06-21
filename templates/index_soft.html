@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>แสดงข้อมูลความคิดเห็น Facebook</title>
+</head>
+<body>
+    <h1>ข้อมูลความคิดเห็น Facebook</h1>
+
+    <form method="POST" action="/sort">
+        <label for="sort_column">เรียงลำดับตาม:</label>
+        <select id="sort_column" name="sort_column">
+            {% for option in sort_options %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">เรียงลำดับ</button>
+    </form>
+
+    <p>{% for table in data %}
+        
+        {{ table|safe }}
+    {% endfor %}</p>
+</body>
+</html>
