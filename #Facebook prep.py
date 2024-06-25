@@ -37,23 +37,33 @@ from pythainlp.corpus import ttc
 from pythainlp import correct
 from pythainlp.util import normalize
 from sentence_transformers import SentenceTransformer,util
+import ast
+
 
 app = Flask(__name__,static_folder=os.path.join(os.getcwd(),'static'))
+
+@app.route('/', methods=['GET'])
+def index():
+  return render_template('text_2.html')
+
 @app.route('/test.py', methods=['POST','GET'])
 def test():
-    # นำเข้าเเละทำความสะอาดข้อมูล
-    data = pd.read_csv('data_commentsFB_docter copy.csv')
-    
+    data = pd.read_csv('data_commentsFB_docter copy.csv')  
     # ระบุโรค
     name_cancar_and_symptoms_pd = pd.read_csv('all_data_nameandsym.csv')
     name_cancar_list  = name_cancar_and_symptoms_pd['name_cancarTH_se'].tolist()
     name_cancar = [item for item in name_cancar_list if not(pd.isnull(item)) == True]
-    
+
     # ระบุอาการ
-    symptoms_pd = name_cancar_and_symptoms_pd[['Key_symptoms_TH','Values_symptoms_TH']]
-    symptoms_nona = symptoms_pd.dropna()
-    symptoms = dict(zip(symptoms_nona['Key_symptoms_TH'], symptoms_nona['Values_symptoms_TH']))
-    
+    symptoms_pd = name_cancar_and_symptoms_pd[['Key_symptoms_TH','Values_symptoms_TH']].dropna()
+    data_k_list = symptoms_pd['Key_symptoms_TH'].tolist()
+    data_V_list = symptoms_pd['Values_symptoms_TH'].tolist()
+    symptoms = {}
+    for list_item in range(len(data_V_list)):
+        split_t = ast.literal_eval(data_V_list[list_item])
+        split_t = [n.strip() for n in split_t]
+        symptoms[data_k_list[list_item]]=split_t
+
     #เเปลงหัวตาราง
     data.rename(columns={'name': 'ชื่อ', 'comments': 'คำพูดโรค'}, inplace=True)
     comment=data.groupby('ชื่อ').sum().reset_index()
@@ -64,7 +74,7 @@ def test():
     name =['กระเพาะปัสสวะ','กระเพาะปัสสาวะ','เยื่อบุโพรงมดลูก','ปากมดลูก','เม็ดเลือดขาว','กระเพาะอาหาร','กระเพราะอาหาร','ต่อมไทรอยด์','ต่อมไทยรอยด์','ท่อน้ำดี']
     for i in name:
         words.add(i)
-    
+
     # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
     list_token =[]
     Token_N= []
@@ -74,9 +84,8 @@ def test():
         custom_tokenizer = Tokenizer(words)
         Token = custom_tokenizer.word_tokenize(normalize(str(text)))
         Token.append('end')
-        for i in Token:
-            Token_N.append(correct(normalize(i)))
-        list_token.append(Token_N)
+        list_token.append(Token)
+    time.sleep(8)
     #หาโรค
     #--------------------------------------------------------
     new_colcan = []
@@ -107,12 +116,12 @@ def test():
             new_colcan.append('ไม่สามารถระบุได้/ไม่มั่นใจว่าเป็น')
     # สร้าง list เพศ 
     Genden = {'ชาย':['พ่อ','บิดา','พี่ชาย','น้องชาย','ลูกชาย','สามี','พัว','ผัว','ปู่','ตา','คุณปู่','คุณตา','คุณพ่อ',
-                 'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
-                 'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม','ลช.','ผ่อ','ชย.','น้าชาย','ผ่อตา','หน.']
-          ,'หญิง':['แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว','ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า',
-                   'คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า','น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้',
-                   'ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง','ก้อน','คลำ']}
-     # หาเพศ โดยใช้nlp
+                    'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
+                    'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม','ลช.','ผ่อ','ชย.','น้าชาย','ผ่อตา','หน.']
+            ,'หญิง':['แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว','ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า',
+                    'คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า','น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้',
+                    'ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง','ก้อน','คลำ']}
+    # หาเพศ โดยใช้nlp
     new_colgenden=[]
     list_genden=[]
     for i in range(len(list_token)):
@@ -122,20 +131,20 @@ def test():
                     list_genden.append('เพศชาย')
                 elif(list_token[i][k] == Genden['หญิง'][j]):
                     list_genden.append('เพศหญิง')
-    genden_list =[]
-    genden_list = list(OrderedDict.fromkeys(list_genden)) # ลบคำซ้ำ
-    #-------------------------------------------------------------------
-    list_define_genden = []
-    if len(genden_list) > 0 :
-        if len(genden_list) == 2:
-            list_define_genden.append('เล่าทั้งสองเพศ')
-        elif len(genden_list)==1:
-            list_define_genden.append(genden_list[0])
-    elif len(genden_list)==0:
-        list_define_genden.append('ไม่สามารถระบุได้/ไม่มั่นใจว่าเป็น')
-    genden_list_de =[]
-    genden_list_de = list(OrderedDict.fromkeys(list_define_genden))
-    new_colgenden.append(genden_list_de[0])
+        genden_list =[]
+        genden_list = list(OrderedDict.fromkeys(list_genden)) # ลบคำซ้ำ
+        #-------------------------------------------------------------------
+        list_define_genden = []
+        if len(genden_list) > 0 :
+            if len(genden_list) == 2:
+                list_define_genden.append('เล่าทั้งสองเพศ')
+            elif len(genden_list)==1:
+                list_define_genden.append(genden_list[0])
+        elif len(genden_list)==0:
+            list_define_genden.append('ไม่สามารถระบุได้/ไม่มั่นใจว่าเป็น')
+        genden_list_de =[]
+        genden_list_de = list(OrderedDict.fromkeys(list_define_genden))
+        new_colgenden.append(genden_list_de[0])
 
     # หาอาการโดย nlp
     symptoms_colcan = []
@@ -151,7 +160,7 @@ def test():
             symptoms_colcan.append(unique_list_symptoms)
         else :
             symptoms_colcan.append(['ไม่มีการระบุอาการ'])
-    
+
     #สร้างฟังชั่นหาเพศกับใครเป็นคนพูด
     def detect_person(comment):
     # คำที่ใช้ตรวจสอบว่ามีใครเป็นคนอยู่ในความคิดเห็น
@@ -206,12 +215,12 @@ def test():
     k2=[]
     for i in comment['คำพูดโรค']:
         k1.append(detect_person(str(i)))
-    if detect_person(str(i)) == 'เล่าประสบการณ์คนอื่น':
-        k2.append(detect_gender_other(str(i)))
-    elif detect_person(str(i)) == 'เล่าประสบการณ์ตัวเอง':
-        k2.append(detect_gender_self(str(i)))
-    elif detect_person(str(i)) == 'ไม่ได้เล่าประสบการณ์':
-        k2.append(detect_gender_self(str(i)))
+        if detect_person(str(i)) == 'เล่าประสบการณ์คนอื่น':
+            k2.append(detect_gender_other(str(i)))
+        elif detect_person(str(i)) == 'เล่าประสบการณ์ตัวเอง':
+            k2.append(detect_gender_self(str(i)))
+        elif detect_person(str(i)) == 'ไม่ได้เล่าประสบการณ์':
+            k2.append(detect_gender_self(str(i)))
 
     #SentenceTransformer
     sentences = list(comment['คำพูดโรค'])
@@ -220,13 +229,13 @@ def test():
     #Normalize the embeddings to unit length
     Normalize_embeddings = embeddings / np.linalg.norm(embeddings, axis=1, keepdims=True)
     clustering_model = KMeans(n_clusters=2)
-    clustering_model.fit(Normalize_embeddings)
+    clustering_model.fit(embeddings)
     cluster_assignment = clustering_model.labels_
     clusternd_sentences= {}
     for sentence_id, cluster_id in enumerate(cluster_assignment):
         if cluster_id not in clusternd_sentences:
             clusternd_sentences[cluster_id] = []
-    clusternd_sentences[cluster_id].append(sentences[sentence_id])
+        clusternd_sentences[cluster_id].append(sentences[sentence_id])
 
     #เเบ่งข้อมูลว่าอันไหนมีประโยนช์
     len_1=[]
@@ -252,7 +261,7 @@ def test():
     useful_embeddings = model.encode(useful)
     #Normalize the embeddings to unit length
     Normalize_useful_embeddings = useful_embeddings / np.linalg.norm(useful_embeddings, axis=1, keepdims=True)
-    clustering_useful_model = KMeans(n_clusters=6)
+    clustering_useful_model = KMeans(n_clusters=len(name_cancar))
     clustering_useful_model.fit(Normalize_useful_embeddings)
     cluster_assignment_useful = clustering_useful_model.labels_
     clusternd_useful_sentences= {}
@@ -260,13 +269,16 @@ def test():
         if cluster_ID not in clusternd_useful_sentences:
             clusternd_useful_sentences[cluster_ID] = []
         clusternd_useful_sentences[cluster_ID].append(useful[sentence_ID])
+    # สร้างตาราง
+    Data_pre_and_clane = comment
+    Data_pre_and_clane['โรค'] = new_colcan
 
     def define_Cencer_with_clusternd(use_clusternd_sentences,n_clusters):
         data = pd.DataFrame()
         for i in range(n_clusters):
             point = []
             define_C =[]
-            test = comment[comment['คำพูดโรค'].isin(use_clusternd_sentences[i])]
+            test = Data_pre_and_clane[Data_pre_and_clane['คำพูดโรค'].isin(use_clusternd_sentences[i])]
             test_cer = list(test['โรค'])
             for j in range(len(test_cer)):
                 if test_cer[j] in name_cancar:
@@ -287,8 +299,7 @@ def test():
     usedata=pd.concat([Pop,define_Cencer_a])
     clust_list = usedata['โรค_clusternd'].tolist()
     # สร้างตาราง
-    Data_pre_and_clane = comment
-    Data_pre_and_clane['โรค'] = new_colcan
+
     Data_pre_and_clane['โรค_clust'] = clust_list
     Data_pre_and_clane['ใครเล่า'] = k1
     Data_pre_and_clane['เพศเเบ่งโดยใช้_nlp'] = new_colgenden
@@ -296,7 +307,7 @@ def test():
     Data_pre_and_clane['อาการ']=symptoms_colcan
     label_symptoms=Data_pre_and_clane['อาการ'].str.join(sep='*').str.get_dummies(sep='*')
     Data_pre_and_clane=Data_pre_and_clane.join(label_symptoms)
-    Data_pre_and_clane.to_csv('data_pre', index=False, encoding='utf-8-sig')
+    Data_pre_and_clane.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
     tables = Data_pre_and_clane.to_html(classes='table table-striped', index=False)
 
     return  render_template('test.html',  tables=[tables], titles=data.columns.values)
