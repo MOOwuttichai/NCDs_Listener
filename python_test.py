@@ -33,7 +33,9 @@ def index():
 def process():
     url = request.form['url']
     url_chack = str(url).split('/')[2]
-    soure = url_chack
+    data_soure_a = {'url':[url_chack]}
+    data_soure_b=pd.DataFrame(data_soure_a)
+    data_soure_b.to_csv('soure_url.csv',index=False)
     # facebook
     if url_chack == 'www.facebook.com':
         option = Options()
@@ -224,23 +226,11 @@ def process():
         data = data.join(data_rechat).fillna(0)
         data = data.join(data_like).fillna(0)
         data = data.join(data_count).fillna(0)
-        data = data.iloc[:,[1,0,3,2,4]]
+        data_f = data.iloc[:,[1,0,3,2,4]]
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
         data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
         browser.close() 
-        _ = ['like','จำนวนการตอบกลับ','ความยาว']
-        sort_options = ['like', 'การตอบกลับ', 'ความยาวของความคิดเห็น']
-        def sort_data(column_name):
-            if column_name == 'like':
-                data.sort_values('like', inplace=True, ascending=False)
-            elif column_name == 'การตอบกลับ':
-                data.sort_values('rechat', inplace=True, ascending=False)
-            elif column_name == 'ความยาวของความคิดเห็น':
-                data.sort_values('count', inplace=True, ascending=False)
-            else:
-                pass
-            return data
         
     # reddit
     elif url_chack == 'www.reddit.com':
@@ -280,32 +270,55 @@ def process():
             differ = len(names)-len(FBcomments)
             for i in range(differ):
                 FBcomments.append('comments_miss')
-
+        count_1=[]
         for item in comments:
-            count.append(len(item))
+            count_1.append(len(item))
 
         data['name'] = names
         data['comments'] = comments
-        data['count'] = count
+        data['count'] = count_1
         data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
-        data = data[data['comments'] != 'comments_miss']
+        data_red = data[data['comments'] != 'comments_miss']
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
         data.to_csv('data_commentsred_docter.csv', index=False, encoding='utf-8-sig')
         driver.close() 
+
+    if url_chack == 'www.facebook.com': 
+        _ = ['like','จำนวนการตอบกลับ','ความยาว']
+        data = pd.read_csv("data_commentsFB_docter.csv", encoding='utf-8-sig')
+        def sort_data(column_name):
+            if column_name == 'like':
+                data.sort_values('like', inplace=True, ascending=False)
+            elif column_name == 'การตอบกลับ':
+                data.sort_values('rechat', inplace=True, ascending=False)
+            elif column_name == 'ความยาวของความคิดเห็น':
+                data.sort_values('count', inplace=True, ascending=False)
+            else:
+                pass
+            return data
+        _ = ['like','จำนวนการตอบกลับ','ความยาว']
+        sort_options = ['like', 'การตอบกลับ', 'ความยาวของความคิดเห็น']
+        data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
+        name_can = data_cancer['name_cancarTH'].dropna().to_list()
+        symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list() 
+    elif url_chack == 'www.reddit.com':
+        data = pd.read_csv("data_commentsred_docter.csv")
         _ = ['ความยาว']
-        sort_options = ['ความยาวของความคิดเห็น']
         def sort_data(column_name):
             if column_name == 'ความยาวของความคิดเห็น':
                 data.sort_values('count', inplace=True, ascending=False)
             else:
                 pass
             return data
-    tables = data.to_html(classes='table table-striped', index=False)
+        sort_options = ['ความยาวของความคิดเห็น']
+        data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
+        name_can = data_cancer['cancer_names_en'].dropna().to_list()
+        symptoms_can = data_cancer['Key_symptoms_EN'].dropna().to_list()
+
     max_v = []
     min_v = []
     avg_v = []
-    data = pd.read_csv("data_commentsFB_docter.csv", encoding='utf-8-sig')
     for i in range(len(data.columns)):
         if i >= 2:
             max_v.append(max(data[data.columns[i]].tolist()))
@@ -318,22 +331,20 @@ def process():
     descriptive['avg'] = avg_v
     descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
     tables_d = descriptive.to_html(classes='table table-striped', index=False)
-
     # เรียงลำดับข้อมูลตามค่าเริ่มต้น (like)
     sorted_data = sort_data('like')
     tables = sorted_data.to_html(classes='table table-striped', index=False)
     # เตรียมตัวเลือกสำหรับ dropdownlist
-    data_cancer = pd.read_csv('name_cancer_and_symptoms (2).csv')
-    name_can = data_cancer['name_cancarTH'].dropna().to_list()
-    symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list() 
 
-    return  render_template('output.html',  tables=[tables], titles=data.columns.values, number_of_rows=number_of_rows, number_of_columns=number_of_columns
-                            ,sort_options=sort_options,skills=name_can,symptoms=symptoms_can
-                           ,tables_d=[tables_d], number_of_rows=data.shape[0], number_of_columns=data.shape[1],soure=soure)
+    return  render_template('output.html',  tables=[tables], titles=data.columns.values, 
+                            sort_options=sort_options,skills=name_can,symptoms=symptoms_can
+                           ,tables_descript=[tables_d], number_of_rows=data.shape[0], number_of_columns=data.shape[1])
+#number_of_rows=number_of_rows, number_of_columns=number_of_columns
 
 @app.route('/sort', methods=['POST','GET'])
 def sort():
-    soure = request.form['soure']
+    soure_b = pd.read_csv('soure_url.csv')
+    soure = soure_b['url'][0]
     if soure == 'www.facebook.com':
         data = pd.read_csv("data_commentsFB_docter.csv", encoding='utf-8-sig')
         def sort_data(column_name):
@@ -347,29 +358,88 @@ def sort():
                 pass
             return data
         sort_options = ['like', 'การตอบกลับ', 'ความยาวของความคิดเห็น']
+        # number_of_rows = len(data)
+        # number_of_columns = len(data.columns) 
+        data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
+        name_can = data_cancer['name_cancarTH'].dropna().to_list()
+        symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list() 
     elif soure == 'www.reddit.com':
-        data = pd.read_csv("data_commentsred_docter.csv", encoding='utf-8-sig')
+        data =  pd.read_csv("data_commentsred_docter.csv")
         def sort_data(column_name):
             if column_name == 'ความยาวของความคิดเห็น':
                 data.sort_values('count', inplace=True, ascending=False)
             else:
                 pass
             return data
-        sort_options = ['ความยาวของความคิดเห็น']  
+        sort_options = ['ความยาวของความคิดเห็น']
+        # number_of_rows = len(data)
+        # number_of_columns = len(data.columns)  
+        data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
+        name_can = data_cancer['cancer_names_en'].dropna().to_list()
+        symptoms_can = data_cancer['Key_symptoms_EN'].dropna().to_list()
     descriptive=pd.read_csv('data_desc.csv',encoding='utf-8-sig')
+    descriptive = descriptive.iloc[:, 1:]
     tables_d = descriptive.to_html(classes='table table-striped', index=False)
     # รับค่าคอลัมน์ที่เลือกจาก dropdownlist
     column_name = request.form['sort_column']
     # เรียงลำดับข้อมูลตามคอลัมน์ที่เลือก
     sorted_data = sort_data(column_name)
     tables = sorted_data.to_html(classes='table table-striped', index=False)
-    data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
-    name_can = data_cancer['name_cancarTH'].dropna().to_list()
-    symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list() 
     # ส่งข้อมูลไปยังเทมเพลต HTML
-    return render_template('index_soft.html', data=[tables],titles=data.columns.values, sort_options=sort_options,skills=name_can,symptoms=symptoms_can
-                           ,tables_d=[tables_d], number_of_rows=data.shape[0], number_of_columns=data.shape[1])
+    return render_template('output.html', tables=[tables],titles=data.columns.values, sort_options=sort_options,skills=name_can,symptoms=symptoms_can
+                           ,tables_descript=[tables_d], number_of_rows=data.shape[0], number_of_columns=data.shape[1],soure=soure)
+#number_of_rows=number_of_rows, number_of_columns=number_of_columns,
 
+@app.route("/ajax_add",methods=["POST","GET"])
+def ajax_add():
+  if request.method == 'POST':
+        # ข้อมูลที่ได้รับจากการกรอง
+        skill = request.form['skill']
+        symptom  = request.form['symptom'] 
+        name_cancer=skill.split(', ')
+        name_symptom = symptom.split(', ')
+        # ข้อมูลอาการเพิ่มเติม
+        soure_b = pd.read_csv('soure_url.csv')
+        soure = soure_b['url'][0]
+        if soure == 'www.facebook.com':
+            data_defu = pd.read_csv('name_cancer_and_symptoms (2).csv')
+            data_defu_sym = data_defu[['Key_symptoms_TH','Values_symptoms_TH']].dropna()
+            data_value_TH = pd.DataFrame()
+            data_symptoms_TH = pd.DataFrame()
+            data_value_TH['name_cancarTH_se']=name_cancer
+            data_symptoms_TH['Key_symptoms_TH'] =name_symptom
+            data_symptoms_TH_1 = data_symptoms_TH.merge(data_defu_sym, how='left',on='Key_symptoms_TH')
+            value_symptoms_TH= data_symptoms_TH_1[data_symptoms_TH_1['Values_symptoms_TH'].isna()]
+            list_of_sym_va_th = value_symptoms_TH['Key_symptoms_TH'].tolist()
+            for i in list_of_sym_va_th:
+                data_symptoms_TH_1.fillna(f"['{i}']",limit=1,inplace=True)
+            # สร้างตาราง
+            all_data = pd.DataFrame()
+            list_100 = list(range(0,100))
+            all_data['index'] = list_100
+            all_data = all_data.merge(data_value_TH.reset_index(), how='outer')
+            all_data = all_data.merge(data_symptoms_TH_1.reset_index(), how='outer')
+        elif soure == 'www.reddit.com':
+            data_defu = pd.read_csv('name_cancer_and_symptoms (2).csv')
+            data_defu_sym = data_defu[['Key_symptoms_EN','Valuessymptoms_EN']].dropna()
+            data_value_TH = pd.DataFrame()
+            data_symptoms_TH = pd.DataFrame()
+            data_value_TH['cancer_names_en_se']=name_cancer
+            data_symptoms_TH['Key_symptoms_EN'] =name_symptom
+            data_symptoms_TH_1 = data_symptoms_TH.merge(data_defu_sym, how='left',on='Key_symptoms_EN')
+            value_symptoms_TH= data_symptoms_TH_1[data_symptoms_TH_1['Valuessymptoms_EN'].isna()]
+            list_of_sym_va_th = value_symptoms_TH['Key_symptoms_EN'].tolist()
+            for i in list_of_sym_va_th:
+                data_symptoms_TH_1.fillna(f"['{i}']",limit=1,inplace=True)
+            # สร้างตาราง
+            all_data = pd.DataFrame()
+            list_100 = list(range(0,100))
+            all_data['index'] = list_100
+            all_data = all_data.merge(data_value_TH.reset_index(), how='outer')
+            all_data = all_data.merge(data_symptoms_TH_1.reset_index(), how='outer')
+        all_data.to_csv('all_data_nameandsym.csv', index=False, encoding='utf-8-sig')
+        msg = 'New record created successfully'  
+        return jsonify(msg)     
 
 
 @app.route('/test.py', methods=['POST','GET'])

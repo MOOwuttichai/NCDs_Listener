@@ -1,22 +1,9 @@
+/* Page 1 */
 body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
-}
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.table-container {
-  overflow: auto;
-  max-width: 500px;
-  overflow-y: auto;
-  max-height: 80vh;
-  border: 1px solid #ccc;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
@@ -32,72 +19,98 @@ th {
 header {
   background-color: #66CDAA;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 10px;
   text-align: justify;
+  width: 100%;
 
 }
 
 .logo {
-  width: 20%;
-  height: 50px;
+  width: 110px;
+  height: 100px;
+  /* padding-right: 10px; */
+  padding-left: 10px;
+  /* border: 1px solid #f44b0e; */
 }
 
-img {
-  width: 100%;
-  height: auto;
+.word {
+  margin-left: 10px;
+  color: black;
+  /* border: 1px solid #0e9cf4; */
 }
 
-h1 {
-  font-size: 2em;
+.h1 { 
+  font-family: sans-serif;
+  font-size: 3em;
   margin: 0;
 }
 
-nav {
-  background-color: #99e8ce;
-  padding: 10px;
-  width: 40%;
+.h2 {
+  font-family: sans-serif;
+  font-size: 2em;
+  margin: 0;
+  color: black;
+}
+
+.nav {
+  background-color: #66CDAA;
+  /* padding: 10px; */
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
   /* border: 1px solid #90EE90; */
 }
 
-.sub {
-  width: 30%;
+.imgncd {
+  background-color: white;
+  padding: 10px;
+  width: 350px;
+  /* justify-content: space-between; */
+  align-items: center;
+  display: flex;
+}
+
+.sub_ {
+  padding-left: 40%;
+  /* width: auto; */
   /* border: 2px solid #3b1ab3; */
   letter-spacing: 2px;
-  text-align: end;
+  text-align: center;
 
 }
 
-.sub ul {
+.sub_ ul {
   list-style: none;
-  margin: 0;
-  padding: 20;
+  margin: 5px;
+  padding: 10px;
   display: flex;
-  text-align: end;
+  /* text-align: end; */
   cursor: pointer;
 
 }
-.sub ul :hover {
+.sub_ ul :hover {
   background-color: #99e8ce;
 }
 
-.sub li {
+.sub_ li {
   margin-right: 20px;
   text-align: center;
 
 }
 
-.sub a {
+.sub_ a {
   text-decoration: none;
+  font-size: 20px;
   color: black;
   /* border: 1px solid #90EE90; */
 }
 
-.sub i {
-  font-size: 2em;
+.sub_ i {
+  font-size: 2.5em;
 
 }
+
 main {
   padding: 20px;
 }
@@ -105,6 +118,8 @@ main {
 .hero {
   text-align: center;
   margin-bottom: 20px;
+  color: black;
+
 }
 
 .hero p {
@@ -114,8 +129,8 @@ main {
 
 .input-section {
   text-align: center;
-  width: 99%;
-
+  width: 100%;
+  /* color: black; */
 }
 
 label {
@@ -131,22 +146,103 @@ input[type="text"] {
   margin-bottom: 10px;
 }
 
-button.Go {
+button.url {
   background-color: #4CAF50;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 2cm;
+
 }
 
-button.Go:hover {
+button.url:hover {
   background-color: #3e8e41;
-}
-
-output {
-  padding: 20px;
-  align-items: stretch;
-  text-align: justify;
 
 }
+
+/* Page 2 */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-container {
+  overflow: auto;
+  /* max-width: 500px; */
+  overflow-y: auto;
+  max-height: 80vh;
+  border: 1px solid white;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#page {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+      "tab ad"
+      "tab ad"
+      "des des";
+  gap: 10px;
+  padding: 10px;
+  /* border: 1px solid #ef3b04; */
+  width: 100%;
+
+}
+
+#tab {
+  grid-area: tab;
+  background-color: white;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  border: 1px solid #041cef;
+}
+
+#ad {
+  grid-area: ad;
+  align-items: start;
+  /* background-color: #0000ff; */
+  border: 1px solid #fa2004;
+  color: black;
+}
+
+#des {
+  grid-area: des;
+  /* background-color: #006400; */
+  border: 1px solid #d4ef04;
+  color: black;
+}
+
+/* Insert Diseases and Symptoms */
+.ui-autocomplete {
+  max-height: 100px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+  height: 100px;  
+}
+/* Style the icon */
+.input-group-text {
+    width: 30px;
+    text-align: center;
+  }
+
+  /* Hide the default checkmark icon */
+  .form-control:focus + .input-group-append .input-group-text {
+    border: none;
+  }
+
+  /* Show the selected tag icon */
+  .form-control:focus + .input-group-append .input-group-text i.selected-tag-icon {
+    display: block;
+  }

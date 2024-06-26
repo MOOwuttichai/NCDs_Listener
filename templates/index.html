@@ -60,10 +60,13 @@
                 <input type="text" name="symptom" id="symptom" class="form-control" style="direction:rtl"/>
             </div>
             <div class="form-group">
-             <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit" />
+             <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit" onclick="enableBtn()" />
             </div>
             <div class="form-group">
               <button  type="button" name="select_all" id="select_all" class="select_all" > select_all </button>
+            </div>
+            <div class="form-group">
+              <button  type="button" name="next_p" id="next_p" class="next_p" disabled > next_p </button>
             </div>
            </form>
           </div>
@@ -108,9 +111,13 @@
     event.preventDefault();
     if($.trim($('#skill').val()).length == 0) {
       alert("Please Enter Your cancer");
+      $("#next_p").prop("disabled",
+      true)
       return false;
     }else if($.trim($('#symptom').val()).length == 0) {
       alert("Please Enter Your symptom");
+      $("#next_p").prop("disabled",
+      true)
       return false;
     }else{
         var form_data = $(this).serialize();
@@ -159,8 +166,9 @@
       }
   });
  });
-
-
+      function enableBtn() {
+        document.getElementById("next_p").disabled = false;
+        }
     </script>
  </body>
 </html>
