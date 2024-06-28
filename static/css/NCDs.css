@@ -53,7 +53,7 @@ header {
 }
 
 .nav {
-  background-color: #66CDAA;
+  background-color: #59caa4;
   /* padding: 10px; */
   width: 100%;
   justify-content: space-between;
@@ -65,7 +65,7 @@ header {
 .imgncd {
   background-color: white;
   padding: 10px;
-  width: 350px;
+  width: 400px;
   /* justify-content: space-between; */
   align-items: center;
   display: flex;
@@ -102,12 +102,13 @@ header {
 .sub_ a {
   text-decoration: none;
   font-size: 20px;
-  color: black;
+  color: white;
   /* border: 1px solid #90EE90; */
 }
 
 .sub_ i {
   font-size: 2.5em;
+  color: white;
 
 }
 
@@ -162,6 +163,31 @@ button.url:hover {
 
 }
 
+#second {
+  padding-bottom: 5%;
+}
+
+.bg {
+  background-color: white;
+  border:1px solid #3e8e41;
+
+}
+.container-fluid {
+  /* padding: 70px 50px 70px 50px; */
+  padding-bottom: 15%;
+}
+.container-fluid div {
+  padding: 10px;
+  margin: 0 auto;
+}
+.container-fluid a {
+  color: #d5d5d5;
+}
+
+.container-fluid a:hover {
+  color: #777;
+  text-decoration: none;
+}
 /* Page 2 */
 
 table {
@@ -216,8 +242,42 @@ table {
   /* background-color: #006400; */
   border: 1px solid #d4ef04;
   color: black;
+  padding-bottom: 20px;
 }
 
+/* Position the button */
+.button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+/* Button Next */
+.createdash {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.createdash:hover {background-color: #3e8e41}
+
+.createdash:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+  
 /* Insert Diseases and Symptoms */
 .ui-autocomplete {
   max-height: 100px;
@@ -246,3 +306,27 @@ table {
   .form-control:focus + .input-group-append .input-group-text i.selected-tag-icon {
     display: block;
   }
+
+.container {
+    padding: 2rem;
+}
+
+.print-button {
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 2rem 0;
+}
+.print-button:hover {
+    background-color: #3e8e41;
+}
+
+iframe {
+    width: 100%;
+    height: 1600px;
+    border: none;
+}
