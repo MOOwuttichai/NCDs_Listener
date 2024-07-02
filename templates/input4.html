@@ -10,15 +10,15 @@
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <style>
-  #myDIV {
-  width: 100%;
-  padding: 50px 0;
-  text-align: center;
-  background-color: lightblue;
-  margin-top: 20px;
-  display :none;
-}
-  </style>
+    #myDIV {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
+    display :none;
+  }
+    </style>
 </head>
   
 <header>
@@ -41,19 +41,21 @@
     </div>
     <div class="sub_">
         <ul>
-            <button>
-            <li><a href="http://localhost:8050/"><i class="ri-home-smile-fill">
-            </i>Home</a></li>
-            </button>
+          <form action="/page1_3" method="post">
+          <button>
+              <li><a><i class="ri-home-smile-fill">
+              </i>Home</a></li>
+              </button>
+            </form>
 
-            <form action="/page2_2.py"  method="post">
-                <button disabled>
+            <form action="/page2_3.py"  method="post">
+                <button>
                 <li><a><i class="ri-table-fill">
                 </i>Prepare</a></li></button>
                 </form>
     
             <form action="/page3_2.py" method="post">
-                <button disabled>
+                <button>
                 <li><a><i class="ri-dashboard-2-fill">
                 </i>Dashboard</a></li></button>
                 </form>
@@ -62,8 +64,7 @@
   </div>   
 </header>
 
-<main>
-  <section class="hero">
+<section class="hero">
     <div class="h2">NCD'S LISTENER</div>
   </section>
   <section class="input-section">
@@ -74,26 +75,27 @@
     <br>
     <button onclick="myFunction()" class="center" type="button">advance option</button>
     <div id="myDIV">
-      <label for="x"><b>xpath ความคิดเห็นเพิ่มเติม</b></label>
-      <input type="text" placeholder="xpath_ความคิดเห็นเพิ่มเติม" id="x" name="x" value="/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[52]/div[1]/div/div[2]/span/span" required>
-      <label for="a"><b>xpath_loop ความคิดเห็นเพิ่มเติม</b></label>
-      <input type="text" placeholder="xpath_loop" id="a" name="a" value="50" required>
-      <label for="aoa"><b>xpath เปิดเพิ่มเติม</b></label>
-      <input type="text" placeholder="xpath_เปิดเพิ่มเติม" id="aoa"name="aoa" value="/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[1]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div[2]/div/div" required>
-      <label for="r"><b>xpath_loop เปิดเพิ่มเติม</b></label>
-      <input type="text" placeholder="xpath_loop" id="r"name="r" value="1" required>
-    </div>
+        <label for="x"><b>xpath ความคิดเห็นเพิ่มเติม</b></label>
+        <input type="text" placeholder="xpath_ความคิดเห็นเพิ่มเติม" id="x" name="x" value="/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[52]/div[1]/div/div[2]/span/span" required>
+        <label for="a"><b>xpath_loop ความคิดเห็นเพิ่มเติม</b></label>
+        <input type="text" placeholder="xpath_loop" id="a" name="a" value="50" required>
+        <label for="aoa"><b>xpath เปิดเพิ่มเติม</b></label>
+        <input type="text" placeholder="xpath_เปิดเพิ่มเติม" id="aoa"name="aoa" value="/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[1]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div[2]/div/div" required>
+        <label for="r"><b>xpath_loop เปิดเพิ่มเติม</b></label>
+        <input type="text" placeholder="xpath_loop" id="r"name="r" value="1" required>
+      </div>
     <button type="submit" class="url">Go!</button>
-    <script>
-      function myFunction() {
-        var x = document.getElementById("myDIV");
-        if (x.style.display === "block") {
-          x.style.display = "none";
-        } else {
-          x.style.display = "block";
-        }
+  </section>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("myDIV");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
       }
-      </script>
+    }
+    </script>
 </main>
 
 <header>

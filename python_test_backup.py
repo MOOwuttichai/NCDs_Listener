@@ -69,6 +69,10 @@ def index():
 def process():
     import pandas as pd
     url = request.form['url']
+    x_1 = request.form['x']
+    a_1 = request.form['a']
+    aoa_1 =request.form['aoa']
+    r_1 = request.form['r']
     url_chack = str(url).split('/')[2]
     data_soure_a = {'url':[url_chack]}
     data_soure_b = pd.DataFrame(data_soure_a)
@@ -99,11 +103,11 @@ def process():
         pass_field.send_keys(Keys.RETURN)
 
         time.sleep(20)
-        x='/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[52]/div[1]/div/div[2]/span/span'
+        x=x_1
         a=int(x[162:164])
         k=x
 
-        aoa='/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[1]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div[2]/div/div'
+        aoa=aoa_1
         kok={'a_a':'div/div/div','b_a':'div[2]/div/div','b_b':'div/div[2]/div','b_c':'div/div/div[2]','c_a':'div[3]/div/div','c_b':'div/div[3]/div','c_c':'div/div/div[3]'}
         LOL=[]
         time.sleep(20)
@@ -121,7 +125,7 @@ def process():
                 time.sleep(1)
                 l = browser.find_element(By.XPATH,k)
                 l.click()
-                a+=50
+                a+=int(a_1)
                 k = x[:162]+str(a)+x[164:]
                 time.sleep(7)
                 browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -152,7 +156,7 @@ def process():
         r=int(aoa[-81:-80])
         for i in range(2):
             for i in range(9999):
-                r += 1
+                r += int(r_1)
                 for j in kok:
                     kra = aoa[:-81]+ str(r) + aoa[-80:-14] + kok[j]
                     LOL.append(kra)
@@ -1230,6 +1234,57 @@ def index_4():
     tables = sorted_data.to_html(classes='table table-striped', index=False)
     return render_template('output2.html', tables=[tables],titles=data.columns.values, sort_options=sort_options,skills=name_can,symptoms=symptoms_can
                            ,tables_descript=[tables_d], number_of_rows=data.shape[0], number_of_columns=data.shape[1])
+
+@server.route('/page2_3.py',methods=["POST","GET"])
+def index_7():
+    soure_b = pd.read_csv('soure_url.csv')
+    soure = soure_b['url'][0]
+    if soure == 'www.facebook.com':
+        data = pd.read_csv("data_commentsFB_docter.csv", encoding='utf-8-sig')
+        def sort_data(column_name):
+            if column_name == 'like':
+                data.sort_values('like', inplace=True, ascending=False)
+            elif column_name == 'การตอบกลับ':
+                data.sort_values('rechat', inplace=True, ascending=False)
+            elif column_name == 'ความยาวของความคิดเห็น':
+                data.sort_values('count', inplace=True, ascending=False)
+            else:
+                pass
+            return data
+        sort_options = ['like', 'การตอบกลับ', 'ความยาวของความคิดเห็น']
+        # number_of_rows = len(data)
+        # number_of_columns = len(data.columns) 
+        data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
+        name_can = data_cancer['name_cancarTH'].dropna().to_list()
+        symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list() 
+    elif soure == 'www.reddit.com':
+        data =  pd.read_csv("data_commentsred_docter.csv")
+        def sort_data(column_name):
+            if column_name == 'ความยาวของความคิดเห็น':
+                data.sort_values('count', inplace=True, ascending=False)
+            else:
+                pass
+            return data
+        sort_options = ['ความยาวของความคิดเห็น'] 
+        data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
+        name_can = data_cancer['cancer_names_en'].dropna().to_list()
+        symptoms_can = data_cancer['Key_symptoms_EN'].dropna().to_list()
+    descriptive=pd.read_csv('data_desc.csv',encoding='utf-8-sig')
+    descriptive = descriptive.iloc[:, 1:]
+    tables_d = descriptive.to_html(classes='table table-striped', index=False)
+    # เรียงลำดับข้อมูลตามคอลัมน์ที่เลือก
+    sorted_data = sort_data('like')
+    tables = sorted_data.to_html(classes='table table-striped', index=False)
+    return render_template('output3.html', tables=[tables],titles=data.columns.values, sort_options=sort_options,skills=name_can,symptoms=symptoms_can
+                           ,tables_descript=[tables_d], number_of_rows=data.shape[0], number_of_columns=data.shape[1])
+
+@server.route('/page1_2', methods=['POST','GET'])
+def index5():
+  return render_template('input3.html')
+
+@server.route('/page1_3', methods=['POST','GET'])
+def index6():
+  return render_template('input4.html')
 
 application = DispatcherMiddleware(
     server,
