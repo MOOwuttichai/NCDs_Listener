@@ -1,46 +1,46 @@
-,cancer_names_en_se,Key_symptoms_EN,Valuessymptoms_EN
-0,Bladder cancer,Fatigue,['Fatigue']
-1,Endometrial cancer,Tiredness,"['Fatigue', 'Tiredness', 'Lethargy', 'Shortness of breath']"
-2,Cervical cancer,Itching,"['Itching', 'Itching skin']"
-3,Leukemia,Feverishness,"['Feverishness', 'Fever']"
-4,Liver cancer,Pain,"['Pain', 'Aches']"
-5,Pancreatic cancer,Numbness,"['Numbness', 'Tingling']"
-6,Prostate cancer,Loss of appetite,['Loss of appetite']
-7,Stomach cancer,Unexplained weight loss,"['Unexplained weight loss', 'Weight loss', 'Rapid weight loss']"
-8,Esophageal cancer,Chronic fever,"['Chronic fever', 'Fever']"
-9,Breast cancer,Night sweats,"['Night sweats', 'Sweating']"
-10,Lung cancer,Body aches,"['Body aches', 'Aches']"
-11,Colorectal cancer,Swollen lymph nodes,['Swollen lymph nodes']
-12,Ovarian cancer,Stomach pain,['Stomach pain']
-13,Oral cancer,Sore throat,['Sore throat']
-14,Thyroid cancer,Swollen armpits,['Swollen armpits']
-15,Lymphoma,Back pain,['Back pain']
-16,Brain cancer,Darkened skin,['Darkened skin']
-17,Skin cancer,Breast pain,['Breast pain']
-18,Intestinal cancer,Bloating,"['Bloating', 'Abdominal bloating', 'Bloated']"
-19,Bile duct cancer,Chronic constipation,"['Chronic constipation', 'Constipation']"
-20,Colorectal cancer,Indigestion,['Indigestion']
-21,Melanoma,Difficulty swallowing,"['Difficulty swallowing', 'Dysphagia']"
-22,Hodgkin lymphoma,Chronic abdominal pain,['Chronic abdominal pain']
-23,Acute leukemia,Vomiting blood,"['Vomiting blood', 'Vomiting', 'Emesis']"
-24,Bone cancer,Bloody stools,"['Bloody stools', 'Blood in stool', 'Melena']"
-25,Central nervous system cancer,Chronic cough,"['Chronic cough', 'Cough', 'Persistent cough', 'Dry cough']"
-26,Kidney cancer,Coughing up blood,['Coughing up blood']
-27,Uterine cancer,Hoarseness,['Hoarseness']
-28,Gallbladder cancer,Shortness of breath,"['Shortness of breath', 'Dyspnea']"
-29,Spinal cord cancer,Chest pain,['Chest pain']
-30,Eye cancer,Vaginal bleeding,"['Vaginal bleeding', 'Bleeding from vagina', 'Abnormal bleeding']"
-31,Vaginal cancer,Vaginal discharge,['Vaginal discharge']
-32,Penile cancer,Frequent urination,['Frequent urination']
-33,Vulvar cancer,Urinary tract infection,"['Urinary tract infection', 'Dysuria']"
-34,Adrenal gland cancer,Hematuria,['Hematuria']
-35,Salivary gland cancer,Enlarged testicles,['Enlarged testicles']
-36,Ovarian cyst cancer,Skin ulcers,"['Skin ulcers', 'Ulcers']"
-37,,Changing moles or freckles,['Changing moles or freckles']
-38,,Lumps or bumps under the skin,['Lumps or bumps under the skin']
-39,,Headache,['Headache']
-40,,Vision problems,['Vision problems']
-41,,Seizures,['Seizures']
+﻿index,name_cancarTH_se,Key_symptoms_TH,Values_symptoms_TH
+0,มะเร็งกระเพาะปัสสวะ,อ่อนเพลีย,['อ่อนเพลีย']
+1,มะเร็งเยื่อบุโพรงมดลูก,เหนื่อยง่าย,"['เหนื่อยง่าย', 'เหนื่อย', 'เพลีย', 'เหนื่อยหอบ']"
+2,มะเร็งเม็ดเลือดขาว,คันเนื้อคันตัว,"['คันเนื้อคันตัว', 'คัน', 'คันตัว', 'คันตามตัว']"
+3,มะเร็งตับ,มีอาการร้อน,"['ร้อน', 'อาการรัอน', 'ตัวร้อน']"
+4,มะเร็งตับอ่อน,อาการเจ็บปวด,"['เจ็บปวด', 'เจ็บ', 'อาการเจ็บปวด']"
+5,มะเร็งต่อมลูกหมาก,อาการชา,"['อาการชา', 'ชา']"
+6,มะเร็งกระเพาะปัสสาวะ,เบื่ออาหาร,['เบื่ออาหาร']
+7,มะเร็งกระเพาะอาหาร,น้ำหนักลดโดยไม่ทราบสาเหตุ,"['น้ำหนักลดโดยไม่ทราบสาเหตุ', 'น้ำหนักลด', 'น้ำหนักลดลงเร็วมาก']"
+8,มะเร็งหลอดอาหาร,ไข้เรื้อรัง,"['ไข้เรื้อรัง', 'ไข้', 'เป็นไข้']"
+9,มะเร็งเต้านม,เหงื่อออกตอนกลางคืน,"['เหงื่อออกตอนกลางคืน', 'เหงื่อออกตอนดึก', 'เหงื่อออก']"
+10,มะเร็งปอด,ปวดใต้รักแร้,"['ปวดใต้รักแร้', 'ปวดรักแร้']"
+11,มะเร็งลำไส้ใหญ่,ปวดเอว,['ปวดเอว']
+12,มะเร็งรังไข่,เจ็บเต้านม,"['เจ็บเต้านม', 'เจ็บเต้า', 'เจ็บนม']"
+13,มะเร็งช่องปาก,ท้องอืด,"['ท้องอืด', 'อาการอืดท้อง', 'อืด']"
+14,มะเร็งต่อมไทรอยด์,ท้องผูกเรื้อรัง,"['ท้องผูกเรื้อรัง', 'ท้องผูก']"
+15,มะเร็งต่อมน้ำเหลือง,กลืนลำบาก,"['กลืนลำบาก', 'กลืนอาหารลำบาก', 'กลืนยาก']"
+16,มะเร็งสมอง,อุจจาระอาจมีเลือด,"['อุจจาระเป็นเลือด', 'อึเป็นเลือด', 'ขี้เป็นเลือด', 'อุจจาระ', 'ขี้', 'ถ่าย', 'ถ่ายเป็นเลือด']"
+17,มะเร็งผิวหนัง,ไอเรื้อรัง,"['ไอเรื้อรัง', 'ไอ', 'ไอต่อเนื่อง', 'ไอแห้ง']"
+18,มะเร็งลำไส้,เสียงแหบ,['เสียงแหบ']
+19,มะเร็งท่อน้ำดี,เจ็บหรือเเน่นหน้าอก,"['เจ็บหน้าอก', 'เเน่นหน้าอก']"
+20,มะเร็งลำไส้ใหญ่และทวารหนัก,เลือดออกผิดปกติจากช่องคลอด,"['เลือดออกผิดปกติจากช่องคลอด', 'เลือดออกจากช่องคลอด', 'เลือดออกผิดปกติจากอวัยวะเพศ', 'เลือดออกจากอวัยวะเพศ', 'เลือดไหล']"
+21,มะเร็งผิวหนังชนิดเมลาโนมา,ตกขาวผิดปกติ,"['ตกขาวผิดปกติ', 'ตกขาว']"
+22,มะเร็งต่อมน้ำเหลืองชนิดนอนฮอดจ์กิน,ปัสสาวะบ่อย,['ปัสสาวะบ่อย']
+23,มะเร็งเม็ดเลือดขาวชนิดเฉียบพลัน,ปัสสาวะแสบขัด,"['ปัสสาวะแสบขัด', 'ฉี่แสบขัด']"
+24,มะเร็งกระดูก,ปัสสาวะเป็นเลือด,"['ปัสสาวะเป็นเลือด', 'ฉี่เป็นเลือด']"
+25,มะเร็งสมองและระบบประสาทกลาง,อัณฑะโตผิดปกติ,"['อัณฑะโตผิดปกติ', 'ไข่โตผิดปกติ', 'ไข่ผิดปกติ', 'อัณฑะผิดปกติ', 'อัณฑะ']"
+26,มะเร็งไต,แผลเรื้อรัง,"['แผลเรื้อรัง', 'เป็นแผล', 'แผล']"
+27,มะเร็งมดลูก,ไฝหรือปานเปลี่ยนแปลง,"['ไฝหรือปานเปลี่ยนแปลง', 'ไฝเปลี่ยนแปลง', 'ปานเปลี่ยนแปลง']"
+28,มะเร็งถุงน้ำดี,มีตุ่มหรือก้อนใต้ผิวหนัง,"['มีตุ่มหรือก้อนใต้ผิวหนัง', 'มีตุ่มใต้ผิวหนัง', 'มีก้อนใต้ผิวหนัง', 'ก้อน', 'ตุ่ม', 'มีก้อน', 'มีตุ่ม', 'ตื่ง', 'มีตื่ง']"
+29,มะเร็งกระดูกสันหลัง,ปวดศีรษะ,"['ปวดศีรษะ', 'ปวดหัว']"
+30,มะเร็งลูกตา,มองเห็นภาพผิดปกติ,"['มองเห็นภาพผิดปกติ', 'มองไม่เห็น']"
+31,มะเร็งเยื่อบุช่องคลอด,ชัก,['ชัก']
+32,มะเร็งเยื่อบุอวัยวะเพศชาย,,
+33,มะเร็งเยื่อบุอวัยวะเพศหญิง,,
+34,มะเร็งต่อมหมวกไต,,
+35,มะเร็งต่อมน้ำลาย,,
+36,มะเร็งถุงน้ำรังไข่,,
+37,,,
+38,,,
+39,,,
+40,,,
+41,,,
 42,,,
 43,,,
 44,,,
