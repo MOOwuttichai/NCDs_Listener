@@ -62,7 +62,7 @@ app1 = dash.Dash(requests_pathname_prefix="/app1/")
 @server.route('/', methods=['GET'])
 # ส่วนของหน้าที่ 1 สำหรับ input url ใช้ประกอบกับ HTML
 def index():
-  return render_template('input2.html')
+  return render_template('Page1_pro1.html')
 # ส่วนของหน้าที่ 1 สำหรับการดึงข้อมูลมาเก็บเป็นตาราง เเละให้เเสดงผลหน้าที่ 2 โดยให้เเสดงตารางข้อมูล,ค่าสถิติเบื้องต้น,word cloud,เเละการใส่อาการ ใช้ร่วมกับ HTML ด้วย
 # ปล. ตัวกรอกอาการเป็น tag ต่างๆใช้html(เขียนเอง),jqurry(เขียนเอง) เเละ css(สำเร็จรูป)
 @server.route('/process.py', methods=['POST'])
