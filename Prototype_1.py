@@ -264,7 +264,7 @@ def process():
         data_comment=pd.DataFrame(data={'comments':FBcomments})
         data_name=pd.DataFrame(data={'name':names})
         data_rechat=pd.DataFrame(data={'rechat':re_chat_all})
-        data_like=pd.DataFrame(data={'like':like_kk})
+        data_like=pd.DataFrame(data={'like':like_count})
         data_count=pd.DataFrame(data={'count':count})
         # ทำตาราง
         data = data_comment
@@ -272,7 +272,7 @@ def process():
         data = data.join(data_rechat).fillna(0)
         data = data.join(data_like).fillna(0)
         data = data.join(data_count).fillna(0)
-        data_f = data.iloc[:,[1,0,3,2,4]]
+        data = data.iloc[:,[1,0,3,2,4]]
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
         data.to_csv('data_commentsFB_docter.csv', index=False, encoding='utf-8-sig')
@@ -331,7 +331,7 @@ def process():
         driver.close() 
 
     if url_chack == 'www.facebook.com': 
-        _ = ['like','จำนวนการตอบกลับ','ความยาว']
+        _ = ['จำนวนการตอบกลับ','like','ความยาว']
         data = pd.read_csv("data_commentsFB_docter.csv", encoding='utf-8-sig')
         def sort_data(column_name):
             if column_name == 'like':
@@ -343,7 +343,7 @@ def process():
             else:
                 pass
             return data
-        _ = ['like','จำนวนการตอบกลับ','ความยาว']
+        _ = ['จำนวนการตอบกลับ','like','ความยาว']
         sort_options = ['like', 'การตอบกลับ', 'ความยาวของความคิดเห็น']
         data_cancer= pd.read_csv('name_cancer_and_symptoms (2).csv')
         name_can = data_cancer['name_cancarTH'].dropna().to_list()
@@ -430,6 +430,7 @@ def process():
     descriptive['min'] = min_v
     descriptive['avg'] = avg_v
     descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
+    descriptive =pd.read_csv('data_desc.csv')
     tables_d = descriptive.to_html(classes='table table-striped', index=False)
     # เรียงลำดับข้อมูลตามค่าเริ่มต้น (like)
     sorted_data = sort_data('like')
