@@ -80,6 +80,11 @@
           <option value="{{ option }}">{{ option }}</option>
           {% endfor %}
         </select>
+        <label for="sort_column">เรียงจาก:</label>
+        <select id="sort_column" name="sort_column">
+          <option value="www.facebook.com">ภาษาไทย</option>
+          <option value="www.reddit.com">ภาษาอังกฤษ</option>
+        </select>
         <button type="submit">เรียงลำดับ</button>
       </form>
 
@@ -98,7 +103,7 @@
         {% endfor %}</p>
     </div>
 
-    <img src="{{ url_for('wordcloud') }}" alt="WordCloudSymptoms" style="width: 570px; height: 275px;">
+    <img src="{{ url_for('wordcloud') }}" alt="WordCloudSymptoms" style="width: 620px; height: 300px;">
   </div>
 </div>
 

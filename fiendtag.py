@@ -70,8 +70,8 @@ def ajax_add():
           data_symptoms_EN = pd.DataFrame()
           data_value_EN['name_cancarEN_se']=name_cancer
           data_symptoms_EN['Key_symptoms_EN'] =name_symptom
-          data_symptoms_EN_1 = data_symptoms_TH.merge(data_defu_sym_EN, how='left',on='Key_symptoms_EN')
-          value_symptoms_EN= data_symptoms_EN_1[data_symptoms_EN_1['Values_symptoms_TH'].isna()]
+          data_symptoms_EN_1 = data_symptoms_EN.merge(data_defu_sym_EN, how='left',on='Key_symptoms_EN')
+          value_symptoms_EN= data_symptoms_EN_1[data_symptoms_EN_1['Valuessymptoms_EN'].isna()]
           list_of_sym_va_en = value_symptoms_EN['Key_symptoms_EN'].tolist()
           for i in list_of_sym_va_en:
             data_symptoms_EN_1.fillna(f"['{i}']",limit=1,inplace=True)

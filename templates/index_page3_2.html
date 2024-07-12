@@ -53,7 +53,8 @@
            <form method="post" id="reg_form">
             <div class="form-group">
              <label>Enter your cancer</label>
-             <input type="text" name="skill" id="skill" class="form-control" style="direction:rtl"/>
+             <input type="text" name="skill" id="skill" class="form-control" style="direction:rtl"
+             value="{% for skill in skills %} {{skill}}, {% endfor %}"/>
             </div>
             <div class="form-group">
                 <label>Enter your symptoms</label>
