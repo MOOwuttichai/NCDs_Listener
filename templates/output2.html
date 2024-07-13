@@ -115,7 +115,7 @@
       <h2 align="center">เพิ่มโรคและอาการ</h2>
       <br />
       <div class="col-md-6" style="margin:0 auto; float:none;">
-        <form method="post" id="reg_form">
+        <form action = "/ajax_add" method="post" id="reg_form">
           <div class="form-group">
             <label>Enter your disease</label>
             <input type="text" name="skill" id="skill" class="form-control" style="direction:rtl" />
@@ -125,12 +125,11 @@
             <input type="text" name="symptom" id="symptom" class="form-control" style="direction:rtl" />
           </div>
           <div class="form-group">
-            <input type="hidden" id="custId" name="custId" value="3487"/>
-            <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit" />
-          </div>
-          <div class="form-group">
             <button type="button" name="select_all" id="select_all" class="select_all"> select_all </button>
           </div>
+          <div class="form-group">
+          <button type="submit" name="submit" id="submit" class="btn btn-info">Submit</button>
+        </div>
         </form>
       </div>
     </div>
@@ -155,6 +154,26 @@
     showAutocompleteOnFocus: true
         })
     })
+    $('#reg_form').on('submit', function (event) {
+      if ($.trim($('#skill').val()).length == 0) {
+        alert("Please Enter Your cancer");
+        return false;
+      } else if ($.trim($('#symptom').val()).length == 0) {
+        alert("Please Enter Your symptom");
+        return false;
+      } else {
+        var form_data = $(this).serialize();
+        $('#submit').attr("disabled", "disabled");
+        $.ajax({
+          url: "/ajax_add",
+          method: "POST",
+          data: form_data,
+          beforeSend: function () {
+            $('#submit').val('Submitting...');
+          }
+        });
+      }
+    });
   $('#skill').on('tokenfield:createtoken', function (event) {
     var existingTokens = $(this).tokenfield('getTokens');
     $.each(existingTokens, function (index, token) {
@@ -170,35 +189,6 @@
     });
   });
 
-  $('#reg_form').on('submit', function (event) {
-    event.preventDefault();
-    if ($.trim($('#skill').val()).length == 0) {
-      alert("Please Enter Your cancer");
-      return false;
-    } else if ($.trim($('#symptom').val()).length == 0) {
-      alert("Please Enter Your symptom");
-      return false;
-    } else {
-      var form_data = $(this).serialize();
-      $('#submit').attr("disabled", "disabled");
-      $.ajax({
-        url: "/ajax_add",
-        method: "POST",
-        data: form_data,
-        beforeSend: function () {
-          $('#submit').val('Submitting...');
-        },
-        success: function (data) {
-          if (data != '') {
-            $('#skill').tokenfield('setTokens', []);
-            $('#symptom').tokenfield('setTokens', []);
-            $('#submit').attr("disabled", false);
-            $('#submit').val('Submit');
-          }
-        }
-      });
-    }
-  });
   $(document).ready(function () {
     $('button.select_all').click(function () {
       var data = ''

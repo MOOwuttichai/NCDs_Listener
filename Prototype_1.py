@@ -1168,13 +1168,15 @@ def ajax_add():
             print(symptoms)
         #====================================================================================================
             #เเปลงหัวตาราง
-            data = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+            data = pd.read_csv('data_tokenizer.csv', encoding='utf-8-sig')
             count_user = len(set(data['ชื่อ']))
             count_comment = len(set(data['คำพูดโรค']))
-            data = data.iloc[:,:6]
             comment=data.groupby('ชื่อ').sum().reset_index()
+            comment = comment.drop(['Unnamed: 0'], axis=1)
             # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
-            list_token =comment['token'].to_list()
+            list_token = []
+            for i in range(len(comment['token'])):
+                list_token.append(ast.literal_eval(comment['token'][i]))
             #หาโรค
             #--------------------------------------------------------
             new_colcan = []
@@ -1329,8 +1331,7 @@ def ajax_add():
             Data_pre_and_clane.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
         elif sorue == 'www.reddit.com':
             import pandas as pd
-            data = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
-            data = data.iloc[:,:4]
+            data = pd.read_csv('data_tokenizer.csv', encoding='utf-8-sig')
             count_user = len(set(data['name']))
             count_comment = len(set(data['comments']))
             # ระบุโรค
@@ -1347,7 +1348,10 @@ def ajax_add():
                 split_t = [n.strip() for n in split_t]
                 cancer_symptoms_en[data_k_list[list_item]]=split_t
             data_raddit=data.groupby('name').sum().reset_index()
-            list_token_red =data_raddit['token'].to_list()
+            data_raddit = data_raddit.drop(['Unnamed: 0'], axis=1)
+            list_token_red = []
+            for i in range(len(data_raddit['token'])):
+                list_token_red.append(ast.literal_eval(data_raddit['token'][i]))
             column_cancer_nlp_rad=[]
             for list_token_i in range(len(list_token_red)):#len(comment)
                 list_cancer_en = []
@@ -1503,6 +1507,8 @@ def ajax_add():
             label_symptoms_en=all_reddit_data['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
             all_reddit_data = all_reddit_data.join(label_symptoms_en)
             all_reddit_data.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
+        data_use=pd.read_csv('data_pre.csv')
+#======================================================================================================================
         if soure == 'www.facebook.com':
             all_data=pd.read_csv('all_data_nameandsym.csv')
             data_use=pd.read_csv('data_pre.csv')
@@ -1526,22 +1532,25 @@ def ajax_add():
                     data_use.drop(i, axis=1, inplace=True)
             rows_to_drop = data_use[~data_use['defind_cancer_with_nlp'].isin(name_cancar_filter_en)].index
             data_use.drop(rows_to_drop, axis=0, inplace=True)
+        print(data_use)
+#===========================================================================================================================
         sorue_sym_4 = pd.read_csv('soure_url.csv')
         sorue_chack = sorue_sym_4['url'][0]
         if sorue_chack == 'www.facebook.com': 
             _ = ['จำนวนคนตอบกลับ','จำนวนคนกด like','จำนวนความยาวตัวอักษร']
             data =  data_use
-            print(data_use)
+            data_show = data_use.iloc[:,:5]
+            print(data_show)
             def sort_data(column_name,how_sort):
                 if column_name == 'จำนวนคนกด like':
-                    data.sort_values('like', inplace=True, ascending=how_sort)
+                    data_show.sort_values('like', inplace=True, ascending=how_sort)
                 elif column_name == 'จำนวนคนตอบกลับ':
-                    data.sort_values('rechat', inplace=True, ascending=how_sort)
+                    data_show.sort_values('rechat', inplace=True, ascending=how_sort)
                 elif column_name == 'จำนวนความยาวตัวอักษร':
-                    data.sort_values('count', inplace=True, ascending=how_sort)
+                    data_show.sort_values('count', inplace=True, ascending=how_sort)
                 else:
                     pass
-                return data
+                return data_show
             sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
             mylist_name_can = data['โรค'].to_list()
             name_can  = list(dict.fromkeys(mylist_name_can))
@@ -1584,7 +1593,6 @@ def ajax_add():
             max_v = []
             min_v = []
             avg_v = []
-            data_show = data_use.iloc[:,:5]
             for i in range(len(data_show.columns)):
                 if i >= 2 :
                     max_v.append(max(data_show[data_show.columns[i]].tolist()))
@@ -1602,6 +1610,7 @@ def ajax_add():
             from nltk.tokenize import word_tokenize as to_en
             from nltk.stem import WordNetLemmatizer
             data = all_reddit_data
+            data_show = data_use.iloc[:,:3]
             _ = ['จำนวนความยาวตัวอักษร']
             def sort_data(column_name,how_sort):
                 if column_name == 'ความยาวของความคิดเห็น':
@@ -1649,7 +1658,6 @@ def ajax_add():
             max_v = []
             min_v = []
             avg_v = []
-            data_show = data_use.iloc[:,:3]
             for i in range(len(data_show.columns)):
                 if i == 2:
                     max_v.append(max(data_show[data_show.columns[i]].tolist()))
@@ -1670,7 +1678,591 @@ def ajax_add():
         tables = sorted_data.to_html(classes='table table-striped', index=False)
             # for found in name_cancarTH_filter:
     return render_template('output2.html', tables=[tables], sort_options=sort_options,skills=name_can,symptoms=symptoms_can
-                    ,tables_descript=[tables_d])    
+                    ,tables_descript=[tables_d])
+
+@server.route("/update",methods=["POST","GET"])
+def update():
+    #========================================== ส่วนตัวรับข้อมูลเพิ่ม/ลด โรคเเละอาการ ======================================
+    if request.method == 'POST':
+        # ข้อมูลที่ได้รับจากการกรอง
+        import pandas as pd
+        skill = request.form['skill']
+        symptom  = request.form['symptom'] 
+        name_cancer=skill.split(', ')
+        name_symptom = symptom.split(', ')
+        # ข้อมูลอาการเพิ่มเติม
+        # c_submit= request.form['custId']
+        soure_b = pd.read_csv('soure_url.csv')
+        soure = soure_b['url'][0]
+        if soure == 'www.facebook.com':
+            data_defu = pd.read_csv('name_cancer_and_symptoms (2).csv')
+            data_defu_sym = data_defu[['Key_symptoms_TH','Values_symptoms_TH']].dropna()
+            data_value_TH = pd.DataFrame()
+            data_symptoms_TH = pd.DataFrame()
+            data_value_TH['name_cancarTH_se']=name_cancer
+            data_symptoms_TH['Key_symptoms_TH'] =name_symptom
+            data_symptoms_TH_1 = data_symptoms_TH.merge(data_defu_sym, how='left',on='Key_symptoms_TH')
+            value_symptoms_TH= data_symptoms_TH_1[data_symptoms_TH_1['Values_symptoms_TH'].isna()]
+            list_of_sym_va_th = value_symptoms_TH['Key_symptoms_TH'].tolist()
+            for i in list_of_sym_va_th:
+                data_symptoms_TH_1.fillna(f"['{i}']",limit=1,inplace=True)
+            # สร้างตาราง
+            all_data = pd.DataFrame()
+            list_100 = list(range(0,100))
+            all_data['index'] = list_100
+            all_data = all_data.merge(data_value_TH.reset_index(), how='outer')
+            all_data = all_data.merge(data_symptoms_TH_1.reset_index(), how='outer')
+        elif soure == 'www.reddit.com':
+            data_defu = pd.read_csv('name_cancer_and_symptoms (2).csv')
+            data_defu_sym = data_defu[['Key_symptoms_EN','Valuessymptoms_EN']].dropna()
+            data_value_TH = pd.DataFrame()
+            data_symptoms_TH = pd.DataFrame()
+            data_value_TH['cancer_names_en_se']=name_cancer
+            data_symptoms_TH['Key_symptoms_EN'] =name_symptom
+            data_symptoms_TH_1 = data_symptoms_TH.merge(data_defu_sym, how='left',on='Key_symptoms_EN')
+            value_symptoms_TH= data_symptoms_TH_1[data_symptoms_TH_1['Valuessymptoms_EN'].isna()]
+            list_of_sym_va_th = value_symptoms_TH['Key_symptoms_EN'].tolist()
+            for i in list_of_sym_va_th:
+                data_symptoms_TH_1.fillna(f"['{i}']",limit=1,inplace=True)
+            # สร้างตาราง
+            all_data = pd.DataFrame()
+            list_100 = list(range(0,100))
+            all_data['index'] = list_100
+            all_data = all_data.merge(data_value_TH.reset_index(), how='outer')
+            all_data = all_data.merge(data_symptoms_TH_1.reset_index(), how='outer')
+        all_data.to_csv('all_data_nameandsym.csv', index=False, encoding='utf-8-sig')
+        sorue = soure
+        #===================================================================================================
+        # update ตาราง 
+        if sorue == 'www.facebook.com':
+            # ระบุโรค
+            name_cancar_and_symptoms_pd = pd.read_csv('all_data_nameandsym.csv')
+            name_cancar_list  = name_cancar_and_symptoms_pd['name_cancarTH_se'].tolist()
+            name_cancar = [item for item in name_cancar_list if not(pd.isnull(item)) == True]
+            # ระบุอาการ
+            symptoms_pd = name_cancar_and_symptoms_pd[['Key_symptoms_TH','Values_symptoms_TH']].dropna()
+            data_k_list = symptoms_pd['Key_symptoms_TH'].tolist()
+            data_V_list = symptoms_pd['Values_symptoms_TH'].tolist()
+            symptoms = {}
+            for list_item in range(len(data_V_list)):
+                split_t = ast.literal_eval(data_V_list[list_item])
+                split_t = [n.strip() for n in split_t]
+                symptoms[data_k_list[list_item]]=split_t
+            print(name_cancar)
+            print(symptoms)
+        #====================================================================================================
+            #เเปลงหัวตาราง
+            data = pd.read_csv('data_tokenizer.csv', encoding='utf-8-sig')
+            count_user = len(set(data['ชื่อ']))
+            count_comment = len(set(data['คำพูดโรค']))
+            comment=data.groupby('ชื่อ').sum().reset_index()
+            comment = comment.drop(['Unnamed: 0'], axis=1)
+            # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
+            list_token = []
+            for i in range(len(comment['token'])):
+                list_token.append(ast.literal_eval(comment['token'][i]))
+            #หาโรค
+            #--------------------------------------------------------
+            new_colcan = []
+            for i in range(len(list_token)):#len(comment)
+                list_cancer = []
+                for k in range(len(list_token[i])):
+                    if (list_token[i][k] == "มะเร็ง")|(list_token[i][k] == "โรคมะเร็ง")|(list_token[i][k] == "โรค"):
+                        list_cancer.append(list_token[i][k]+list_token[i][k+1])
+                unique_list = list(OrderedDict.fromkeys(list_cancer))
+                #----------------------------------------------------------
+                list_define_cancer = []
+                for i in range(len(unique_list)):
+                    for j in range(len(name_cancar)):
+                        if unique_list[i]==name_cancar[j]:
+                            list_define_cancer.append(unique_list[i])
+                #-----------------------------------------------------
+                cancer_list_de2 =[]
+                if len(list_define_cancer) > 0:
+                    if len(list_define_cancer) == 2:
+                        cancer_list_de2.append('เล่ามากกว่า 2 โรค')
+                    elif len(list_define_cancer)==1:
+                        cancer_list_de2.append(list_define_cancer[0])
+                elif list_define_cancer==[]:
+                    cancer_list_de2.append('ไม่สามารถระบุได้/ไม่มั่นใจว่าเป็น')
+                if len(cancer_list_de2)> 0 :
+                    new_colcan.append(cancer_list_de2[0])
+                elif len(cancer_list_de2)== 0 :
+                    new_colcan.append('ไม่สามารถระบุได้/ไม่มั่นใจว่าเป็น')
+            # สร้าง list เพศ 
+            Genden = {'ชาย':['พ่อ','บิดา','พี่ชาย','น้องชาย','ลูกชาย','สามี','พัว','ผัว','ปู่','ตา','คุณปู่','คุณตา','คุณพ่อ',
+                            'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
+                            'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม','ลช.','ผ่อ','ชย.','น้าชาย','ผ่อตา','หน.']
+                    ,'หญิง':['แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว','ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า',
+                            'คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า','น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้',
+                            'ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง','ก้อน','คลำ']}
+            # หาเพศ โดยใช้nlp
+            new_colgenden=[]
+            list_genden=[]
+            for i in range(len(list_token)):
+                for j in range(len(Genden['หญิง'])):
+                    for k in range(len(list_token[i])):
+                        if (list_token[i][k] == Genden['ชาย'][j]):
+                            list_genden.append('เพศชาย')
+                        elif(list_token[i][k] == Genden['หญิง'][j]):
+                            list_genden.append('เพศหญิง')
+                genden_list =[]
+                genden_list = list(OrderedDict.fromkeys(list_genden)) # ลบคำซ้ำ
+                #-------------------------------------------------------------------
+                list_define_genden = []
+                if len(genden_list) > 0 :
+                    if len(genden_list) == 2:
+                        list_define_genden.append('เล่าทั้งสองเพศ')
+                    elif len(genden_list)==1:
+                        list_define_genden.append(genden_list[0])
+                elif len(genden_list)==0:
+                    list_define_genden.append('ไม่สามารถระบุได้/ไม่มั่นใจว่าเป็น')
+                genden_list_de =[]
+                genden_list_de = list(OrderedDict.fromkeys(list_define_genden))
+                new_colgenden.append(genden_list_de[0])
+
+            # หาอาการโดย nlp
+            symptoms_colcan = []
+            for i in range(len(list_token)):
+                list_symptoms= []
+                for j in range(len(list_token[i])):
+                    for k in symptoms:
+                        for l in range(len(symptoms[k])):
+                            if list_token[i][j] == symptoms[k][l]:
+                                list_symptoms.append(symptoms[k][0])
+                unique_list_symptoms = list(OrderedDict.fromkeys(list_symptoms))
+                if len(unique_list_symptoms) > 0:
+                    symptoms_colcan.append(unique_list_symptoms)
+                else :
+                    symptoms_colcan.append(['ไม่มีการระบุอาการ'])
+
+            #สร้างฟังชั่นหาเพศกับใครเป็นคนพูด
+            def detect_person(comment):
+            # คำที่ใช้ตรวจสอบว่ามีใครเป็นคนอยู่ในความคิดเห็น
+                other = ['พ่อ','บิดา','พี่ชาย','น้องชาย','ลูกชาย','สามี','พัว','ผัว','ปู่','ตา','คุณปู่','คุณตา','คุณพ่อ',
+                        'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
+                        'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม''แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว',
+                        'ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า','คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า',
+                        'น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้','ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง']
+                myself = ['ผมเป็น','ผมเอง','กระผม','พมเป็น','พมเอง','กระพม','หนูเอง','หนู','ดิฉัน','ตัวเอง','ก้อน','คลำ']
+                # ตรวจสอบคำในความคิดเห็น
+                for keyword in  other:
+                    if keyword in comment and "อาการ" not in comment :
+                        return 'เล่าประสบการณ์คนอื่น'
+                for keyword in  myself:
+                    if keyword in comment:
+                        return 'เล่าประสบการณ์ตัวเอง'
+                # หากไม่พบคำที่บ่งบอกถึงคน
+                return 'ไม่ได้เล่าประสบการณ์'
+            def detect_gender_other(comment):
+                # คำที่บ่งบอกถึงเพศชาย
+                male_keywords = ['พ่อ','บิดา','พี่ชาย','น้องชาย','ลูกชาย','สามี','พัว','ผัว','ปู่','ตา','คุณปู่','คุณตา','คุณพ่อ',
+                                'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
+                                'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม']
+                # คำที่บ่งบอกถึงเพศหญิง
+                female_keywords = ['แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว','ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า','คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า',
+                                'น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้','ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง']
+                # ตรวจสอบคำในความคิดเห็น
+                for keyword in male_keywords:
+                    if keyword in comment and "อาการ" not in comment :
+                        return "เพศชาย"
+                for keyword in female_keywords:
+                    if keyword in comment:
+                        return "เพศหญิง"
+                # หากไม่พบคำที่บ่งบอกถึงเพศ
+                return "ไม่ระบุเพศ"
+            def detect_gender_self(comment):
+                # คำที่บ่งบอกถึงเพศชาย
+                male_keywords = ['ผมเป็น','ครับ','ผมเอง','คับ','กระผม','พมเป็น','พมเอง','กระพม']
+                # คำที่บ่งบอกถึงเพศหญิง
+                female_keywords = ['ค่ะ','คะ','หนูเอง','หนูเป็น','ดิฉัน','ก้อน','คลำ']
+                # ตรวจสอบคำในความคิดเห็น
+                for keyword in male_keywords:
+                    if keyword in comment:
+                        return "เพศชาย"
+                for keyword in female_keywords:
+                    if keyword in comment:
+                        return "เพศหญิง"
+                # หากไม่พบคำที่บ่งบอกถึงเพศ
+                return "ไม่ระบุเพศ"
+            #เเบ่งเพศเเละใครเล่าโดยใช้ python
+            k1=[]
+            k2=[]
+            for i in comment['คำพูดโรค']:
+                k1.append(detect_person(str(i)))
+                if detect_person(str(i)) == 'เล่าประสบการณ์คนอื่น':
+                    k2.append(detect_gender_other(str(i)))
+                elif detect_person(str(i)) == 'เล่าประสบการณ์ตัวเอง':
+                    k2.append(detect_gender_self(str(i)))
+                elif detect_person(str(i)) == 'ไม่ได้เล่าประสบการณ์':
+                    k2.append(detect_gender_self(str(i)))
+            #หาว่ามีประโยชน์หรือไม่มีประโยชน์
+            use_ful_data =[]
+            for i in range(len(list_token)):
+                if len(list_token[i]) >= 100:
+                    use_ful_data.append('อาจมีประโยชน์')
+                else :
+                    use_ful_data.append('ไม่มีประโยชน์')
+            Data_pre_and_clane = comment
+            Data_pre_and_clane['โรค'] = new_colcan
+            Data_pre_and_clane['ความมีประโยชน์'] = use_ful_data
+            Data_pre_and_clane['ใครเล่า'] = k1
+            Data_pre_and_clane['เพศเเบ่งโดยใช้_nlp'] = new_colgenden
+            Data_pre_and_clane['เพศเเบ่งโดยใช้_python'] = k2
+            Data_pre_and_clane['อาการ']=symptoms_colcan
+            label_symptoms=Data_pre_and_clane['อาการ'].str.join(sep='*').str.get_dummies(sep='*')
+            Data_pre_and_clane=Data_pre_and_clane.join(label_symptoms)
+            Data_pre_and_clane.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
+        elif sorue == 'www.reddit.com':
+            import pandas as pd
+            data = pd.read_csv('data_tokenizer.csv', encoding='utf-8-sig')
+            count_user = len(set(data['name']))
+            count_comment = len(set(data['comments']))
+            # ระบุโรค
+            name_cancar_and_symptoms_pd = pd.read_csv('all_data_nameandsym.csv')
+            name_cancar_list  = name_cancar_and_symptoms_pd['cancer_names_en_se'].tolist()
+            cancer_names_en = [item for item in name_cancar_list if not(pd.isnull(item)) == True]
+            # ระบุอาการ
+            symptoms_pd = name_cancar_and_symptoms_pd[['Key_symptoms_EN','Valuessymptoms_EN']].dropna()
+            data_k_list = symptoms_pd['Key_symptoms_EN'].tolist()
+            data_V_list = symptoms_pd['Valuessymptoms_EN'].tolist()
+            cancer_symptoms_en = {}
+            for list_item in range(len(data_V_list)):
+                split_t = ast.literal_eval(data_V_list[list_item])
+                split_t = [n.strip() for n in split_t]
+                cancer_symptoms_en[data_k_list[list_item]]=split_t
+            data_raddit=data.groupby('name').sum().reset_index()
+            data_raddit = data_raddit.drop(['Unnamed: 0'], axis=1)
+            list_token_red = []
+            for i in range(len(data_raddit['token'])):
+                list_token_red.append(ast.literal_eval(data_raddit['token'][i]))
+            column_cancer_nlp_rad=[]
+            for list_token_i in range(len(list_token_red)):#len(comment)
+                list_cancer_en = []
+                for list_token_k in range(len(list_token_red[list_token_i])):
+                    for cancer_names_j in range(len(cancer_names_en)):
+                        if (list_token_red[list_token_i][list_token_k] == 'cancer'):
+                            list_cancer_en.append(list_token_red[list_token_i][list_token_k-1]+list_token_red[list_token_i][list_token_k])
+                unique_list_en = list(OrderedDict.fromkeys(list_cancer_en))
+        #----------------------------------------------------------------------------
+                list_define_cancer_en = []
+                new_list_en=[]
+                for i in range(len(unique_list_en)):
+                    for j in range(len(cancer_names_en)):
+                        if unique_list_en[i]==cancer_names_en[j]:
+                            list_define_cancer_en.append(unique_list[i])
+        #----------------------------------------------------------------------------
+                cancer_list_de_red =[]
+                if len(list_cancer_en) > 0:
+                    if len(list_cancer_en) == 2:
+                        cancer_list_de_red.append('Tell more than 2 diseases.')
+                    elif len(list_cancer_en)==1:
+                        cancer_list_de_red.append(list_cancer_en[0])
+                elif list_cancer_en==[]:
+                    cancer_list_de_red.append('Unable to identify / not sure if it is')
+                if len(cancer_list_de_red)> 0 :
+                    column_cancer_nlp_rad.append(cancer_list_de_red[0])
+                elif len(cancer_list_de_red)== 0 :
+                    column_cancer_nlp_rad.append('Unable to identify / not sure if it is')
+        #-----------------------------------
+            all_reddit_data = data_raddit
+            all_reddit_data['defind_cancer_with_nlp'] = column_cancer_nlp_rad
+        #-----------------------------------
+            data_value_red =[]
+            for i in range(len(list_token_red)):
+                if len(list_token_red[i]) >= 150 :
+                    data_value_red.append('maybe_useful')
+                else:
+                    data_value_red.append('Not useful or not giving too much information')
+            new_colgenden_en=[]
+            list_genden_en=[]
+            #เเบ่งเพศ
+            Genden_en = {'Male':['dad', "father","stepfather","grandfather","great-grandfather",
+            "husband","boyfriend","fiancé","son","stepson","grandson","great-grandson","brother",
+            "half-brother","stepbrother","uncle","great-uncle","nephew","great-nephew",
+            "father-in-law","stepfather-in-law","grandfather-in-law","son-in-law","stepson-in-law",
+            "grandson-in-law","brother-in-law","half-brother-in-law","stepbrother-in-law","uncle-in-law",
+            "great-uncle-in-law","nephew-in-law","great-nephew-in-law","godfather","stepfather",
+            "godson","foster father","foster son","stepson","stepbrother","half-brother","great-uncle",
+            "great-nephew","first cousin","second cousin","third cousin","father-in-law",
+            "stepfather-in-law","grandfather-in-law","son-in-law","stepson-in-law","grandson-in-law",
+            "brother-in-law","half-brother-in-law","stepbrother-in-law","uncle-in-law","great-uncle-in-law",
+            "nephew-in-law","great-nephew-in-law"'he','him','his','boy'],
+            'Female':["mother",'mom',"stepmother","grandmother","great-grandmother","wife",
+            "girlfriend","fiancée","daughter","stepdaughter","granddaughter","great-granddaughter",
+            "sister","half-sister","stepsister","aunt","great-aunt","niece","great-niece",
+            "mother-in-law","stepmother-in-law","grandmother-in-law","daughter-in-law",
+            "stepdaughter-in-law","granddaughter-in-law","sister-in-law",
+            "half-sister-in-law","stepsister-in-law","aunt-in-law","great-aunt-in-law",
+            "niece-in-law","great-niece-in-law","cousin-in-law","godmother","stepmother",
+            "goddaughter","foster mother","foster daughter","stepdaughter","stepsister",
+            "half-sister","great-aunt","great-niece","mother-in-law","stepmother-in-law","grandmother-in-law",
+            "daughter-in-law","stepdaughter-in-law","granddaughter-in-law","sister-in-law",
+            "half-sister-in-law","stepsister-in-law","aunt-in-law","great-aunt-in-law",
+            "niece-in-law","great-niece-in-law",'she','her','hers','mommy','girl']}
+            for i in range(len(list_token_red)):
+                for j in range(len(Genden_en['Female'])):
+                    for k in range(len(list_token_red[i])):
+                        if (list_token_red[i][k] == Genden_en['Male'][j]):
+                            list_genden_en.append('Male')
+                        elif(list_token_red[i][k] == Genden_en['Female'][j]):
+                            list_genden_en.append('Female')
+                genden_list_en =[]
+                genden_list_en = list(OrderedDict.fromkeys(list_genden_en)) # ลบคำซ้ำ
+                #-------------------------------------------------------------------
+                list_define_genden_en = []
+                if len(genden_list_en) > 0 :
+                    if len(genden_list_en) == 2:
+                        list_define_genden_en.append('Both genders are told.')
+                    elif len(genden_list_en)==1:
+                        list_define_genden_en.append(genden_list_en[0])
+                elif len(genden_list_en)==0:
+                    list_define_genden_en.append('Unable to identify/not sure if it is')
+                genden_list_de_en =[]
+                genden_list_de_en = list(OrderedDict.fromkeys(list_define_genden_en))
+                new_colgenden_en.append(genden_list_de_en[0])
+            def detect_person_en(comment):
+                # คำที่ใช้ตรวจสอบว่ามีใครเป็นคนอยู่ในความคิดเห็น
+                other = ['you','your','we','they','he','she','him','her','it']
+                myself = ['my','myself']
+                for keyword in  myself:
+                    if keyword in comment:
+                        return "Tell about your own experiences"
+                for keyword in  other:
+                    if keyword in comment:
+                        return "Tell other people's experiences"
+                # หากไม่พบคำที่บ่งบอกถึงคน
+                return "Didn't tell the experience"
+            def detect_gender_other_en(comment):
+                # คำที่บ่งบอกถึงเพศชาย
+                male_keywords = ['he','him','dad', "father","stepfather","grandfather","great-grandfather","husband",
+                "boyfriend","fiancé","son","stepson","grandson","great-grandson","brother","half-brother","stepbrother","uncle","great-uncle","nephew",
+                "great-nephew","father-in-law","stepfather-in-law","grandfather-in-law","son-in-law","stepson-in-law","grandson-in-law","brother-in-law",
+                "half-brother-in-law","stepbrother-in-law","uncle-in-law","great-uncle-in-law","nephew-in-law","great-nephew-in-law","godfather","stepfather",
+                "godson","foster father","foster son","stepson","stepbrother","half-brother","great-uncle","great-nephew","first cousin","second cousin",
+                "third cousin","father-in-law","stepfather-in-law","grandfather-in-law","son-in-law","stepson-in-law","grandson-in-law","brother-in-law",
+                "half-brother-in-law","stepbrother-in-law","uncle-in-law","great-uncle-in-law","nephew-in-law",
+                "great-nephew-in-law",'boy']
+                # คำที่บ่งบอกถึงเพศหญิง
+                female_keywords = ["mother",'mom',"stepmother",'girl',
+                "grandmother","great-grandmother","wife","girlfriend","fiancée","daughter","stepdaughter",
+                "granddaughter","great-granddaughter","sister","half-sister","stepsister","aunt","great-aunt","niece",
+                "great-niece","mother-in-law","stepmother-in-law","grandmother-in-law","daughter-in-law","stepdaughter-in-law",
+                "granddaughter-in-law","sister-in-law","half-sister-in-law","stepsister-in-law","aunt-in-law","great-aunt-in-law",
+                "niece-in-law","great-niece-in-law","cousin-in-law","godmother","stepmother","goddaughter","foster mother","foster daughter","stepdaughter","stepsister",
+                "half-sister","great-aunt","great-niece","mother-in-law","stepmother-in-law","grandmother-in-law","daughter-in-law","stepdaughter-in-law",
+                "granddaughter-in-law","sister-in-law","half-sister-in-law","stepsister-in-law","aunt-in-law","great-aunt-in-law","niece-in-law","great-niece-in-law",'mommy','she','her']
+                # ตรวจสอบคำในความคิดเห็น
+                for keyword in male_keywords:
+                    if keyword in comment :
+                        return "Male"
+                for keyword in female_keywords:
+                    if keyword in comment:
+                        return "Female"
+                return "Gender not specified"
+            k3=[]
+            k4=[]
+            for i in data_raddit['comments']:
+                k3.append(detect_person_en(str(i)))
+                if detect_person_en(str(i)) == "Tell about your own experiences":
+                    k4.append("Gender not specified")
+                elif detect_person_en(str(i)) == "Tell other people's experiences":
+                    k4.append(detect_gender_other_en(str(i)))
+                elif detect_person_en(str(i)) == "Didn't tell the experience":
+                    k4.append(detect_gender_other_en(str(i)))
+            symptoms_colcan_en = []
+            for i in range(len(list_token_red)):
+                list_symptoms_en= []
+                for j in range(len(list_token_red[i])):
+                    for k in cancer_symptoms_en:
+                        for l in range(len(cancer_symptoms_en[k])):
+                            if list_token_red[i][j] == cancer_symptoms_en[k][l]:
+                                list_symptoms_en.append(cancer_symptoms_en[k][0])
+                unique_list_symptoms_en = list(OrderedDict.fromkeys(list_symptoms_en))
+                if len(unique_list_symptoms_en) > 0:
+                    symptoms_colcan_en.append(unique_list_symptoms_en)
+                else :
+                    symptoms_colcan_en.append(['No symptoms identified'])
+            all_reddit_data['defind_Genden_with_nlp'] = new_colgenden_en
+            all_reddit_data['defind_Genden_with_python'] = k4
+            all_reddit_data['defind_exp_with_python'] = k3
+            all_reddit_data['use_ful'] = data_value_red
+            all_reddit_data['symptoms_colcan_en'] = symptoms_colcan_en
+            label_symptoms_en=all_reddit_data['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
+            all_reddit_data = all_reddit_data.join(label_symptoms_en)
+            all_reddit_data.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
+        data_use=pd.read_csv('data_pre.csv')
+#======================================================================================================================
+        if soure == 'www.facebook.com':
+            all_data=pd.read_csv('all_data_nameandsym.csv')
+            data_use=pd.read_csv('data_pre.csv')
+            name_cancarTH_filter = all_data['name_cancarTH_se'].dropna().to_list()
+            name_symptomsTH_filter = all_data['Key_symptoms_TH'].dropna().to_list()
+            data_column_sym = data_use.columns[12:]
+            for i in data_column_sym:
+                if i not in name_symptomsTH_filter:
+                    data_use.drop(i, axis=1, inplace=True)
+            rows_to_drop = data_use[~data_use['โรค'].isin(name_cancarTH_filter)].index
+            data_use.drop(rows_to_drop, axis=0, inplace=True)
+        elif soure == 'www.reddit.com':
+            #filter reddit
+            all_data=pd.read_csv('all_data_nameandsym.csv')
+            data_use=pd.read_csv('data_pre.csv')
+            name_symptoms_filter_en = all_data['Key_symptoms_EN'].dropna().to_list()
+            name_cancar_filter_en= all_data['cancer_names_en_se'].dropna().to_list()
+            data_column_sym = data_use.columns[10:]
+            for i in data_column_sym:
+                if i not in name_symptoms_filter_en:
+                    data_use.drop(i, axis=1, inplace=True)
+            rows_to_drop = data_use[~data_use['defind_cancer_with_nlp'].isin(name_cancar_filter_en)].index
+            data_use.drop(rows_to_drop, axis=0, inplace=True)
+        print(data_use)
+#===========================================================================================================================
+        sorue_sym_4 = pd.read_csv('soure_url.csv')
+        sorue_chack = sorue_sym_4['url'][0]
+        if sorue_chack == 'www.facebook.com': 
+            _ = ['จำนวนคนตอบกลับ','จำนวนคนกด like','จำนวนความยาวตัวอักษร']
+            data =  data_use
+            data_show = data_use.iloc[:,:5]
+            print(data_show)
+            def sort_data(column_name,how_sort):
+                if column_name == 'จำนวนคนกด like':
+                    data_show.sort_values('like', inplace=True, ascending=how_sort)
+                elif column_name == 'จำนวนคนตอบกลับ':
+                    data_show.sort_values('rechat', inplace=True, ascending=how_sort)
+                elif column_name == 'จำนวนความยาวตัวอักษร':
+                    data_show.sort_values('count', inplace=True, ascending=how_sort)
+                else:
+                    pass
+                return data_show
+            sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
+            mylist_name_can = data['โรค'].to_list()
+            name_can  = list(dict.fromkeys(mylist_name_can))
+            sym_list = data.columns
+            symptoms_can = sym_list[12:]
+            data_name_sym_have = pd.DataFrame()
+            data_value_TH = pd.DataFrame(data={'name_cancarTH':name_can})
+            data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_TH':symptoms_can})
+            list_100 = list(range(0,100))
+            data_name_sym_have['index'] = list_100
+            data_name_sym_have = data_name_sym_have.merge(data_value_TH.reset_index(), how='outer')
+            data_name_sym_have = data_name_sym_have.merge(data_symptoms_TH.reset_index(), how='outer')
+            data_name_sym_have.to_csv('data_name_sym_have.csv',encoding='utf-8-sig')
+            #------word cloud---------#
+            from pythainlp.tokenize import word_tokenize as to_th_k # เป็นตัวตัดคำของภาษาไทย
+            from pythainlp.corpus import thai_stopwords # เป็นคลัง Stop Words ของภาษาไทย
+            text_th= ''
+            for row in data['คำพูดโรค']: # ให้ python อ่านข้อมูลรีวิวจากทุก row ใน columns 'content'
+                text_th = text_th + row.lower() + ' ' # เก็บข้อมูลรีวิวของเราทั้งหมดเป็น String ในตัวแปร text
+
+            wt_th = to_th_k(text_th, engine='newmm') # ตัดคำที่ได้จากตัวแปร text
+
+            path_th = 'THSarabunNew-20240628T045147Z-001\THSarabunNew\THSarabunNew.ttf' # ตั้ง path ไปหา font ที่เราต้องการใช้แสดงผล
+            wordcloud_th = WordCloud(font_path = path_th, # font ที่เราต้องการใช้ในการแสดงผล เราเลือกใช้ THSarabunNew
+                                stopwords = thai_stopwords(), # stop words ที่ใช้ซึ่งจะโดนตัดออกและไม่แสดงบน words cloud
+                                relative_scaling = 0.3,
+                                min_font_size = 1,
+                                background_color = "white",
+                                width=620,
+                                height=300,
+                                max_words = 500, # จำนวนคำที่เราต้องการจะแสดงใน Word Cloud
+                                colormap = 'plasma',
+                                scale = 3,
+                                font_step = 4,
+                                collocations = False,
+                                regexp = r"[ก-๙a-zA-Z']+", # Regular expression to split the input text into token
+                                margin=2).generate(' '.join(wt_th)) # input คำที่เราตัดเข้าไปจากตัวแปร wt ในรูปแบบ string
+
+            wordcloud_th.to_file("wordcloud.png")
+            max_v = []
+            min_v = []
+            avg_v = []
+            for i in range(len(data_show.columns)):
+                if i >= 2 :
+                    max_v.append(max(data_show[data_show.columns[i]].tolist()))
+                    min_v.append(min(data_show[data_show.columns[i]].tolist()))
+                    avg_v.append(np.mean(data_show[data_show.columns[i]].tolist()))
+            descriptive = pd.DataFrame()
+            descriptive[' '] = _
+            descriptive['max'] = max_v
+            descriptive['min'] = min_v
+            descriptive['avg'] = avg_v
+            descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
+            sorted_data = sort_data('จำนวนคนกด like',False)
+        elif sorue_chack == 'www.reddit.com':
+            import pandas as pd
+            from nltk.tokenize import word_tokenize as to_en
+            from nltk.stem import WordNetLemmatizer
+            data = all_reddit_data
+            data_show = data_use.iloc[:,:3]
+            _ = ['จำนวนความยาวตัวอักษร']
+            def sort_data(column_name,how_sort):
+                if column_name == 'ความยาวของความคิดเห็น':
+                    data_show.sort_values('count', inplace=True, ascending=how_sort)
+                else:
+                    pass
+                return data_show
+            sort_options = ['ความยาวของความคิดเห็น']
+            mylist_name_can = data['defind_cancer_with_nlp'].to_list()
+            name_can  = list(dict.fromkeys(mylist_name_can))
+            symptoms_can = data.columns[10:]
+            data_name_sym_have = pd.DataFrame()
+            data_value_TH = pd.DataFrame(data={'cancer_names_en':name_can})
+            data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_EN':symptoms_can})
+            list_100 = list(range(0,100))
+            data_name_sym_have['index'] = list_100
+            data_name_sym_have = data_name_sym_have.merge(data_value_TH.reset_index(), how='outer')
+            data_name_sym_have = data_name_sym_have.merge(data_symptoms_TH.reset_index(), how='outer')
+            data_name_sym_have.to_csv('data_name_sym_have.csv',encoding='utf-8-sig')
+            import pandas as pd
+            #------word cloud---------#
+            # Combine all text into a single string
+            text = ' '.join(data['comments'].str.lower())
+            # Tokenize the text
+            tokens = to_en(text)
+            # Remove stop words and lemmatize
+            stop_words = set(stopwords.words('english'))
+            lemmatizer = WordNetLemmatizer()
+            filtered_words = [lemmatizer.lemmatize(w) for w in tokens if w.isalpha() and w not in stop_words]
+            # Create a word cloud
+            wordcloud = WordCloud(
+                stopwords=stop_words,
+                background_color="white",
+                width=620,
+                height=300,
+                max_words=500,
+                colormap='plasma',
+                scale=3,
+                font_step=4,
+                collocations=False,
+                margin=2
+            ).generate(' '.join(filtered_words))
+            # Save the word cloud to a file
+            wordcloud.to_file("wordcloud.png")
+            max_v = []
+            min_v = []
+            avg_v = []
+            for i in range(len(data_show.columns)):
+                if i == 2:
+                    max_v.append(max(data_show[data_show.columns[i]].tolist()))
+                    min_v.append(min(data_show[data_show.columns[i]].tolist()))
+                    avg_v.append(np.mean(data_show[data_show.columns[i]].tolist()))
+            descriptive = pd.DataFrame()
+            descriptive[' '] = _
+            descriptive['max'] = max_v
+            descriptive['min'] = min_v
+            descriptive['avg'] = avg_v
+            descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
+            sorted_data = sort_data('ความยาวของความคิดเห็น',False)
+        descriptive =pd.read_csv('data_desc.csv')
+        descriptive = descriptive.iloc[:, 1:]
+        tables_d = descriptive.to_html(classes='table table-striped', index=False)
+        # เรียงลำดับข้อมูลตามค่าเริ่มต้น (like)
+        sorted_data.to_csv('sorted_data.csv',encoding='utf-8-sig')
+        tables = sorted_data.to_html(classes='table table-striped', index=False)
+            # for found in name_cancarTH_filter:
+    return render_template('output2.html', tables=[tables], sort_options=sort_options,skills=name_can,symptoms=symptoms_can
+                    ,tables_descript=[tables_d])
 
 
 
