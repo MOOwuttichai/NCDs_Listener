@@ -1,46 +1,46 @@
-﻿index,name_cancarTH_se,Key_symptoms_TH,Values_symptoms_TH
-0,มะเร็งปากมดลูก,ปวดท้อง,['ปวดท้อง']
-1,มะเร็งเต้านม,มีตุ่มหรือก้อนใต้ผิวหนัง,"['มีตุ่มหรือก้อนใต้ผิวหนัง', 'มีตุ่มใต้ผิวหนัง', 'มีก้อนใต้ผิวหนัง', 'ก้อน', 'ตุ่ม', 'มีก้อน', 'มีตุ่ม', 'ตื่ง', 'มีตื่ง']"
-2,มะเร็งรังไข่,หายใจลำบาก,"['หายใจลำบาก', 'หายใจไม่อิ่ม', 'หายใจ']"
-3,มะเร็งต่อมน้ำเหลือง,อาการชา,"['อาการชา', 'ชา']"
-4,มะเร็งผิวหนัง,อุจจาระเป็นเลือด,['อุจจาระเป็นเลือด']
-5,มะเร็งปอด,อ่อนเพลีย,['อ่อนเพลีย']
-6,มะเร็งกระเพาะอาหาร,เจ็บปวด,['เจ็บปวด']
-7,,เสียงแหบ,['เสียงแหบ']
-8,,เหนื่อยง่าย,"['เหนื่อยง่าย', 'เหนื่อย', 'เพลีย', 'เหนื่อยหอบ']"
-9,,ไอเรื้อรัง,"['ไอเรื้อรัง', 'ไอ', 'ไอต่อเนื่อง', 'ไอแห้ง']"
-10,,,
-11,,,
-12,,,
-13,,,
-14,,,
-15,,,
-16,,,
-17,,,
-18,,,
-19,,,
-20,,,
-21,,,
-22,,,
-23,,,
-24,,,
-25,,,
-26,,,
-27,,,
-28,,,
-29,,,
-30,,,
-31,,,
-32,,,
-33,,,
-34,,,
-35,,,
-36,,,
-37,,,
-38,,,
-39,,,
-40,,,
-41,,,
+,cancer_names_en_se,Key_symptoms_EN,Valuessymptoms_EN
+0,bladder cancer,fatigue,['fatigue']
+1,endometrial cancer,tiredness,"['fatigue', 'tiredness', 'lethargy', 'shortness of breath']"
+2,cervical cancer,itching,"['itching', 'itching skin']"
+3,leukemia,feverishness,"['feverishness', 'fever']"
+4,liver cancer,pain,"['pain', 'aches']"
+5,pancreatic cancer,numbness,"['numbness', 'tingling']"
+6,prostate cancer,loss of appetite,['loss of appetite']
+7,stomach cancer,unexplained weight loss,"['unexplained weight loss', 'weight loss', 'rapid weight loss']"
+8,esophageal cancer,chronic fever,"['chronic fever', 'fever']"
+9,breast cancer,night sweats,"['night sweats', 'sweating']"
+10,lung cancer,body aches,"['body aches', 'aches']"
+11,colorectal cancer,swollen lymph nodes,['swollen lymph nodes']
+12,ovarian cancer,stomach pain,['stomach pain']
+13,oral cancer,sore throat,['sore throat']
+14,thyroid cancer,swollen armpits,['swollen armpits']
+15,lymphoma,back pain,['back pain']
+16,brain cancer,darkened skin,['darkened skin']
+17,skin cancer,breast pain,['breast pain']
+18,intestinal cancer,bloating,"['bloating', 'abdominal bloating', 'bloated']"
+19,bile duct cancer,chronic constipation,"['chronic constipation', 'constipation']"
+20,colorectal cancer,indigestion,['indigestion']
+21,melanoma,difficulty swallowing,"['difficulty swallowing', 'dysphagia']"
+22,hodgkin lymphoma,chronic abdominal pain,['chronic abdominal pain']
+23,acute leukemia,vomiting blood,"['vomiting blood', 'vomiting', 'emesis']"
+24,bone cancer,bloody stools,"['bloody stools', 'blood in stool', 'melena']"
+25,central nervous system cancer,chronic cough,"['chronic cough', 'cough', 'persistent cough', 'dry cough']"
+26,kidney cancer,coughing up blood,['coughing up blood']
+27,uterine cancer,hoarseness,['hoarseness']
+28,gallbladder cancer,shortness of breath,"['shortness of breath', 'dyspnea']"
+29,spinal cord cancer,chest pain,['chest pain']
+30,eye cancer,vaginal bleeding,"['vaginal bleeding', 'bleeding from vagina', 'abnormal bleeding']"
+31,vaginal cancer,vaginal discharge,['vaginal discharge']
+32,penile cancer,frequent urination,['frequent urination']
+33,vulvar cancer,urinary tract infection,"['urinary tract infection', 'dysuria']"
+34,adrenal gland cancer,hematuria,['hematuria']
+35,salivary gland cancer,enlarged testicles,['enlarged testicles']
+36,ovarian cyst cancer,skin ulcers,"['skin ulcers', 'ulcers']"
+37,,changing moles or freckles,['changing moles or freckles']
+38,,lumps or bumps under the skin,['lumps or bumps under the skin']
+39,,headache,['headache']
+40,,vision problems,['vision problems']
+41,,seizures,['seizures']
 42,,,
 43,,,
 44,,,

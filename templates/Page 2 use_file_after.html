@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head> 
     <header>
+      <a href="/page1_2">
         <div class="nav">
           <div class="imgncd">
             <div class="logo">
@@ -28,23 +29,24 @@
               <div class="h1">NCDs </br> Listener</div> 
             </div>
           </div>
+        </a>
           <div class="sub">
               <ul>
                 <form action="/page1_2" method="post">
-                  <button>
+                  <button >
                     <li><i class="ri-download-2-fill"></i>
                     <a>Data Selection</a></li>
                   </button>
                 </form>
       
-                <form action="/page2_2.py"  method="post">
-                  <button>
+                <form action="/page2_3.py"  method="post">
+                  <button id='myBtn1' onmousemove="readValue_bd()" disabled>
                     <li><i class="ri-table-fill"></i>
                     <a>Data Preparation</a></button></li>
                 </form>
               
                 <form action="/page3_2.py" method="post">
-                  <button disabled>
+                  <button  id='myBtn2' onmousemove="readValue_b2d()" disabled>
                     <li><i class="ri-dashboard-2-fill"></i>
                     <a>Data Visualization</a></button></li>
                 </form>
@@ -80,4 +82,18 @@
 
     </div>
 </body>  
+<script>
+  function readValue_bd() {
+  var x = {{x}}
+  if (x > 1) {
+    document.getElementById("myBtn1").disabled = false;
+    } 
+}
+function readValue_b2d() {
+  var y = {{y}}
+  if (y > 1) {
+    document.getElementById("myBtn2").disabled = false;
+    }
+  }
+</script>
 </html>

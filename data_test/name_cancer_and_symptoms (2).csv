@@ -1,0 +1,101 @@
+﻿index,name_cancarTH,cancer_names_en,Key_symptoms_TH,Values_symptoms_TH,Key_symptoms_EN,Valuessymptoms_EN
+0,มะเร็งกระเพาะปัสสวะ,Bladder cancer,อ่อนเพลีย,['อ่อนเพลีย'],Fatigue,['Fatigue']
+1,มะเร็งเยื่อบุโพรงมดลูก,Endometrial cancer,เหนื่อยง่าย,"['เหนื่อยง่าย', 'เหนื่อย', 'เพลีย', 'เหนื่อยหอบ']",Tiredness,"['Fatigue', 'Tiredness', 'Lethargy', 'Shortness of breath']"
+2,มะเร็งปากมดลูก,Cervical cancer,คันเนื้อคันตัว,"['คันเนื้อคันตัว', 'คัน', 'คันตัว', 'คันตามตัว']",Itching,"['Itching', 'Itching skin']"
+3,มะเร็งเม็ดเลือดขาว,Leukemia,มีอาการร้อน,"['ร้อน', 'อาการรัอน', 'ตัวร้อน']",Feverishness,"['Feverishness', 'Fever']"
+4,มะเร็งตับ,Liver cancer,อาการเจ็บปวด,"['เจ็บปวด', 'เจ็บ', 'อาการเจ็บปวด']",Pain,"['Pain', 'Aches']"
+5,มะเร็งตับอ่อน,Pancreatic cancer,อาการชา,"['อาการชา', 'ชา']",Numbness,"['Numbness', 'Tingling']"
+6,มะเร็งต่อมลูกหมาก,Prostate cancer,เบื่ออาหาร,['เบื่ออาหาร'],Loss of appetite,['Loss of appetite']
+7,มะเร็งกระเพาะปัสสาวะ,Stomach cancer,น้ำหนักลดโดยไม่ทราบสาเหตุ,"['น้ำหนักลดโดยไม่ทราบสาเหตุ', 'น้ำหนักลด', 'น้ำหนักลดลงเร็วมาก']",Unexplained weight loss,"['Unexplained weight loss', 'Weight loss', 'Rapid weight loss']"
+8,มะเร็งกระเพาะอาหาร,Esophageal cancer,ไข้เรื้อรัง,"['ไข้เรื้อรัง', 'ไข้', 'เป็นไข้']",Chronic fever,"['Chronic fever', 'Fever']"
+9,มะเร็งหลอดอาหาร,Breast cancer,เหงื่อออกตอนกลางคืน,"['เหงื่อออกตอนกลางคืน', 'เหงื่อออกตอนดึก', 'เหงื่อออก']",Night sweats,"['Night sweats', 'Sweating']"
+10,มะเร็งเต้านม,Lung cancer,ปวดเมื่อย,"['ปวดเมื่อยตามร่างกาย', 'เมื่อย']",Body aches,"['Body aches', 'Aches']"
+11,มะเร็งปอด,Colorectal cancer,บวมหรือต่อมน้ำเหลืองโต,"['บวมหรือต่อมน้ำเหลืองโต', 'ต่อมน้ำเหลืองโต', 'บวมน้ำเหลืองโต']",Swollen lymph nodes,['Swollen lymph nodes']
+12,มะเร็งลำไส้ใหญ่,Ovarian cancer,ปวดท้อง,['ปวดท้อง'],Stomach pain,['Stomach pain']
+13,มะเร็งรังไข่,Oral cancer,เจ็บคอ,['เจ็บคอ'],Sore throat,['Sore throat']
+14,มะเร็งช่องปาก,Thyroid cancer,ปวดใต้รักแร้,"['ปวดใต้รักแร้', 'ปวดรักแร้']",Swollen armpits,['Swollen armpits']
+15,มะเร็งต่อมไทรอยด์,Lymphoma,ปวดเอว,['ปวดเอว'],Back pain,['Back pain']
+16,มะเร็งต่อมน้ำเหลือง,Brain cancer,ผิวคล้ำผิดปกติ,['ผิวคล้ำ'],Darkened skin,['Darkened skin']
+17,มะเร็งสมอง,Skin cancer,เจ็บเต้านม,"['เจ็บเต้านม', 'เจ็บเต้า', 'เจ็บนม']",Breast pain,['Breast pain']
+18,มะเร็งผิวหนัง,Intestinal cancer,ท้องอืด,"['ท้องอืด', 'อาการอืดท้อง', 'อืด']",Bloating,"['Bloating', 'Abdominal bloating', 'Bloated']"
+19,มะเร็งลำไส้,Bile duct cancer,ท้องผูกเรื้อรัง,"['ท้องผูกเรื้อรัง', 'ท้องผูก']",Chronic constipation,"['Chronic constipation', 'Constipation']"
+20,มะเร็งท่อน้ำดี,Colorectal cancer,อาหารไม่ย่อย,['อาหารไม่ย่อย'],Indigestion,['Indigestion']
+21,มะเร็งลำไส้ใหญ่และทวารหนัก,Melanoma,กลืนลำบาก,"['กลืนลำบาก', 'กลืนอาหารลำบาก', 'กลืนยาก']",Difficulty swallowing,"['Difficulty swallowing', 'Dysphagia']"
+22,มะเร็งผิวหนังชนิดเมลาโนมา,Hodgkin lymphoma,ปวดท้องเรื้อรัง,['ปวดท้องเรื้อรัง'],Chronic abdominal pain,['Chronic abdominal pain']
+23,มะเร็งต่อมน้ำเหลืองชนิดนอนฮอดจ์กิน,Acute leukemia,อาเจียนอาจมีเลือด,"['อาเจียนเป็นเลือด', 'อาเจียน', 'อ้วก']",Vomiting blood,"['Vomiting blood', 'Vomiting', 'Emesis']"
+24,มะเร็งเม็ดเลือดขาวชนิดเฉียบพลัน,Bone cancer,อุจจาระอาจมีเลือด,"['อุจจาระเป็นเลือด', 'อึเป็นเลือด', 'ขี้เป็นเลือด', 'อุจจาระ', 'ขี้', 'ถ่าย', 'ถ่ายเป็นเลือด']",Bloody stools,"['Bloody stools', 'Blood in stool', 'Melena']"
+25,มะเร็งกระดูก,Central nervous system cancer,ไอเรื้อรัง,"['ไอเรื้อรัง', 'ไอ', 'ไอต่อเนื่อง', 'ไอแห้ง']",Chronic cough,"['Chronic cough', 'Cough', 'Persistent cough', 'Dry cough']"
+26,มะเร็งสมองและระบบประสาทกลาง,Kidney cancer,ไอเป็นเลือด,['ไอเป็นเลือด'],Coughing up blood,['Coughing up blood']
+27,มะเร็งไต,Uterine cancer,เสียงแหบ,['เสียงแหบ'],Hoarseness,['Hoarseness']
+28,มะเร็งมดลูก,Gallbladder cancer,หายใจลำบาก,"['หายใจลำบาก', 'หายใจไม่อิ่ม', 'หายใจ']",Shortness of breath,"['Shortness of breath', 'Dyspnea']"
+29,มะเร็งถุงน้ำดี,Spinal cord cancer,เจ็บหรือเเน่นหน้าอก,"['เจ็บหน้าอก', 'เเน่นหน้าอก']",Chest pain,['Chest pain']
+30,มะเร็งกระดูกสันหลัง,Eye cancer,เลือดออกผิดปกติจากช่องคลอด,"['เลือดออกผิดปกติจากช่องคลอด', 'เลือดออกจากช่องคลอด', 'เลือดออกผิดปกติจากอวัยวะเพศ', 'เลือดออกจากอวัยวะเพศ', 'เลือดไหล']",Vaginal bleeding,"['Vaginal bleeding', 'Bleeding from vagina', 'Abnormal bleeding']"
+31,มะเร็งลูกตา,Vaginal cancer,ตกขาวผิดปกติ,"['ตกขาวผิดปกติ', 'ตกขาว']",Vaginal discharge,['Vaginal discharge']
+32,มะเร็งเยื่อบุช่องคลอด,Penile cancer,ปัสสาวะบ่อย,['ปัสสาวะบ่อย'],Frequent urination,['Frequent urination']
+33,มะเร็งเยื่อบุอวัยวะเพศชาย,Vulvar cancer,ปัสสาวะแสบขัด,"['ปัสสาวะแสบขัด', 'ฉี่แสบขัด']",Urinary tract infection,"['Urinary tract infection', 'Dysuria']"
+34,มะเร็งเยื่อบุอวัยวะเพศหญิง,Adrenal gland cancer,ปัสสาวะเป็นเลือด,"['ปัสสาวะเป็นเลือด', 'ฉี่เป็นเลือด']",Hematuria,['Hematuria']
+35,มะเร็งต่อมหมวกไต,Salivary gland cancer,อัณฑะโตผิดปกติ,"['อัณฑะโตผิดปกติ', 'ไข่โตผิดปกติ', 'ไข่ผิดปกติ', 'อัณฑะผิดปกติ', 'อัณฑะ']",Enlarged testicles,['Enlarged testicles']
+36,มะเร็งต่อมน้ำลาย,Ovarian cyst cancer,แผลเรื้อรัง,"['แผลเรื้อรัง', 'เป็นแผล', 'แผล']",Skin ulcers,"['Skin ulcers', 'Ulcers']"
+37,มะเร็งถุงน้ำรังไข่,,ไฝหรือปานเปลี่ยนแปลง,"['ไฝหรือปานเปลี่ยนแปลง', 'ไฝเปลี่ยนแปลง', 'ปานเปลี่ยนแปลง']",Changing moles or freckles,['Changing moles or freckles']
+38,,,มีตุ่มหรือก้อนใต้ผิวหนัง,"['มีตุ่มหรือก้อนใต้ผิวหนัง', 'มีตุ่มใต้ผิวหนัง', 'มีก้อนใต้ผิวหนัง', 'ก้อน', 'ตุ่ม', 'มีก้อน', 'มีตุ่ม', 'ตื่ง', 'มีตื่ง']",Lumps or bumps under the skin,['Lumps or bumps under the skin']
+39,,,ปวดศีรษะ,"['ปวดศีรษะ', 'ปวดหัว']",Headache,['Headache']
+40,,,มองเห็นภาพผิดปกติ,"['มองเห็นภาพผิดปกติ', 'มองไม่เห็น']",Vision problems,['Vision problems']
+41,,,ชัก,['ชัก'],Seizures,['Seizures']
+42,,,,,,
+43,,,,,,
+44,,,,,,
+45,,,,,,
+46,,,,,,
+47,,,,,,
+48,,,,,,
+49,,,,,,
+50,,,,,,
+51,,,,,,
+52,,,,,,
+53,,,,,,
+54,,,,,,
+55,,,,,,
+56,,,,,,
+57,,,,,,
+58,,,,,,
+59,,,,,,
+60,,,,,,
+61,,,,,,
+62,,,,,,
+63,,,,,,
+64,,,,,,
+65,,,,,,
+66,,,,,,
+67,,,,,,
+68,,,,,,
+69,,,,,,
+70,,,,,,
+71,,,,,,
+72,,,,,,
+73,,,,,,
+74,,,,,,
+75,,,,,,
+76,,,,,,
+77,,,,,,
+78,,,,,,
+79,,,,,,
+80,,,,,,
+81,,,,,,
+82,,,,,,
+83,,,,,,
+84,,,,,,
+85,,,,,,
+86,,,,,,
+87,,,,,,
+88,,,,,,
+89,,,,,,
+90,,,,,,
+91,,,,,,
+92,,,,,,
+93,,,,,,
+94,,,,,,
+95,,,,,,
+96,,,,,,
+97,,,,,,
+98,,,,,,
+99,,,,,,

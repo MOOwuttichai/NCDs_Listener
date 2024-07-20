@@ -13,6 +13,7 @@
 
 <body>
   <header>
+    <a href="/page1_2">
     <div class="nav">
       <div class="imgncd">
         <div class="logo">
@@ -30,6 +31,7 @@
           <div class="h1">NCDs </br> Listener</div> 
         </div>
       </div>
+    </a>
       <div class="sub">
           <ul>
             <form action="/page1_2" method="post">
@@ -39,14 +41,14 @@
               </button>
             </form>
 
-            <form action="/page2_2.py"  method="post">
-              <button>
+            <form action="/page2_3.py"  method="post">
+              <button id='myBtn1' onmousemove="readValue_bd()" disabled>
                 <li><i class="ri-table-fill"></i>
                 <a>Data Preparation</a></button></li>
             </form>
           
             <form action="/page3_2.py" method="post">
-              <button disabled>
+              <button id="myBtn" id='myBtn2' onmousemove="readValue_b2d()" disabled>
                 <li><i class="ri-dashboard-2-fill"></i>
                 <a>Data Visualization</a></button></li>
             </form>
@@ -68,13 +70,26 @@
     <br>
     <div class ="submit_file">
         <form action="/after_pepar">
-        <button type="submit" class="url">Submit</button>
+        <button type="submit" class="url" onclick="createItem()">Submit</button>
         </form>
     </div>
 <div class="footer">
     
 </div>
 </body>
-
+<script>
+  function readValue_bd() {
+  var x = {{x}}
+  if (x > 1) {
+    document.getElementById("myBtn1").disabled = false;
+    } 
+}
+function readValue_b2d() {
+  var y = {{y}}
+  if (y > 1) {
+    document.getElementById("myBtn2").disabled = false;
+    }
+  }
+</script>
 
 </html>

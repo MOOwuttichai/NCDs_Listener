@@ -1,12 +1,12 @@
-﻿,index,name_cancarTH,Key_symptoms_TH
-0,0,มะเร็งปากมดลูก,ปวดท้อง
-1,1,มะเร็งเต้านม,มีตุ่มหรือก้อนใต้ผิวหนัง
-2,2,มะเร็งรังไข่,หายใจลำบาก
-3,3,มะเร็งต่อมน้ำเหลือง,อาการชา
-4,4,มะเร็งผิวหนัง,อ่อนเพลีย
-5,5,มะเร็งปอด,เสียงแหบ
-6,6,มะเร็งกระเพาะอาหาร,เหนื่อยง่าย
-7,7,,ไอเรื้อรัง
+﻿,index,cancer_names_en,Key_symptoms_EN
+0,0,Tell more than 2 diseases.,No symptoms identified
+1,1,breast cancer,pain
+2,2,Unable to identify / not sure if it is,
+3,3,lung cancer,
+4,4,brain cancer,
+5,5,,
+6,6,,
+7,7,,
 8,8,,
 9,9,,
 10,10,,

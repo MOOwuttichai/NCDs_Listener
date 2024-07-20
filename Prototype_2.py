@@ -88,6 +88,10 @@ def process():
     a_1 = request.form['a']
     aoa_1 =request.form['aoa']
     r_1 = request.form['r']
+    try:
+        e_3 = '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div[2]/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div/div/div[4]/div/div/div[3]/div[2]/div/div[2]/span/span'
+    except:
+        pass
     flie_name = 'Data_scraper'
     # ส่วนของการเก็บข้อมูล ว่าเราดึงจากเว็ปไหน เช่น ดึงจากFacebook ก็จะเป็น www.Facebook.com
     url_chack = str(url).split('/')[2]
@@ -137,6 +141,17 @@ def process():
         
         count_r = 0
         switch = True
+        try:
+            e_3 = '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div[2]/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/div/div/div/div/div[1]/div/div[2]/div/div/div[4]/div/div/div[3]/div[2]/div/div[2]/span/span'
+            l_l_l = browser.find_element(By.XPATH,e_3)
+            l_l_l.click()
+            iframe = browser.find_element(By.CLASS_NAME, "x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x78zum5 xdt5ytf x1iyjqo2 x1al4vs7")
+            ActionChains(browser)\
+                .scroll_to_element(iframe)\
+                .scroll_by_amount(0, 50)\
+                .perform()
+        except:
+            pass
         # เปิดความคิดเห็นเพิ่มเติม
         try: 
             while switch:
@@ -218,14 +233,15 @@ def process():
         test_chak = ''
         for item_chak in re_chak:
             test_chak = test_chak + item_chak
-        result = html.find_all('div',{"class":"xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs"})
+        result = html.find_all('div',{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xzsf02u"})
         # ## name
         name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x4zkp8e x676frb x1nxh6w3 x1sibtaa x1s688f xzsf02u"})
         # ## re_chat
         for i in range(len(result)):
             x1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
             y1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/div/div[4]/text()')
-            z1=x1+y1
+            z2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
+            z1=x1+y1+z2
             try:
                 re_chat_all.append((re.findall(r'\b\d+\b',z1[0]))[0])
             except:
@@ -233,8 +249,12 @@ def process():
         # like
         for i in range(len(result)):
             x2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+            xy2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
             try:
-                like_kk.append(x2[0])
+                try:
+                    like_kk.append(x2[0])
+                except:
+                    like_kk.append(xy2[0])
             except:
                 like_kk.append(0)
 

@@ -26,6 +26,7 @@
 
 <body>
   <header>
+    <a href="/page1_2">
     <div class="nav">
       <div class="imgncd">
         <div class="logo">
@@ -43,6 +44,7 @@
           <div class="h1">NCDs </br> Listener</div> 
         </div>
       </div>
+    </a>
       <div class="sub">
           <ul>
             <form action="/page1_2" method="post">
@@ -52,14 +54,14 @@
               </button>
             </form>
 
-            <form action="/page2_2.py"  method="post">
+            <form action="/page2_3.py"  method="post">
               <button>
                 <li><i class="ri-table-fill"></i>
                 <a>Data Preparation</a></button></li>
             </form>
           
             <form action="/page3_2.py" method="post">
-              <button disabled>
+              <button  id='myBtn2' onmousemove="readValue_b2d()" disabled>
                 <li><i class="ri-dashboard-2-fill"></i>
                 <a>Data Visualization</a></button></li>
             </form>
@@ -121,11 +123,20 @@
             <input type="text" name="skill" id="skill" class="form-control" style="direction:rtl" />
           </div>
           <div class="form-group">
+            <button type="button" name="select_disease" id="select_disease" class="select_disease"> show all disease</button>
+          </div>
+          <div class="form-group">
             <label>Enter your symptoms</label>
             <input type="text" name="symptom" id="symptom" class="form-control" style="direction:rtl" />
           </div>
           <div class="form-group">
-            <button type="button" name="select_all" id="select_all" class="select_all"> select_all </button>
+            <button type="button" name="select_symptoms" id="select_symptoms" class="select_symptoms"> show all symptoms</button>
+          </div>
+          <div class="form-group">
+            <input type="hidden" name="sum_ch" id="sum_ch" class="sum_ch" value="3485"/>
+          </div>
+          <div class="form-group">
+            <button type="button" name="select_all" id="select_all" class="select_all"> show all disease&symptoms</button>
           </div>
           <div class="form-group">
           <button type="submit" name="submit" id="submit" class="btn btn-info">Submit</button>
@@ -155,13 +166,6 @@
         })
     })
     $('#reg_form').on('submit', function (event) {
-      if ($.trim($('#skill').val()).length == 0) {
-        alert("Please Enter Your cancer");
-        return false;
-      } else if ($.trim($('#symptom').val()).length == 0) {
-        alert("Please Enter Your symptom");
-        return false;
-      } else {
         var form_data = $(this).serialize();
         $('#submit').attr("disabled", "disabled");
         $.ajax({
@@ -173,7 +177,7 @@
           }
         });
       }
-    });
+    );
   $('#skill').on('tokenfield:createtoken', function (event) {
     var existingTokens = $(this).tokenfield('getTokens');
     $.each(existingTokens, function (index, token) {
@@ -189,7 +193,29 @@
     });
   });
 
-  $(document).ready(function () {
+$(document).ready(function () {
+  $('button.select_disease').click(function () {
+    var data = ''
+    if ($.trim($('#skill').val()).length == 0) {
+        $('#skill').tokenfield('setTokens', [{% for skill in skills %} '{{skill}}', {% endfor %}]);
+    } else if ($.trim($('#skill').val()).length > 0) {
+        $('#skill').tokenfield('setTokens', [$('#skill').val(data)]);
+          }
+        });
+      });
+
+$(document).ready(function () {
+    $('button.select_symptoms').click(function () {
+      var data = ''
+      if ($.trim($('#symptom').val()).length == 0) {
+        $('#symptom').tokenfield('setTokens', [{% for symptom in symptoms %} '{{symptom}}', {% endfor %}]);
+      } else if ($.trim($('#symptom').val()).length > 0) {
+        $('#symptom').tokenfield('setTokens', [$('#symptom').val(data)]);
+            }
+          });
+        });
+
+ $(document).ready(function () {
     $('button.select_all').click(function () {
       var data = ''
       if ($.trim($('#skill').val()).length == 0) {
@@ -213,11 +239,23 @@
  });
 
 </script>
-
-
+<script>
+  function readValue_bd() {
+  var x = {{x}}
+  if (x > 1) {
+    document.getElementById("myBtn1").disabled = false;
+    } 
+}
+function readValue_b2d() {
+  var y = {{y}}
+  if (y > 1) {
+    document.getElementById("myBtn2").disabled = false;
+    }
+  }
+</script>
   <form id="next" action="/page3.py" method="post">
     <div class="button-container">
-  <button type="submit" class="createdash" formaction="/page3.py">Create Dashboard</button>
+  <button type="submit" class="createdash" formaction="/page3.py" onclick="createItem_ad()">Create Dashboard</button>
     </div>
   </form>
   <!-- <form id="next" action="/page3.py" method="post">
