@@ -1,6 +1,7 @@
 from dash import Dash, html, Input, Output, callback,dcc,dash_table
 import pandas as pd
 import plotly.express as px
+import atexit
 
 
 app = Dash(__name__)
@@ -9,7 +10,12 @@ sorue_sym_4 = pd.read_csv('soure_url.csv')
 soure = sorue_sym_4['url'][0]
 if soure == 'www.facebook.com':
     import dash_bootstrap_components as dbc
-    data_for_dash_facebook = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+    try:
+        data_for_dash_facebook = pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
+        data_for_dash_facebook.drop('sum_ch', axis=1, inplace=True)
+        data_for_dash_facebook.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
+    except:
+        data_for_dash_facebook = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
     data_for_dash_facebook['count_plot'] = 1
     sym_o_th = data_for_dash_facebook.iloc[:, 13:-1]
     sym_o1_th = sym_o_th.melt()
@@ -280,7 +286,12 @@ if soure == 'www.facebook.com':
                 )
 elif soure == 'www.reddit.com':
     import dash_bootstrap_components as dbc
-    data_for_dash_raddit = pd.read_csv('data_pre.csv')
+    try:
+        data_for_dash_raddit= pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
+        data_for_dash_raddit.drop('sum_ch', axis=1, inplace=True)
+        data_for_dash_raddit.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
+    except:
+        data_for_dash_raddit = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
     data_for_dash_raddit['count_plot'] = 1
     sym_o = data_for_dash_raddit.iloc[:, 10:-1]
     sym_o1 = sym_o.melt()
@@ -289,6 +300,7 @@ elif soure == 'www.reddit.com':
     app.layout = html.Div([
         html.Div([
         html.Div(id='datatable',style={'height': '300px','overflowY': 'auto'}),
+        dbc.Button("delete Dash", id="reset")
         ]),
     html.Div(
         [
@@ -489,6 +501,12 @@ elif soure == 'www.reddit.com':
         data140 = nms.iloc[:,:3]
         data_for_export = dash_table.DataTable(columns=[{"name": i, "id": i} for i in data140.columns],data=data140.to_dict('records'),export_format="csv")
         return [fig_1,fig_2,fig_3,fig_4,fig_5,fig_6,text_1_en,text_2_en,text_3_en,text_4_en,text_5_en,text_6_en,data_for_export]
+    @app.callback(
+        Input("reset", "n_clicks"),
+    )
+    def shutdown_server(n):
+        app.shutdown_server()
+
     app.clientside_callback(
             """
             function () {            

@@ -81,7 +81,6 @@ def index_AA():
     x00 = pd.read_csv('ref_pas.csv')
     x10 = x00['ref'][0]
     x30 = x00['refy'][0]
-    proc1.kill() 
     return render_template('pagr_1_NEW1.html',x=x10,y=x30)
 
 @server.route('/url_sc', methods=['GET','POST'])
@@ -359,6 +358,8 @@ def process():
         data['name'] = names
         data['comments'] = comments
         data['จำนวนตัวอักษร'] = count_1
+        data['ยอดไลค์'] = 0
+        data['จำนวนการตอบกลับ'] = 0
         data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
         data_red = data[data['comments'] != 'comments_miss']
         number_of_rows = len(data)
@@ -450,8 +451,7 @@ def success():
             symptoms[data_k_list[list_item]]=split_t
 
         #เเปลงหัวตาราง
-        data.rename(columns={'name': 'ชื่อ', 'comments': 'ความคิดเห็น'}, inplace=True)
-        comment=data.groupby('ชื่อ').sum().reset_index()
+        comment=data.groupby('name').sum().reset_index()
 
         # สร้าง set ข้อมูลภาษาไทย
         words = set(thai_words())
@@ -463,7 +463,7 @@ def success():
         # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
         list_token =[]
         for i in range(len(comment)):#len(comment)
-            text= comment['ความคิดเห็น'][i]
+            text= comment['comments'][i]
             custom_tokenizer = Tokenizer(words)
             Token = custom_tokenizer.word_tokenize(normalize(str(text)))
             Token.append('end')
@@ -598,7 +598,7 @@ def success():
         #เเบ่งเพศเเละใครเล่าโดยใช้ python
         k1=[]
         k2=[]
-        for i in comment['ความคิดเห็น']:
+        for i in comment['comments']:
             k1.append(detect_person(str(i)))
             if detect_person(str(i)) == 'เล่าประสบการณ์คนอื่น':
                 k2.append(detect_gender_other(str(i)))
@@ -614,13 +614,13 @@ def success():
             else :
                 use_ful_data.append('ไม่มีประโยชน์')
         Data_pre_and_clane = comment
-        Data_pre_and_clane['โรค'] = new_colcan
-        Data_pre_and_clane['ความมีประโยชน์'] = use_ful_data
-        Data_pre_and_clane['ใครเล่า'] = k1
-        Data_pre_and_clane['เพศเเบ่งโดยใช้_nlp'] = new_colgenden
-        Data_pre_and_clane['เพศเเบ่งโดยใช้_python'] = k2
-        Data_pre_and_clane['อาการ']=symptoms_colcan
-        label_symptoms=Data_pre_and_clane['อาการ'].str.join(sep='*').str.get_dummies(sep='*')
+        Data_pre_and_clane['defind_cancer_with_nlp'] = new_colcan
+        Data_pre_and_clane['use_ful'] = use_ful_data
+        Data_pre_and_clane['defind_exp_with_python'] = k1
+        Data_pre_and_clane['defind_Genden_with_nlp'] = new_colgenden
+        Data_pre_and_clane['defind_Genden_with_python'] = k2
+        Data_pre_and_clane['symptoms_colcan_en']=symptoms_colcan
+        label_symptoms=Data_pre_and_clane['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
         Data_pre_and_clane=Data_pre_and_clane.join(label_symptoms)
         Data_pre_and_clane.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
         data_show = Data_pre_and_clane.iloc[:,:5]
@@ -837,7 +837,7 @@ def success():
                 pass
             return data_show
         sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
-        mylist_name_can = data['โรค'].to_list()
+        mylist_name_can = data['defind_cancer_with_nlp'].to_list()
         name_can  = list(dict.fromkeys(mylist_name_can))
         sym_list = data.columns
         symptoms_can = sym_list[13:]
@@ -853,7 +853,7 @@ def success():
         from pythainlp.tokenize import word_tokenize as to_th_k # เป็นตัวตัดคำของภาษาไทย
         from pythainlp.corpus import thai_stopwords # เป็นคลัง Stop Words ของภาษาไทย
         text_th= ''
-        for row in data['ความคิดเห็น']: # ให้ python อ่านข้อมูลรีวิวจากทุก row ใน columns 'content'
+        for row in data['comments']: # ให้ python อ่านข้อมูลรีวิวจากทุก row ใน columns 'content'
             text_th = text_th + row.lower() + ' ' # เก็บข้อมูลรีวิวของเราทั้งหมดเป็น String ในตัวแปร text
 
         wt_th = to_th_k(text_th, engine='newmm') # ตัดคำที่ได้จากตัวแปร text
@@ -905,7 +905,7 @@ def success():
         sort_options = ['ความยาวของความคิดเห็น']
         mylist_name_can = data['defind_cancer_with_nlp'].to_list()
         name_can  = list(dict.fromkeys(mylist_name_can))
-        symptoms_can = data.columns[10:]
+        symptoms_can = data.columns[13:]
         data_name_sym_have = pd.DataFrame()
         data_value_TH = pd.DataFrame(data={'cancer_names_en':name_can})
         data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_EN':symptoms_can})
@@ -1124,7 +1124,7 @@ def ajax_add():
         #====================================================================================================
             #เเปลงหัวตาราง
             data = pd.read_csv('data_tokenizer.csv', encoding='utf-8-sig')
-            comment=data.groupby('ชื่อ').sum().reset_index()
+            comment=data.groupby('name').sum().reset_index()
             comment = comment.drop(['Unnamed: 0'], axis=1)
             # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
             list_token = []
@@ -1257,7 +1257,7 @@ def ajax_add():
             #เเบ่งเพศเเละใครเล่าโดยใช้ python
             k1=[]
             k2=[]
-            for i in comment['ความคิดเห็น']:
+            for i in comment['comments']:
                 k1.append(detect_person(str(i)))
                 if detect_person(str(i)) == 'เล่าประสบการณ์คนอื่น':
                     k2.append(detect_gender_other(str(i)))
@@ -1273,13 +1273,13 @@ def ajax_add():
                 else :
                     use_ful_data.append('ไม่มีประโยชน์')
             Data_pre_and_clane = comment
-            Data_pre_and_clane['โรค'] = new_colcan
-            Data_pre_and_clane['ความมีประโยชน์'] = use_ful_data
-            Data_pre_and_clane['ใครเล่า'] = k1
-            Data_pre_and_clane['เพศเเบ่งโดยใช้_nlp'] = new_colgenden
-            Data_pre_and_clane['เพศเเบ่งโดยใช้_python'] = k2
-            Data_pre_and_clane['อาการ']=symptoms_colcan
-            label_symptoms=Data_pre_and_clane['อาการ'].str.join(sep='*').str.get_dummies(sep='*')
+            Data_pre_and_clane['defind_cancer_with_nlp'] = new_colcan
+            Data_pre_and_clane['use_ful'] = use_ful_data
+            Data_pre_and_clane['defind_exp_with_python'] = k1
+            Data_pre_and_clane['defind_Genden_with_nlp'] = new_colgenden
+            Data_pre_and_clane['defind_Genden_with_python'] = k2
+            Data_pre_and_clane['symptoms_colcan_en']=symptoms_colcan
+            label_symptoms=Data_pre_and_clane['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
             Data_pre_and_clane=Data_pre_and_clane.join(label_symptoms)
             Data_pre_and_clane.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
         elif sorue == 'www.reddit.com':
@@ -1468,7 +1468,7 @@ def ajax_add():
             for i in data_column_sym:
                 if i not in name_symptomsTH_filter:
                     data_use.drop(i, axis=1, inplace=True)
-            rows_to_drop = data_use[~data_use['โรค'].isin(name_cancarTH_filter)].index
+            rows_to_drop = data_use[~data_use['defind_cancer_with_nlp'].isin(name_cancarTH_filter)].index
             data_use.drop(rows_to_drop, axis=0, inplace=True)
         elif soure == 'www.reddit.com':
             #filter reddit
@@ -1502,10 +1502,10 @@ def ajax_add():
                     pass
                 return data_show
             sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
-            mylist_name_can = data['โรค'].to_list()
+            mylist_name_can = data['defind_cancer_with_nlp'].to_list()
             name_can  = list(dict.fromkeys(mylist_name_can))
             sym_list = data.columns
-            symptoms_can = sym_list[12:]
+            symptoms_can = sym_list[13:]
             data_name_sym_have = pd.DataFrame()
             data_value_TH = pd.DataFrame(data={'name_cancarTH':name_can})
             data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_TH':symptoms_can})
@@ -1518,7 +1518,7 @@ def ajax_add():
             from pythainlp.tokenize import word_tokenize as to_th_k # เป็นตัวตัดคำของภาษาไทย
             from pythainlp.corpus import thai_stopwords # เป็นคลัง Stop Words ของภาษาไทย
             text_th= ''
-            for row in data['ความคิดเห็น']: # ให้ python อ่านข้อมูลรีวิวจากทุก row ใน columns 'content'
+            for row in data['comments']: # ให้ python อ่านข้อมูลรีวิวจากทุก row ใน columns 'content'
                 text_th = text_th + row.lower() + ' ' # เก็บข้อมูลรีวิวของเราทั้งหมดเป็น String ในตัวแปร text
 
             wt_th = to_th_k(text_th, engine='newmm') # ตัดคำที่ได้จากตัวแปร text
@@ -1571,7 +1571,7 @@ def ajax_add():
             sort_options = ['ความยาวของความคิดเห็น']
             mylist_name_can = data['defind_cancer_with_nlp'].to_list()
             name_can  = list(dict.fromkeys(mylist_name_can))
-            symptoms_can = data.columns[10:]
+            symptoms_can = data.columns[13:]
             data_name_sym_have = pd.DataFrame()
             data_value_TH = pd.DataFrame(data={'cancer_names_en':name_can})
             data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_EN':symptoms_can})
@@ -1646,7 +1646,15 @@ def index_2():
     x30 = x09['refy'][0]
     x19 = x09['ref'][0]
     x09.to_csv('ref_pas.csv',index=False)
-    proc1 = subprocess.Popen("python test_dash_for_project.py",shell=True)
+    try:
+        data_for_dash = pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
+        data_for_dash.drop('sum_ch', axis=1, inplace=True)
+        data_for_dash.to_csv('data_for_dash_01.csv',index=False,encoding='utf-8-sig')
+        data_for_dash.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
+    except:
+        data_for_dash = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+        data_for_dash.to_csv('data_for_dash_01.csv',index=False,encoding='utf-8-sig')
+    proc1 = subprocess.Popen("python test_dash_for_project2.py",shell=True)
     proc1
     return render_template('login2_2.html',x=x19,y=x30)
 
@@ -2168,11 +2176,6 @@ def index_2():
 
 @server.route('/page3_2.py',methods=["POST","GET"])
 def index_3456():
-    import subprocess
-    from dash import Dash, html, Input, Output, callback,dcc,dash_table
-    import plotly.express as px
-    proc1 = subprocess.Popen(['py', 'test_dash_for_project.py'])
-    proc1
     return render_template('login2_2.html')
 
 @server.route('/page2_3.py',methods=["POST","GET"])
@@ -2218,8 +2221,7 @@ def index_78():
     tables = sorted_data.to_html(classes='table table-striped', index=False)
     x10 = pd.read_csv('ref_pas.csv')
     x20 = x10['ref'][0]
-    x30 = x10['refy'][0]
-    proc1.kill() 
+    x30 = x10['refy'][0] 
     return render_template('output2.html', tables=[tables], sort_options=sort_options,skills=name_can,symptoms=symptoms_can
                            ,tables_descript=[tables_d],number_of_rows=number_of_rows,number_of_columns=number_of_columns,count_user = count_user,count_comment=count_comment
                            ,x=x20,y=x30)
