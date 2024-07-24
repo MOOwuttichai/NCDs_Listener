@@ -18,7 +18,7 @@ import json
 import time
 import re
 import datetime
-from flask import Flask, request, render_template, make_response, session,jsonify,send_from_directory
+from flask import Flask, request, render_template, make_response, session,jsonify,send_from_directory,send_file
 from werkzeug.utils import secure_filename
 import numpy as np
 import os
@@ -71,8 +71,11 @@ server = Flask(__name__,static_folder=os.path.join(os.getcwd(),'static'))
 # ส่วนของหน้าที่ 1 สำหรับ input url ใช้ประกอบกับ HTML
 def index_A():
     ref = {'ref':[0],'refy':[0]}
+    select = {'use_url':[0]}
     ref_pas = pd.DataFrame(ref)
+    select_1 = pd.DataFrame(select)
     ref_pas.to_csv('ref_pas.csv',index=False)
+    select_1.to_csv('use_F_or_U.csv',index=False)
     return render_template('pagr_1_NEW.html')
 
 @server.route('/page1_2', methods=['GET','POST'])
@@ -96,7 +99,8 @@ def index_B():
 def index_C():
   x02 = pd.read_csv('ref_pas.csv')
   x12 = x02['ref'][0]
-  return render_template('Page 2 use_file.html',x=x12)
+  x30 = x02['refy'][0]
+  return render_template('Page 2 use_file.html',x=x12,y=x30)
 # ส่วนของหน้าที่ 1 สำหรับการดึงข้อมูลมาเก็บเป็นตาราง เเละให้เเสดงผลหน้าที่ 2 โดยให้เเสดงตารางข้อมูล,ค่าสถิติเบื้องต้น,word cloud,เเละการใส่อาการ ใช้ร่วมกับ HTML ด้วย
 # ปล. ตัวกรอกอาการเป็น tag ต่างๆใช้html(เขียนเอง),jqurry(เขียนเอง) เเละ css(สำเร็จรูป)
 @server.route('/process.py', methods=['POST'])
@@ -146,7 +150,6 @@ def process():
         x=x_1
         a=int(x[162:164])
         k=x
-
         aoa=aoa_1
         kok={'a_a':'div/div/div','b_a':'div[2]/div/div','b_b':'div/div[2]/div','b_c':'div/div/div[2]','c_a':'div[3]/div/div','c_b':'div/div[3]/div','c_c':'div/div/div[3]'}
         LOL=[]
@@ -207,7 +210,28 @@ def process():
                     time.sleep(1)
                 except:
                     pass
-
+            list_like_1 = []
+            list_like_2 = []
+            for i in range(9999):
+                aoa_1 = f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div/div/div'
+                list_like_1.append(aoa_1)
+                aoa_2 = f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div/div[2]/div'
+                list_like_2.append(aoa_2)
+            for g in range(1000):
+                try:
+                    more_1 = browser.find_element(By.XPATH,list_like_1[g])
+                    more_1.click()
+                    time.sleep(1)
+                except:
+                    pass
+            browser.execute_script("window.scrollTo(0,0);")
+            for g in range(1000):
+                try:
+                    more_2 = browser.find_element(By.XPATH,list_like_2[g])
+                    more_2.click()
+                    time.sleep(1)
+                except:
+                    pass
         # เช็กว่าลงสุดไหมv.2
         last_height = browser.execute_script("return document.body.scrollHeight")
         while True:
@@ -244,8 +268,9 @@ def process():
         # ## re_chat
         for i in range(len(result)):
             x1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
+            x2 = dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
             y1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/div/div[4]/text()')
-            z1=x1+y1
+            z1=x1+y1+x2
             try:
                 re_chat_all.append((re.findall(r'\b\d+\b',z1[0]))[0])
             except:
@@ -253,8 +278,10 @@ def process():
         # like
         for i in range(len(result)):
             x2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+            x3=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+            sum_like = x2+x3
             try:
-                like_kk.append(x2[0])
+                like_kk.append(sum_like[0])
             except:
                 like_kk.append(0)
 
@@ -291,23 +318,18 @@ def process():
         for item in name :
             names.append(item.text)
         data = pd.DataFrame()
-
-        #นับความยาว ความคิดเห็น 
-        for item in FBcomments:
-            count.append(len(item))
-
         data_comment=pd.DataFrame(data={'comments':FBcomments})
         data_name=pd.DataFrame(data={'name':names})
         data_rechat=pd.DataFrame(data={'จำนวนการตอบกลับ':re_chat_all})
         data_like=pd.DataFrame(data={'ยอดไลค์':like_count})
-        data_count=pd.DataFrame(data={'จำนวนตัวอักษร':count})
+
         # ทำตาราง
         data = data_comment
         data = data.join(data_name).fillna('NaN_name')
         data = data.join(data_rechat).fillna(0)
         data = data.join(data_like).fillna(0)
-        data = data.join(data_count).fillna(0)
-        data = data.iloc[:,[1,0,3,2,4]]
+        data = data.iloc[:,[1,0,3,2]]
+        data['test'] = 101
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
         data.to_csv(f'{flie_name}.csv', index=False, encoding='utf-8-sig')
@@ -329,7 +351,7 @@ def process():
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
                 wait = WebDriverWait(driver, 60)
                 time.sleep(3)
-                l = driver.find_element("xpath",'//*[@id="comment-tree"]/faceplate-partial/div[1]/button')
+                l = driver.find_element("xpath",'/html/body/shreddit-app/div/div[1]/div/main/div/faceplate-batch/shreddit-comment-tree/faceplate-partial/div[1]/faceplate-tracker/button')
                 l.click()
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
                 wait = WebDriverWait(driver, 60)
@@ -352,14 +374,9 @@ def process():
             differ = len(names)-len(FBcomments)
             for i in range(differ):
                 FBcomments.append('comments_miss')
-        count_1=[]
-        for item in comments:
-            count_1.append(len(item))
         data['name'] = names
         data['comments'] = comments
-        data['จำนวนตัวอักษร'] = count_1
-        data['ยอดไลค์'] = 0
-        data['จำนวนการตอบกลับ'] = 0
+        data['test'] = 101
         data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
         data_red = data[data['comments'] != 'comments_miss']
         number_of_rows = len(data)
@@ -370,15 +387,25 @@ def process():
     x03 = pd.read_csv('ref_pas.csv')
     x13 = x03['ref'][0]
     x30 = x03['refy'][0]
+    use_ur = pd.read_csv('use_F_or_U.csv')
+    use_ur.iloc[0,0] = 1
+    use_ur.to_csv('use_F_or_U.csv',index=False)
     return  render_template('Page 2 use_url.html',name = filename,x=x13,y=x30)
 
 @server.route('/return-files/',methods=['POST','GET'])
 def return_files_tut():
-    df = pd.read_csv('Data_scraper.csv', encoding='utf-8-sig')
-    resp = make_response(df.to_csv(index=False, encoding='utf-8-sig'))
-    resp.headers["Content-Disposition"] = "attachment; filename=Data_scraper.csv"
-    resp.headers["Content-Type"] = "text/csv"
-    return resp
+    data = pd.read_csv('Data_scraper.csv')
+    data = data.drop(['test'], axis=1)
+    data.to_csv('Data_scraper_save.csv',index=False,encoding='utf-8-sig')
+    # df = pd.read_csv('Data_scraper.csv', encoding='utf-8-sig')
+    # resp = make_response(df.to_csv(index=False, encoding='utf-8-sig'))
+    # resp.headers["Content-Disposition"] = "attachment; filename=Data_scraper.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+    return send_file('Data_scraper_save.csv',
+        mimetype='text/csv',
+        download_name='Data_scraper_save.csv',
+        as_attachment=True
+    )
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
 server.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -403,6 +430,9 @@ def uploadFile():
         x04 = pd.read_csv('ref_pas.csv')
         x14 = x04['ref'][0]
         x30 = x04['refy'][0]
+        use_ur = pd.read_csv('use_F_or_U.csv')
+        use_ur.iloc[0,0] = 0
+        use_ur.to_csv('use_F_or_U.csv',index=False)
         return render_template('Page 2 use_file_after.html',x=x14,y=x30)
     x05 = pd.read_csv('ref_pas.csv')
     x15 = x05['ref'][0]
@@ -412,11 +442,17 @@ def uploadFile():
 @server.route('/after_pepar', methods = ['POST','GET'])   
 def success():   
     import pandas as pd
-    try:   
+    use_ur_or_fi = pd.read_csv('use_F_or_U.csv')
+    if use_ur_or_fi.iloc[0,0] == 1:
+        data = pd.read_csv('Data_scraper.csv')   
+        data = data.drop(['test'], axis=1)
+        data.to_csv('Data_scraper.csv',index=False,encoding='utf-8-sig')
+        data.to_csv('Data_prepo.csv',index=False,encoding='utf-8-sig')   
+    elif use_ur_or_fi.iloc[0,0] == 0:
         data_file_path = session.get('uploaded_data_file_path', None)
         data= pd.read_csv(data_file_path,encoding='utf-8-sig')
-    except:
-        data = pd.read_csv('Data_scraper.csv')
+        data.to_csv('Data_prepo.csv',index=False,encoding='utf-8-sig') 
+    data = pd.read_csv('Data_prepo.csv',encoding='utf-8-sig')
     count_user = len(set(data['name']))
     count_comment = len(set(data['comments']))
     number_of_rows = len(data)
@@ -462,12 +498,15 @@ def success():
 
         # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
         list_token =[]
+        count = []
         for i in range(len(comment)):#len(comment)
             text= comment['comments'][i]
             custom_tokenizer = Tokenizer(words)
             Token = custom_tokenizer.word_tokenize(normalize(str(text)))
             Token.append('end')
             list_token.append(Token)
+            count.append(len(Token))
+        comment['จำนวนคำ'] = count
         comment['token'] = list_token
         comment.to_csv('data_tokenizer.csv',encoding='utf-8-sig')
         time.sleep(8)
@@ -606,16 +645,16 @@ def success():
                 k2.append(detect_gender_self(str(i)))
             elif detect_person(str(i)) == 'ไม่ได้เล่าประสบการณ์':
                 k2.append(detect_gender_self(str(i)))
-        #หาว่ามีประโยชน์หรือไม่มีประโยชน์
-        use_ful_data =[]
-        for i in range(len(list_token)):
-            if len(list_token[i]) >= 50:
-                use_ful_data.append('อาจมีประโยชน์')
-            else :
-                use_ful_data.append('ไม่มีประโยชน์')
+        # #หาว่ามีประโยชน์หรือไม่มีประโยชน์
+        # use_ful_data =[]
+        # for i in range(len(list_token)):
+        #     if len(list_token[i]) >= 50:
+        #         use_ful_data.append('อาจมีประโยชน์')
+        #     else :
+        #         use_ful_data.append('ไม่มีประโยชน์')
         Data_pre_and_clane = comment
         Data_pre_and_clane['defind_cancer_with_nlp'] = new_colcan
-        Data_pre_and_clane['use_ful'] = use_ful_data
+        Data_pre_and_clane['use_ful'] = 'non'
         Data_pre_and_clane['defind_exp_with_python'] = k1
         Data_pre_and_clane['defind_Genden_with_nlp'] = new_colgenden
         Data_pre_and_clane['defind_Genden_with_python'] = k2
@@ -664,6 +703,12 @@ def success():
             data_r_token = remove_(data_r_token)
             data_r_token = lemma(data_r_token)
             list_token_red.append(data_r_token)
+            count_1=[]
+            for item in list_token_red:
+                count_1.append(len(item))
+        data_raddit['จำนวนคำ'] = count_1
+        data_raddit['ยอดไลค์'] = 0
+        data_raddit['จำนวนการตอบกลับ'] = 0
         data_raddit['token'] = list_token_red
         data_raddit.to_csv('data_tokenizer.csv',encoding='utf-8-sig')
         column_cancer_nlp_rad=[]
@@ -697,12 +742,12 @@ def success():
         all_reddit_data = data_raddit
         all_reddit_data['defind_cancer_with_nlp'] = column_cancer_nlp_rad
         #-----------------------------------
-        data_value_red =[]
-        for i in range(len(list_token_red)):
-            if len(list_token_red[i]) >= 50 :
-                data_value_red.append('maybe_useful')
-            else:
-                data_value_red.append('Not useful or not giving too much information')
+        # data_value_red =[]
+        # for i in range(len(list_token_red)):
+        #     if len(list_token_red[i]) >= 50 :
+        #         data_value_red.append('maybe_useful')
+        #     else:
+        #         data_value_red.append('Not useful or not giving too much information')
         new_colgenden_en=[]
         list_genden_en=[]
         #เเบ่งเพศ
@@ -815,7 +860,7 @@ def success():
         all_reddit_data['defind_Genden_with_nlp'] = new_colgenden_en
         all_reddit_data['defind_Genden_with_python'] = k4
         all_reddit_data['defind_exp_with_python'] = k3
-        all_reddit_data['use_ful'] = data_value_red
+        all_reddit_data['use_ful'] = 'non'
         all_reddit_data['symptoms_colcan_en'] = symptoms_colcan_en
         label_symptoms_en=all_reddit_data['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
         all_reddit_data = all_reddit_data.join(label_symptoms_en)
@@ -824,23 +869,23 @@ def success():
     sorue_sym_4 = pd.read_csv('soure_url.csv')
     sorue_chack = sorue_sym_4['url'][0]
     if sorue_chack == 'www.facebook.com': 
-        _ = ['จำนวนคนตอบกลับ','จำนวนคนกด like','จำนวนความยาวตัวอักษร']
+        _ = ['ยอดไลค์','จำนวนการตอบกลับ','จำนวนคำ']
         data = Data_pre_and_clane
         def sort_data(column_name,how_sort):
-            if column_name == 'จำนวนคนกด like':
+            if column_name == 'ยอดไลค์':
                 data_show.sort_values('ยอดไลค์', inplace=True, ascending=how_sort)
-            elif column_name == 'จำนวนคนตอบกลับ':
+            elif column_name == 'จำนวนการตอบกลับ':
                 data_show.sort_values('จำนวนการตอบกลับ', inplace=True, ascending=how_sort)
-            elif column_name == 'จำนวนความยาวตัวอักษร':
-                data_show.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+            elif column_name == 'จำนวนคำ':
+                data_show.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
             else:
                 pass
             return data_show
-        sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
+        sort_options = ['ยอดไลค์', 'จำนวนการตอบกลับ', 'จำนวนคำ']
         mylist_name_can = data['defind_cancer_with_nlp'].to_list()
         name_can  = list(dict.fromkeys(mylist_name_can))
         sym_list = data.columns
-        symptoms_can = sym_list[13:]
+        symptoms_can = sym_list[12:]
         data_name_sym_have = pd.DataFrame()
         data_value_TH = pd.DataFrame(data={'name_cancarTH':name_can})
         data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_TH':symptoms_can})
@@ -889,23 +934,23 @@ def success():
         descriptive['min'] = min_v
         descriptive['avg'] = avg_v
         descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
-        sorted_data = sort_data('จำนวนคนกด like',False)
+        sorted_data = sort_data('ยอดไลค์',False)
     elif sorue_chack == 'www.reddit.com':
         import pandas as pd
         from nltk.tokenize import word_tokenize as to_en
         from nltk.stem import WordNetLemmatizer
         data = all_reddit_data
-        _ = ['จำนวนความยาวตัวอักษร']
+        _ = ['จำนวนคำ']
         def sort_data(column_name,how_sort):
-            if column_name == 'ความยาวของความคิดเห็น':
-                data_show.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+            if column_name == 'จำนวนคำ':
+                data_show.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
             else:
                 pass
             return data_show
-        sort_options = ['ความยาวของความคิดเห็น']
+        sort_options = ['จำนวนคำ']
         mylist_name_can = data['defind_cancer_with_nlp'].to_list()
         name_can  = list(dict.fromkeys(mylist_name_can))
-        symptoms_can = data.columns[13:]
+        symptoms_can = data.columns[12:]
         data_name_sym_have = pd.DataFrame()
         data_value_TH = pd.DataFrame(data={'cancer_names_en':name_can})
         data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_EN':symptoms_can})
@@ -984,27 +1029,27 @@ def sort():
     count_comment = len(set(data.iloc[:,1]))
     if soure == 'www.facebook.com':
         def sort_data(column_name,how_sort):
-            if column_name == 'จำนวนคนกด like':
+            if column_name == 'ยอดไลค์':
                 data.sort_values('ยอดไลค์', inplace=True, ascending=how_sort)
-            elif column_name == 'จำนวนคนตอบกลับ':
+            elif column_name == 'จำนวนการตอบกลับ':
                 data.sort_values('จำนวนการตอบกลับ', inplace=True, ascending=how_sort)
-            elif column_name == 'จำนวนความยาวตัวอักษร':
-                data.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+            elif column_name == 'จำนวนคำ':
+                data.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
             else:
                 pass
             return data
-        sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
+        sort_options = ['ยอดไลค์','จำนวนการตอบกลับ','จำนวนคำ']
         data_cancer= pd.read_csv('data_name_sym_have.csv')
         name_can = data_cancer['name_cancarTH'].dropna().to_list()
         symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list() 
     elif soure == 'www.reddit.com':
         def sort_data(column_name,how_sort):
-            if column_name == 'ความยาวของความคิดเห็น':
-                data.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+            if column_name == 'จำนวนคำ':
+                data.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
             else:
                 pass
             return data
-        sort_options = ['ความยาวของความคิดเห็น']
+        sort_options = ['จำนวนคำ']
         data_cancer= pd.read_csv('data_name_sym_have.csv')
         name_can = data_cancer['cancer_names_en'].dropna().to_list()
         symptoms_can = data_cancer['Key_symptoms_EN'].dropna().to_list()
@@ -1266,15 +1311,15 @@ def ajax_add():
                 elif detect_person(str(i)) == 'ไม่ได้เล่าประสบการณ์':
                     k2.append(detect_gender_self(str(i)))
             #หาว่ามีประโยชน์หรือไม่มีประโยชน์
-            use_ful_data =[]
-            for i in range(len(list_token)):
-                if len(list_token[i]) >= 50:
-                    use_ful_data.append('อาจมีประโยชน์')
-                else :
-                    use_ful_data.append('ไม่มีประโยชน์')
+            # use_ful_data =[]
+            # for i in range(len(list_token)):
+            #     if len(list_token[i]) >= 50:
+            #         use_ful_data.append('อาจมีประโยชน์')
+            #     else :
+            #         use_ful_data.append('ไม่มีประโยชน์')
             Data_pre_and_clane = comment
             Data_pre_and_clane['defind_cancer_with_nlp'] = new_colcan
-            Data_pre_and_clane['use_ful'] = use_ful_data
+            Data_pre_and_clane['use_ful'] = 'non'
             Data_pre_and_clane['defind_exp_with_python'] = k1
             Data_pre_and_clane['defind_Genden_with_nlp'] = new_colgenden
             Data_pre_and_clane['defind_Genden_with_python'] = k2
@@ -1453,7 +1498,7 @@ def ajax_add():
             all_reddit_data['defind_Genden_with_nlp'] = new_colgenden_en
             all_reddit_data['defind_Genden_with_python'] = k4
             all_reddit_data['defind_exp_with_python'] = k3
-            all_reddit_data['use_ful'] = data_value_red
+            all_reddit_data['use_ful'] = 'non'
             all_reddit_data['symptoms_colcan_en'] = symptoms_colcan_en
             label_symptoms_en=all_reddit_data['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
             all_reddit_data = all_reddit_data.join(label_symptoms_en)
@@ -1476,7 +1521,7 @@ def ajax_add():
             data_use=pd.read_csv('data_pre.csv')
             name_symptoms_filter_en = all_data['Key_symptoms_EN'].dropna().to_list()
             name_cancar_filter_en= all_data['cancer_names_en_se'].dropna().to_list()
-            data_column_sym = data_use.columns[10:]
+            data_column_sym = data_use.columns[12:]
             for i in data_column_sym:
                 if i not in name_symptoms_filter_en:
                     data_use.drop(i, axis=1, inplace=True)
@@ -1488,24 +1533,24 @@ def ajax_add():
         sorue_sym_4 = pd.read_csv('soure_url.csv')
         sorue_chack = sorue_sym_4['url'][0]
         if sorue_chack == 'www.facebook.com': 
-            _ = ['จำนวนคนกด like','จำนวนคนตอบกลับ','จำนวนความยาวตัวอักษร']
+            _ = ['ยอดไลค์','จำนวนการตอบกลับ','จำนวนคำ']
             data =  data_use
             data_show = data_use.iloc[:,:5]
             def sort_data(column_name,how_sort):
-                if column_name == 'จำนวนคนกด like':
+                if column_name == 'ยอดไลค์':
                     data_show.sort_values('ยอดไลค์', inplace=True, ascending=how_sort)
-                elif column_name == 'จำนวนคนตอบกลับ':
+                elif column_name == 'จำนวนการตอบกลับ':
                     data_show.sort_values('จำนวนการตอบกลับ', inplace=True, ascending=how_sort)
-                elif column_name == 'จำนวนความยาวตัวอักษร':
-                    data_show.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+                elif column_name == 'จำนวนคำ':
+                    data_show.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
                 else:
                     pass
                 return data_show
-            sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
+            sort_options = ['ยอดไลค์','จำนวนการตอบกลับ','จำนวนคำ']
             mylist_name_can = data['defind_cancer_with_nlp'].to_list()
             name_can  = list(dict.fromkeys(mylist_name_can))
             sym_list = data.columns
-            symptoms_can = sym_list[13:]
+            symptoms_can = sym_list[12:-1]
             data_name_sym_have = pd.DataFrame()
             data_value_TH = pd.DataFrame(data={'name_cancarTH':name_can})
             data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_TH':symptoms_can})
@@ -1554,24 +1599,24 @@ def ajax_add():
             descriptive['min'] = min_v
             descriptive['avg'] = avg_v
             descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
-            sorted_data = sort_data('จำนวนคนกด like',False)
+            sorted_data = sort_data('ยอดไลค์',False)
         elif sorue_chack == 'www.reddit.com':
             import pandas as pd
             from nltk.tokenize import word_tokenize as to_en
             from nltk.stem import WordNetLemmatizer
             data = all_reddit_data
             data_show = data_use.iloc[:,:3]
-            _ = ['จำนวนความยาวตัวอักษร']
+            _ = ['จำนวนคำ']
             def sort_data(column_name,how_sort):
-                if column_name == 'ความยาวของความคิดเห็น':
-                    data_show.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+                if column_name == 'จำนวนคำ':
+                    data_show.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
                 else:
                     pass
                 return data_show
-            sort_options = ['ความยาวของความคิดเห็น']
+            sort_options = ['จำนวนคำ']
             mylist_name_can = data['defind_cancer_with_nlp'].to_list()
             name_can  = list(dict.fromkeys(mylist_name_can))
-            symptoms_can = data.columns[13:]
+            symptoms_can = data.columns[12:]
             data_name_sym_have = pd.DataFrame()
             data_value_TH = pd.DataFrame(data={'cancer_names_en':name_can})
             data_symptoms_TH = pd.DataFrame(data={'Key_symptoms_EN':symptoms_can})
@@ -1619,7 +1664,7 @@ def ajax_add():
             descriptive['min'] = min_v
             descriptive['avg'] = avg_v
             descriptive.to_csv('data_desc.csv',encoding='utf-8-sig')
-            sorted_data = sort_data('ความยาวของความคิดเห็น',False)
+            sorted_data = sort_data('จำนวนคำ',False)
         descriptive =pd.read_csv('data_desc.csv')
         descriptive = descriptive.iloc[:, 1:]
         tables_d = descriptive.to_html(classes='table table-striped', index=False)
@@ -2190,27 +2235,27 @@ def index_78():
     count_comment = len(set(data.iloc[:,1]))
     if soure == 'www.facebook.com':
         def sort_data(column_name,how_sort):
-            if column_name == 'จำนวนคนกด like':
+            if column_name == 'ยอดไลค์':
                 data.sort_values('ยอดไลค์', inplace=True, ascending=how_sort)
-            elif column_name == 'จำนวนคนตอบกลับ':
+            elif column_name == 'จำนวนการตอบกลับ':
                 data.sort_values('จำนวนการตอบกลับ', inplace=True, ascending=how_sort)
-            elif column_name == 'จำนวนความยาวตัวอักษร':
-                data.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+            elif column_name == 'จำนวนคำ':
+                data.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
             else:
                 pass
             return data
-        sort_options = ['จำนวนคนกด like', 'จำนวนคนตอบกลับ', 'จำนวนความยาวตัวอักษร']
+        sort_options = ['ยอดไลค์', 'จำนวนการตอบกลับ', 'จำนวนความยาวตัวอักษร']
         data_cancer= pd.read_csv('data_name_sym_have.csv')
         name_can = data_cancer['name_cancarTH'].dropna().to_list()
         symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list()
     elif soure == 'www.reddit.com':
         def sort_data(column_name,how_sort):
-            if column_name == 'ความยาวของความคิดเห็น':
-                data.sort_values('จำนวนตัวอักษร', inplace=True, ascending=how_sort)
+            if column_name == 'จำนวนคำ':
+                data.sort_values('จำนวนคำ', inplace=True, ascending=how_sort)
             else:
                 pass
             return data
-        sort_options = ['ความยาวของความคิดเห็น']
+        sort_options = ['จำนวนคำ']
         data_cancer= pd.read_csv('data_name_sym_have.csv')
         name_can = data_cancer['cancer_names_en'].dropna().to_list()
         symptoms_can = data_cancer['Key_symptoms_EN'].dropna().to_list()

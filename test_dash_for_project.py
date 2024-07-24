@@ -10,14 +10,14 @@ sorue_sym_4 = pd.read_csv('soure_url.csv')
 soure = sorue_sym_4['url'][0]
 if soure == 'www.facebook.com':
     import dash_bootstrap_components as dbc
-    try:
-        data_for_dash_facebook = pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
-        data_for_dash_facebook.drop('sum_ch', axis=1, inplace=True)
-        data_for_dash_facebook.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
-    except:
-        data_for_dash_facebook = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+    # try:
+    #     data_for_dash_facebook = pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
+    #     data_for_dash_facebook.drop('sum_ch', axis=1, inplace=True)
+    #     data_for_dash_facebook.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
+    # except:
+    data_for_dash_facebook = pd.read_csv('data_test\data_pre_docter_new.csv', encoding='utf-8-sig')
     data_for_dash_facebook['count_plot'] = 1
-    sym_o_th = data_for_dash_facebook.iloc[:, 13:-1]
+    sym_o_th = data_for_dash_facebook.iloc[:, 12:-1]
     sym_o1_th = sym_o_th.melt()
     sym_o2_th = (pd.crosstab(sym_o1_th['variable'], sym_o1_th['value']).rename(columns={0: 'ไม่มีการเล่า', 1: 'มีการเล่า'})).reset_index()
 
@@ -169,7 +169,7 @@ if soure == 'www.facebook.com':
         nms = nms[nms['ยอดไลค์']>=count_like]
         nms = nms[nms['จำนวนการตอบกลับ']>=count_rechat]
         nms = nms[nms['จำนวนตัวอักษร']>=count_word]
-        sym_c = nms.iloc[:, 13:-1]
+        sym_c = nms.iloc[:, 12:-1]
         sym_ca = sym_c.melt()
         sym_can = (pd.crosstab(sym_ca['variable'], sym_ca['value']).rename(columns={0: 'ไม่มีการเล่า', 1: 'มีการเล่า'}))
         plot_data=sym_can['มีการเล่า'].reset_index()
@@ -286,12 +286,12 @@ if soure == 'www.facebook.com':
                 )
 elif soure == 'www.reddit.com':
     import dash_bootstrap_components as dbc
-    try:
-        data_for_dash_raddit= pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
-        data_for_dash_raddit.drop('sum_ch', axis=1, inplace=True)
-        data_for_dash_raddit.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
-    except:
-        data_for_dash_raddit = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+    # try:
+    #     data_for_dash_raddit= pd.read_csv('data_pre_setting.csv', encoding='utf-8-sig')
+    #     data_for_dash_raddit.drop('sum_ch', axis=1, inplace=True)
+    #     data_for_dash_raddit.to_csv('data_pre_setting.csv',index=False,encoding='utf-8-sig')
+    # except:
+    data_for_dash_raddit = pd.read_csv('data_test\data_pre_red2.csv', encoding='utf-8-sig')
     data_for_dash_raddit['count_plot'] = 1
     sym_o = data_for_dash_raddit.iloc[:, 10:-1]
     sym_o1 = sym_o.melt()

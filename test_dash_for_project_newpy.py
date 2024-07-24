@@ -11,108 +11,114 @@ app.layout = html.Div([
             html.Div([
                 html.Div(id='datatable',style={'height': '300px','overflowY': 'auto'}),
                     ]),
-        html.Div(
+        html.Nav(
             [
-        dbc.Button("Print", id="grid-browser-print-btn",style={'height': '300px','overflowY': 'auto'}),
-        dbc.ModalBody(
-            # customize your printed report here
-            [
-        # ประสบการณ์ของใคร
-        html.Div([
-                html.P("แผนภูมิประสบการณ์กับจำนวนความคิดเห็น"),
-                dcc.Graph(id="pie-charts-exp-graph"),
-                html.P(id = 'text_sum_exp')],style={'width': '40%',  'display': 'inline-block'}),
-        html.Div([
-            html.P("ประสบการณ์:"),
-            dcc.Checklist(id='pie-charts-exp-names')
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left"}),
-        # Gender
-        html.Div([
-            html.P("แผนภูมิเพศผู้ป่วยกับจำนวนความคิดเห็น"),
-            dcc.Graph(id="pie-charts-Gender-graph"),
-            html.P(id = 'text_sum_Gender')],style={'width': '40%',  'display': 'inline-block'}),
-        html.Div([
-            html.P("เพศ:"),
-            dcc.Checklist(id='pie-charts-Gender-names')
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left"}),
-            html.Br(style={"line-height": "5"}),
-        # โรค
-        html.Div([
-            html.P("โรค:"),
-            dcc.Dropdown(id='pie-charts-cancer-names',multi=True)
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left"}),
-        html.Div([
-            html.P("แผนภูมิโรคกับจำนวนความคิดเห็น"),
-            dcc.Graph(id="pie-charts-carcer-graph"),
-            html.P(id = 'text_sum_cancer',style={'whiteSpace': 'pre-line'})],style={'width': '50%', 'display': 'inline-block'}),
-        # useful
-        html.Div([
-            html.P("แผนภูมิความมีประโยชน์กับจำนวนความคิดเห็น"),
-            dcc.Graph(id="pie-charts-useful-graph"),
-            html.P(id ="text_sum_useful")],style={'width': '40%',  'display': 'inline-block'}),
         html.Div([
                 html.P("ความมีประโยชน์:"),
                 dcc.Checklist(id="pie-charts-useful-names"),
                 html.Br(style={"line-height": "5"}),
                 html.P("จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์:"),
                 dcc.Input(id='my-numeric-input-1',type= "number",placeholder="จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์",value = 5)
-                ],style={'width': '29%', 'display': 'inline-block',"float":"left"}),
-                html.Br(style={"line-height": "5"}),
+                ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
+                html.Br(style={"line-height": "5",'border-style':'solid'}),
+            ],style={'width': '40%',"height": "100%"}),
+        html.Main(
+            [
+        dbc.ModalBody(
+            # customize your printed report here
+            [
+                # useful
+        html.Div([
+            html.P("แผนภูมิความมีประโยชน์กับจำนวนความคิดเห็น"),
+            dcc.Graph(id="pie-charts-useful-graph"),
+            html.P(id ="text_sum_useful")],style={'width': '40%',  'display': 'inline-block','border-style':'solid'}),
+        # ประสบการณ์ของใคร
+        html.Div([
+                html.P("แผนภูมิประสบการณ์กับจำนวนความคิดเห็น"),
+                dcc.Graph(id="pie-charts-exp-graph"),
+                html.P(id = 'text_sum_exp')],style={'width': '40%',  'display': 'inline-block','border-style':'solid'}),
+        html.Div([
+            html.P("ประสบการณ์:"),
+            dcc.Checklist(id='pie-charts-exp-names')
+            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
+        # Gender
+        html.Div([
+            html.P("แผนภูมิเพศผู้ป่วยกับจำนวนความคิดเห็น"),
+            dcc.Graph(id="pie-charts-Gender-graph"),
+            html.P(id = 'text_sum_Gender')],style={'width': '40%',  'display': 'inline-block','border-style':'solid'}),
+        html.Div([
+            html.P("เพศ:"),
+            dcc.Checklist(id='pie-charts-Gender-names')
+            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
+            html.Br(style={"line-height": "5"}),
+        # โรค
+        html.Div([
+            html.P("โรค:"),
+            dcc.Dropdown(id='pie-charts-cancer-names',multi=True)
+            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
+        html.Div([
+            html.P("แผนภูมิโรคกับจำนวนความคิดเห็น"),
+            dcc.Graph(id="pie-charts-carcer-graph"),
+            html.P(id = 'text_sum_cancer',style={'whiteSpace': 'pre-line'})],style={'width': '50%', 'display': 'inline-block','border-style':'solid'}),
+
         # sym
         html.Div([
             html.P("อาการ:"),
             dcc.Dropdown(id='pie-charts-sym-names',multi=True)
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left"}),
+            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
         html.Div([
             html.P("แผนภูมิอาการกับจำนวนความคิดเห็น"),
             dcc.Graph(id="his-charts-sym-graph"),
-            html.P(id ="text_sum_sym",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block'}),
-            html.Br(style={"line-height": "5"}),
-            html.Br(style={"line-height": "5"}),
+            html.P(id ="text_sum_sym",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
         # word count
         html.Div([
             html.P("จำนวนคำในประโยค(ขั้นต่ำ):"),
             dcc.Slider(0,200,200/5,value=0,
                 tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_word-names'),
-            ],style={'width': '20%', 'display': 'inline-block',"float":"left"}),
+            ],style={'width': '20%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
         html.Div([
             html.P("แผนภูมิจำนวนคำกับชื่อผู้ที่มาเเสดงความคิดเห็น"),
             dcc.Graph(id="line-charts-count_word-graph"),
-            html.P(id ="text_sum_word",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block'}),
-            html.Br(style={"line-height": "5"}),
-            html.Br(style={"line-height": "5"}),
+            html.P(id ="text_sum_word",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
         # like
          html.Div([
             html.P("จำนวน like(ขั้นต่ำ):"),
             dcc.Slider(0, 500, 500/5,
                 value=0,tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_like-names'),
-            ],style={'width': '20%', 'display': 'inline-block',"float":"left"}),
-            html.Br(style={"line-height": "5"}),
-            html.Br(style={"line-height": "5"}),
+            ],style={'width': '20%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
         html.Div([
             html.P("แผนภูมิจำนวนยอดไลน์กับชื่อผู้ที่มาเเสดงความคิดเห็น"),
             dcc.Graph(id="line-charts-like-graph"),
-            html.P(id ="text_sum_like",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block'}),
-            html.Br(style={"line-height": "5"}),
-            html.Br(style={"line-height": "5"}),
+            html.P(id ="text_sum_like",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
+            html.Br(style={"line-height": "5",'border-style':'solid'}),
         # reply count
         html.Div([
             html.P("จำนวนการตอบกลับ(ขั้นต่ำ):"),
             dcc.Slider(0, 100, 100/5,
                 value=0,tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_rechat-names'),
-            ],style={'width': '20%', 'display': 'inline-block',"float":"left"}),
+            ],style={'width': '20%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
         html.Div([
             html.P("แผนภูมิจำนวนการตอบกลับกับชื่อผู้ที่มาเเสดงความคิดเห็น"),
             dcc.Graph(id="line-charts-rechat-graph"),
-            html.P(id ="text_sum_reply",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block'}),
+            html.P(id ="text_sum_reply",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
             ],
                 id="grid-print-area",
                 ),
                 html.Div(id="dummy"),
-                ])
+                dbc.Button("Print", id="grid-browser-print-btn",style={'height': '60px','width': '200px','overflowY': 'auto','textAlign': 'center'
+                                                                       ,'background-color': '#04AA6D','color':' white','border-radius': '12px',
+                                                                       'align-items': 'center'}),
+                ],style = {'border-style':'solid'})
             ])
     
 @callback(
@@ -202,6 +208,11 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     fig_6 = px.line(nms,x='name', y='ยอดไลค์')
     fig_7 = px.line(nms,x='name', y='จำนวนการตอบกลับ')
     fig_8 = px.line(nms,x='name', y='จำนวนคำ')
+    fig_1.update_layout(clickmode='event+select')
+    fig_2.update_layout(clickmode='event+select')
+    fig_3.update_layout(clickmode='event+select')
+    fig_4.update_layout(clickmode='event+select')
+    fig_5.update_layout(clickmode='event+select')
     # สรุปกราฟประสบการณ์
     sum_all_exp = nms['defind_exp_with_python']
     sum_non_exp = nms[nms['defind_exp_with_python'].isin(['ไม่ได้เล่าประสบการณ์',"Didn't tell the experience"]) ]
@@ -298,6 +309,18 @@ def input_tag(n):
     v_4 = data_for_dash_facebook['use_ful'].unique()
     o_5 = sym_o2_th['variable'].unique()
     return(o_1,v_1,o_2,v_2,o_3,v_3,o_4,v_4,o_5)
+# @callback(
+#     Input('pie-charts-exp-graph', 'clickData'),
+#     Input('pie-charts-exp-graph', 'n_clicks'))
+# def click_exp (data,n):
+#     print (data)
+#     i = 1
+#     if n is None:
+#         i += 1
+#     print(i)
+
+        
+
 
 app.clientside_callback(
             """

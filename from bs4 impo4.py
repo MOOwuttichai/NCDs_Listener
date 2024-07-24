@@ -53,7 +53,7 @@ aoa='/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/d
 kok={'a_a':'div/div/div','b_a':'div[2]/div/div','b_b':'div/div[2]/div','b_c':'div/div/div[2]','c_a':'div[3]/div/div','c_b':'div/div[3]/div','c_c':'div/div/div[3]'}
 LOL=[]
 time.sleep(20)
-browser.get('https://www.facebook.com/chawalit.atchulacancer/posts/pfbid023gqcSi5bD9soLZb3vNvGwqMAzvWi8w1uHpVnYFtPVi8bVVpzVGHbvt3tuo5yvgDFl?_rdc=2&_rdr')
+browser.get('https://www.facebook.com/groups/970360980058128/permalink/1482997705461117')
 wait = WebDriverWait(browser, 120) # once logged in, free to open up any target page
 time.sleep(7)
 
@@ -92,7 +92,6 @@ while True:
         break
     last_height = new_height
 
-
 # เปิดเพิ่มเติม
 r=int(aoa[-81:-80])
 for i in range(2):
@@ -101,13 +100,34 @@ for i in range(2):
         for j in kok:
             kra = aoa[:-81]+ str(r) + aoa[-80:-14] + kok[j]
             LOL.append(kra)
-    for g in range(1000):
-        try:
-            l = browser.find_element(By.XPATH,LOL[g])
-            l.click()
-            time.sleep(1)
-        except:
-            pass
+list_like_1 = []
+list_like_2 = []
+for i in range(9999):
+  aoa_1 = f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div/div/div'
+  list_like_1.append(aoa_1)
+  aoa_2 = f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div/div[2]/div'
+  list_like_2.append(aoa_2)
+for g in range(1000):
+    try:
+        l = browser.find_element(By.XPATH,LOL[g])
+        l.click()
+        time.sleep(1)
+    except:
+        pass
+for g in range(1000):
+    try:
+        more_1 = browser.find_element(By.XPATH,list_like_1[g])
+        more_1.click()
+        time.sleep(1)
+    except:
+        pass
+for g in range(1000):
+    try:
+        more_2 = browser.find_element(By.XPATH,list_like_2[g])
+        more_2.click()
+        time.sleep(1)
+    except:
+        pass
 #เช็กว่าลงสุดไหม v.2
 last_height = browser.execute_script("return document.body.scrollHeight")
 while True:
@@ -144,8 +164,9 @@ name = html.find_all(["span"],{"class":"x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt
 # ## re_chat
 for i in range(len(result)):
     x1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
+    x2 = dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
     y1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/div/div[4]/text()')
-    z1=x1+y1
+    z1=x1+y1+x2
     try:
         re_chat_all.append((re.findall(r'\b\d+\b',z1[0]))[0])
     except:
@@ -153,8 +174,10 @@ for i in range(len(result)):
  # like
 for i in range(len(result)):
     x2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+    x3=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+    sum_like = x2+x3
     try:
-        like_kk.append(x2[0])
+        like_kk.append(sum_like[0])
     except:
         like_kk.append(0)
 # แปลง like จาก str ไปเป็น int
@@ -206,5 +229,5 @@ data = data.join(data_like).fillna(0)
 data = data.join(data_count).fillna(0)
 data = data.iloc[:,[1,0,3,2,4]]
 # data=data.applymap(lambda x: " ".join(x.split()) if isinstance(x, str) else x)
-data.to_csv('data_commentsFB_docter_test1.csv', index=False, encoding='utf-8-sig')
+data.to_csv('data_commentsFBNEWWWW.csv', index=False, encoding='utf-8-sig')
 print(test_chak)
