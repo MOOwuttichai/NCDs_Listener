@@ -4,6 +4,20 @@ import plotly.express as px
 import os
 import dash_bootstrap_components as dbc
 import dash_daq as daq
+from langchain_google_genai import ChatGoogleGenerativeAI 
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_anthropic import ChatAnthropic #v 0.1.15
+#v0.2
+from langchain_community.document_loaders import DirectoryLoader, TextLoader, PyMuPDFLoader, PyPDFLoader
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_chroma import Chroma
+from langchain_core.prompts import PromptTemplate
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema import StrOutputParser
+from langchain.indexes import VectorstoreIndexCreator
+
+from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain.chains.llm import LLMChain
 app = Dash(__name__)
 data_for_dash_facebook = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
 app.layout = html.Div([
@@ -108,11 +122,14 @@ app.layout = html.Div([
             html.P("แผนภูมิจำนวนการตอบกลับกับชื่อผู้ที่มาเเสดงความคิดเห็น"),
             dcc.Graph(id="line-charts-rechat-graph"),
             html.P(id ="text_sum_reply",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block'}),
+            html.P('สรุปความคิดเห็นโดย gimini'),
+            html.P(id ="text_sum_bybot",style={'whiteSpace': 'pre-line'})
             ],
                 id="grid-print-area",
                 ),
                 html.Div(id="dummy"),
                 ])
+                
             ])
     
 @callback(
@@ -133,6 +150,7 @@ app.layout = html.Div([
     Output("text_sum_reply", 'children'),
     Output("text_sum_word", 'children'),
     Output('datatable', 'children',allow_duplicate=True),
+    Output("text_sum_bybot", 'children'),
     Input("interval", "n_intervals"),
     Input("pie-charts-exp-names", "value"),
     Input('pie-charts-Gender-names', "value"),
@@ -267,7 +285,9 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
         data130 = nms.iloc[:,:2]
     data_for_export = dash_table.DataTable(data130.to_dict('records'), [{"name": i, "id": i} for i in data130.columns],style_cell={'textAlign': 'left'},sort_action="native",
         sort_mode="multi",export_format="csv")
-    return [fig_1,fig_2,fig_3,fig_4,fig_5,fig_6,fig_7,fig_8,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,data_for_export]
+    with open('bot_summarize_comment.txt', 'r',encoding='utf-8-sig') as file:
+        look = file.read()
+    return [fig_1,fig_2,fig_3,fig_4,fig_5,fig_6,fig_7,fig_8,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,data_for_export,look]
 
 @callback(
     Output('pie-charts-exp-names', "options",allow_duplicate=True),
@@ -280,9 +300,10 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     Output('pie-charts-useful-names', "value",allow_duplicate=True),
     Output('pie-charts-sym-names', "options",allow_duplicate=True),
     Input("interval", "n_intervals"),
+    Input('my-numeric-input-1', 'value'),
     prevent_initial_call=True,
 )
-def input_tag(n):
+def input_tag(n,real_useFul):
     import dash_bootstrap_components as dbc
     data_for_dash_facebook = pd.read_csv('data_for_dash_01.csv', encoding='utf-8-sig')
     sym_o_th = data_for_dash_facebook.iloc[:, 12:]
@@ -294,8 +315,8 @@ def input_tag(n):
     v_2=data_for_dash_facebook['defind_cancer_with_nlp'].unique()
     o_3 = data_for_dash_facebook['defind_Genden_with_python'].unique()
     v_3 = data_for_dash_facebook['defind_Genden_with_python'].unique()
-    o_4 = data_for_dash_facebook['use_ful'].unique()
-    v_4 = data_for_dash_facebook['use_ful'].unique()
+    o_4 = ['อาจมีประโยชน์','ไม่มีประโยชน์']
+    v_4 = ['อาจมีประโยชน์','ไม่มีประโยชน์']
     o_5 = sym_o2_th['variable'].unique()
     return(o_1,v_1,o_2,v_2,o_3,v_3,o_4,v_4,o_5)
 

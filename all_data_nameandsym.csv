@@ -1,101 +1,101 @@
-,cancer_names_en_se,Key_symptoms_EN,Valuessymptoms_EN
-0,bladder cancer,fatigue,['fatigue']
-1,endometrial cancer,tiredness,"['fatigue', 'tiredness', 'lethargy', 'shortness of breath']"
-2,cervical cancer,itching,"['itching', 'itching skin']"
-3,leukemia,feverishness,"['feverishness', 'fever']"
-4,liver cancer,pain,"['pain', 'aches']"
-5,pancreatic cancer,numbness,"['numbness', 'tingling']"
-6,prostate cancer,loss of appetite,['loss of appetite']
-7,stomach cancer,unexplained weight loss,"['unexplained weight loss', 'weight loss', 'rapid weight loss']"
-8,esophageal cancer,chronic fever,"['chronic fever', 'fever']"
-9,breast cancer,night sweats,"['night sweats', 'sweating']"
-10,lung cancer,body aches,"['body aches', 'aches']"
-11,colorectal cancer,swollen lymph nodes,['swollen lymph nodes']
-12,ovarian cancer,stomach pain,['stomach pain']
-13,oral cancer,sore throat,['sore throat']
-14,thyroid cancer,swollen armpits,['swollen armpits']
-15,lymphoma,back pain,['back pain']
-16,brain cancer,darkened skin,['darkened skin']
-17,skin cancer,breast pain,['breast pain']
-18,intestinal cancer,bloating,"['bloating', 'abdominal bloating', 'bloated']"
-19,bile duct cancer,chronic constipation,"['chronic constipation', 'constipation']"
-20,colorectal cancer,indigestion,['indigestion']
-21,melanoma,difficulty swallowing,"['difficulty swallowing', 'dysphagia']"
-22,hodgkin lymphoma,chronic abdominal pain,['chronic abdominal pain']
-23,acute leukemia,vomiting blood,"['vomiting blood', 'vomiting', 'emesis']"
-24,bone cancer,bloody stools,"['bloody stools', 'blood in stool', 'melena']"
-25,central nervous system cancer,chronic cough,"['chronic cough', 'cough', 'persistent cough', 'dry cough']"
-26,kidney cancer,coughing up blood,['coughing up blood']
-27,uterine cancer,hoarseness,['hoarseness']
-28,gallbladder cancer,shortness of breath,"['shortness of breath', 'dyspnea']"
-29,spinal cord cancer,chest pain,['chest pain']
-30,eye cancer,vaginal bleeding,"['vaginal bleeding', 'bleeding from vagina', 'abnormal bleeding']"
-31,vaginal cancer,vaginal discharge,['vaginal discharge']
-32,penile cancer,frequent urination,['frequent urination']
-33,vulvar cancer,urinary tract infection,"['urinary tract infection', 'dysuria']"
-34,adrenal gland cancer,hematuria,['hematuria']
-35,salivary gland cancer,enlarged testicles,['enlarged testicles']
-36,ovarian cyst cancer,skin ulcers,"['skin ulcers', 'ulcers']"
-37,,changing moles or freckles,['changing moles or freckles']
-38,,lumps or bumps under the skin,['lumps or bumps under the skin']
-39,,headache,['headache']
-40,,vision problems,['vision problems']
-41,,seizures,['seizures']
-42,,,
-43,,,
-44,,,
-45,,,
-46,,,
-47,,,
-48,,,
-49,,,
-50,,,
-51,,,
-52,,,
-53,,,
-54,,,
-55,,,
-56,,,
-57,,,
-58,,,
-59,,,
-60,,,
-61,,,
-62,,,
-63,,,
-64,,,
-65,,,
-66,,,
-67,,,
-68,,,
-69,,,
-70,,,
-71,,,
-72,,,
-73,,,
-74,,,
-75,,,
-76,,,
-77,,,
-78,,,
-79,,,
-80,,,
-81,,,
-82,,,
-83,,,
-84,,,
-85,,,
-86,,,
-87,,,
-88,,,
-89,,,
-90,,,
-91,,,
-92,,,
-93,,,
-94,,,
-95,,,
-96,,,
-97,,,
-98,,,
-99,,,
+﻿name_cancarTH_se,Key_symptoms_TH,Values_symptoms_TH
+มะเร็งกระเพาะปัสสวะ,อ่อนเพลีย,['อ่อนเพลีย']
+มะเร็งเยื่อบุโพรงมดลูก,เหนื่อยง่าย,"['เหนื่อยง่าย', 'เหนื่อย', 'เพลีย', 'เหนื่อยหอบ']"
+มะเร็งปากมดลูก,คันเนื้อคันตัว,"['คันเนื้อคันตัว', 'คัน', 'คันตัว', 'คันตามตัว']"
+มะเร็งเม็ดเลือดขาว,มีอาการร้อน,"['ร้อน', 'อาการรัอน', 'ตัวร้อน']"
+มะเร็งตับ,อาการเจ็บปวด,"['เจ็บปวด', 'เจ็บ', 'อาการเจ็บปวด']"
+มะเร็งตับอ่อน,อาการชา,"['อาการชา', 'ชา']"
+มะเร็งต่อมลูกหมาก,เบื่ออาหาร,['เบื่ออาหาร']
+มะเร็งกระเพาะปัสสาวะ,น้ำหนักลดโดยไม่ทราบสาเหตุ,"['น้ำหนักลดโดยไม่ทราบสาเหตุ', 'น้ำหนักลด', 'น้ำหนักลดลงเร็วมาก']"
+มะเร็งกระเพาะอาหาร,ไข้เรื้อรัง,"['ไข้เรื้อรัง', 'ไข้', 'เป็นไข้']"
+มะเร็งหลอดอาหาร,เหงื่อออกตอนกลางคืน,"['เหงื่อออกตอนกลางคืน', 'เหงื่อออกตอนดึก', 'เหงื่อออก']"
+มะเร็งเต้านม,ปวดเมื่อย,"['ปวดเมื่อยตามร่างกาย', 'เมื่อย']"
+มะเร็งปอด,บวมหรือต่อมน้ำเหลืองโต,"['บวมหรือต่อมน้ำเหลืองโต', 'ต่อมน้ำเหลืองโต', 'บวมน้ำเหลืองโต']"
+มะเร็งลำไส้ใหญ่,ปวดท้อง,['ปวดท้อง']
+มะเร็งรังไข่,เจ็บคอ,['เจ็บคอ']
+มะเร็งช่องปาก,ปวดใต้รักแร้,"['ปวดใต้รักแร้', 'ปวดรักแร้']"
+มะเร็งต่อมไทรอยด์,ปวดเอว,['ปวดเอว']
+มะเร็งต่อมน้ำเหลือง,ผิวคล้ำผิดปกติ,['ผิวคล้ำ']
+มะเร็งสมอง,เจ็บเต้านม,"['เจ็บเต้านม', 'เจ็บเต้า', 'เจ็บนม']"
+มะเร็งผิวหนัง,ท้องอืด,"['ท้องอืด', 'อาการอืดท้อง', 'อืด']"
+มะเร็งลำไส้,ท้องผูกเรื้อรัง,"['ท้องผูกเรื้อรัง', 'ท้องผูก']"
+มะเร็งท่อน้ำดี,อาหารไม่ย่อย,['อาหารไม่ย่อย']
+มะเร็งลำไส้ใหญ่และทวารหนัก,กลืนลำบาก,"['กลืนลำบาก', 'กลืนอาหารลำบาก', 'กลืนยาก']"
+มะเร็งผิวหนังชนิดเมลาโนมา,ปวดท้องเรื้อรัง,['ปวดท้องเรื้อรัง']
+มะเร็งต่อมน้ำเหลืองชนิดนอนฮอดจ์กิน,อาเจียนอาจมีเลือด,"['อาเจียนเป็นเลือด', 'อาเจียน', 'อ้วก']"
+มะเร็งเม็ดเลือดขาวชนิดเฉียบพลัน,อุจจาระอาจมีเลือด,"['อุจจาระเป็นเลือด', 'อึเป็นเลือด', 'ขี้เป็นเลือด', 'อุจจาระ', 'ขี้', 'ถ่าย', 'ถ่ายเป็นเลือด']"
+มะเร็งกระดูก,ไอเรื้อรัง,"['ไอเรื้อรัง', 'ไอ', 'ไอต่อเนื่อง', 'ไอแห้ง']"
+มะเร็งสมองและระบบประสาทกลาง,ไอเป็นเลือด,['ไอเป็นเลือด']
+มะเร็งไต,เสียงแหบ,['เสียงแหบ']
+มะเร็งมดลูก,หายใจลำบาก,"['หายใจลำบาก', 'หายใจไม่อิ่ม', 'หายใจ']"
+มะเร็งถุงน้ำดี,เจ็บหรือเเน่นหน้าอก,"['เจ็บหน้าอก', 'เเน่นหน้าอก']"
+มะเร็งกระดูกสันหลัง,เลือดออกผิดปกติจากช่องคลอด,"['เลือดออกผิดปกติจากช่องคลอด', 'เลือดออกจากช่องคลอด', 'เลือดออกผิดปกติจากอวัยวะเพศ', 'เลือดออกจากอวัยวะเพศ', 'เลือดไหล']"
+มะเร็งลูกตา,ตกขาวผิดปกติ,"['ตกขาวผิดปกติ', 'ตกขาว']"
+มะเร็งเยื่อบุช่องคลอด,ปัสสาวะบ่อย,['ปัสสาวะบ่อย']
+มะเร็งเยื่อบุอวัยวะเพศชาย,ปัสสาวะแสบขัด,"['ปัสสาวะแสบขัด', 'ฉี่แสบขัด']"
+มะเร็งเยื่อบุอวัยวะเพศหญิง,ปัสสาวะเป็นเลือด,"['ปัสสาวะเป็นเลือด', 'ฉี่เป็นเลือด']"
+มะเร็งต่อมหมวกไต,อัณฑะโตผิดปกติ,"['อัณฑะโตผิดปกติ', 'ไข่โตผิดปกติ', 'ไข่ผิดปกติ', 'อัณฑะผิดปกติ', 'อัณฑะ']"
+มะเร็งต่อมน้ำลาย,แผลเรื้อรัง,"['แผลเรื้อรัง', 'เป็นแผล', 'แผล']"
+มะเร็งถุงน้ำรังไข่,ไฝหรือปานเปลี่ยนแปลง,"['ไฝหรือปานเปลี่ยนแปลง', 'ไฝเปลี่ยนแปลง', 'ปานเปลี่ยนแปลง']"
+,มีตุ่มหรือก้อนใต้ผิวหนัง,"['มีตุ่มหรือก้อนใต้ผิวหนัง', 'มีตุ่มใต้ผิวหนัง', 'มีก้อนใต้ผิวหนัง', 'ก้อน', 'ตุ่ม', 'มีก้อน', 'มีตุ่ม', 'ตื่ง', 'มีตื่ง']"
+,ปวดศีรษะ,"['ปวดศีรษะ', 'ปวดหัว']"
+,มองเห็นภาพผิดปกติ,"['มองเห็นภาพผิดปกติ', 'มองไม่เห็น']"
+,ชัก,['ชัก']
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,

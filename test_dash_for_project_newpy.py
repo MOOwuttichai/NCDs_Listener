@@ -1,126 +1,195 @@
-from dash import Dash, html, Input, Output, callback,dcc,dash_table,no_update
+from dash import Dash, html, Input, Output, callback,dcc,dash_table,no_update,dash
 import pandas as pd
 import plotly.express as px
 import os
 import dash_bootstrap_components as dbc
 import dash_daq as daq
-app = Dash(__name__)
+app = dash.Dash(__name__)
 data_for_dash_facebook = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+css_tab_STYLE = {'border-style':'solid','margin-left': '25%','display': 'inline-block','font-family':'THSarabunNew','font-size': '20px'}
+css_tab_STYLE_v2 = {'border-style':'solid','margin-left': '25%','display': 'inline-block','width': '45%','font-family':'THSarabunNew','font-size': '20px'}
+css_pie_STYLE = {'border-style':'solid','width': '90%','margin-left': '3%','font-family':'THSarabunNew','font-size': '20px'}
+css_bar_and_line_STYLE={'display': 'flex', 'align-items': 'center', 'justify-content': 'center','border-style':'solid','font-family':'THSarabunNew','font-size': '20px'}
+css_slider_style = {'width': '50%', 'display': 'inline-block','border-style':'solid','margin-left': '25%','font-family':'THSarabunNew','font-size': '20px'}
+css_grahp_name_style={'text-align': 'center','font-family':'THSarabunNew'}
+css_summare_text = {'text-align': 'center','font-size': '20px','font-family':'THSarabunNew'}
+css_summare_text_v2 = {'text-align': 'center','whiteSpace': 'pre-line','font-size': '20px','font-family':'THSarabunNew'}
 app.layout = html.Div([
-        dcc.Interval( id="interval",interval= 10*1000,n_intervals=0,),
-            html.Div([
-                html.Div(id='datatable',style={'height': '300px','overflowY': 'auto'}),
-                    ]),
-        html.Nav(
-            [
         html.Div([
-                html.P("ความมีประโยชน์:"),
-                dcc.Checklist(id="pie-charts-useful-names"),
-                html.Br(style={"line-height": "5"}),
-                html.P("จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์:"),
-                dcc.Input(id='my-numeric-input-1',type= "number",placeholder="จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์",value = 5)
-                ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-                html.Br(style={"line-height": "5",'border-style':'solid'}),
-            ],style={'width': '40%',"height": "100%"}),
+        html.Div([
+            html.H1('สรุปความคิดเห็นของข้อมูลที่ดึงมาโดย Google Gemini',style={'text-align': 'center','font-family':'THSarabunNew'}),
+            html.P(id ="text_sum_bybot",style={'whiteSpace': 'pre-line','font-family':'THSarabunNew','font-size': '25px'}),
+        ],style={'margin-left': 10,'margin-right': 10,'margin-top': 10,})
+        ],style={'backgroundColor':'#d0f8ce','box-shadow':' 0 4px 8px 0 rgba(0, 0, 0, 0.2)','border-radius': '18px'}),
+        dcc.Interval( id="interval",n_intervals=0,),
+html.Div([
+            html.Div([
+                html.Div([
+                html.Div(id='datatable',style={'height': '400px','overflowY': 'auto','width': '1300px','margin-left': 120,'font-family':'THSarabunNew'}),
+                ]),
+                html.Div([
+                html.P('เรียงลำดับข้อมูลในตารางตาม "จำนวนคำ" : ',style={'display': 'inline-block','font-family':'THSarabunNew','font-size': '25px'}),
+                dcc.Dropdown(id='soft_table',options=['มากไปน้อย','น้อยไปมาก'],value ='น้อยไปมาก',style={'width': '300px','display': 'inline-block','margin-left': 10,'font-size': '20px'}),
+                    ],style={'margin-left': '25%'}),
+                ]),
+        html.H1("Dashboard",style={'text-align': 'center','font-family':'THSarabunNew'}),
         html.Main(
             [
         dbc.ModalBody(
             # customize your printed report here
             [
-                # useful
+        # useful 
         html.Div([
-            html.P("แผนภูมิความมีประโยชน์กับจำนวนความคิดเห็น"),
+        html.Div([       
+        html.H1("แผนภูมิความมีประโยชน์กับจำนวนความคิดเห็น",style=css_grahp_name_style),
+            html.Div([
+            html.P("ความมีประโยชน์:"),
+            dcc.Checklist(id="pie-charts-useful-names",inline=True),
+            ],style=css_tab_STYLE),
+            html.Div([
+            html.P("จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์:"),
+            dcc.Input(id='my-numeric-input-1',type= "number",placeholder="จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์",value = 5)
+            ],style={'border-style':'solid','width': '20%','margin-left': '3%','display': 'inline-block','font-family':'THSarabunNew','font-size': '20px'}),
+            html.Div([
             dcc.Graph(id="pie-charts-useful-graph"),
-            html.P(id ="text_sum_useful")],style={'width': '40%',  'display': 'inline-block','border-style':'solid'}),
+            ],style=css_pie_STYLE),
+            html.P(id ="text_sum_useful",style=css_summare_text),
+        ],style={'margin-left': 10,'margin-right': 10,'margin-top': 10})
+        ],style={'backgroundColor':'#d0f8ce','border-radius': '18px','border-style':'solid','border-color':'white'}),
+        html.Br(style={"line-height": "100px"}),
         # ประสบการณ์ของใคร
-        html.Div([
-                html.P("แผนภูมิประสบการณ์กับจำนวนความคิดเห็น"),
-                dcc.Graph(id="pie-charts-exp-graph"),
-                html.P(id = 'text_sum_exp')],style={'width': '40%',  'display': 'inline-block','border-style':'solid'}),
-        html.Div([
+        html.H1("แผนภูมิประสบการณ์กับจำนวนความคิดเห็น",style=css_grahp_name_style),
+        html.Div([ ## html.Div([id]),html.Div([html.Div([]),html.Div([])])
+            html.Div([
             html.P("ประสบการณ์:"),
-            dcc.Checklist(id='pie-charts-exp-names')
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-        # Gender
+            dcc.Checklist(id='pie-charts-exp-names',inline=True),
+            ],style=css_tab_STYLE),
+            html.Div([
+            dcc.Graph(id="pie-charts-exp-graph"),
+            ],style=css_pie_STYLE),
+        ]),
+        html.P(id = 'text_sum_exp',style=css_summare_text),
+        html.Br(style={"line-height": "100px"}),
+        # เพศ
         html.Div([
-            html.P("แผนภูมิเพศผู้ป่วยกับจำนวนความคิดเห็น"),
-            dcc.Graph(id="pie-charts-Gender-graph"),
-            html.P(id = 'text_sum_Gender')],style={'width': '40%',  'display': 'inline-block','border-style':'solid'}),
         html.Div([
+        html.H1("แผนภูมิ เพศผู้ป่วยกับจำนวนความคิดเห็น",style=css_grahp_name_style),
+        html.Div([
+            html.Div([
             html.P("เพศ:"),
-            dcc.Checklist(id='pie-charts-Gender-names')
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-            html.Br(style={"line-height": "5"}),
+            dcc.Checklist(id='pie-charts-Gender-names',inline=True)
+            ],style=css_tab_STYLE),
+            html.Div([
+            dcc.Graph(id="pie-charts-Gender-graph"),
+            ],style=css_pie_STYLE),
+            ]),
+            html.P(id = 'text_sum_Gender',style=css_summare_text),
+        ],style={'margin-left': 10,'margin-right': 10,'margin-top': 10})
+        ],style={'backgroundColor':'#d0f8ce','border-radius': '18px','border-style':'solid','border-color':'white'}),
+        html.Br(style={"line-height": "100px"}),
         # โรค
+        html.H1("แผนภูมิโรคกับจำนวนความคิดเห็น",style=css_grahp_name_style),
         html.Div([
+            html.Div([
             html.P("โรค:"),
             dcc.Dropdown(id='pie-charts-cancer-names',multi=True)
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-        html.Div([
-            html.P("แผนภูมิโรคกับจำนวนความคิดเห็น"),
+            ],style=css_tab_STYLE_v2),
+            html.Div([
             dcc.Graph(id="pie-charts-carcer-graph"),
-            html.P(id = 'text_sum_cancer',style={'whiteSpace': 'pre-line'})],style={'width': '50%', 'display': 'inline-block','border-style':'solid'}),
-
+            ],style=css_bar_and_line_STYLE),
+        ]),
+        html.P(id = 'text_sum_cancer',style=css_summare_text_v2),
+        html.Br(style={"line-height": "100px"}),
         # sym
         html.Div([
+        html.Div([
+        html.H1("แผนภูมิอาการกับจำนวนความคิดเห็น",style=css_grahp_name_style),
+        html.Div([
+            html.Div([
             html.P("อาการ:"),
             dcc.Dropdown(id='pie-charts-sym-names',multi=True)
-            ],style={'width': '29%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-        html.Div([
-            html.P("แผนภูมิอาการกับจำนวนความคิดเห็น"),
-            dcc.Graph(id="his-charts-sym-graph"),
-            html.P(id ="text_sum_sym",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
+            ],style=css_tab_STYLE_v2),
+            html.Div([
+            dcc.Graph(id="his-charts-sym-graph"),                               
+            ],style=css_bar_and_line_STYLE),
+        ]),
+        html.P(id ="text_sum_sym",style=css_summare_text_v2),
+        ],style={'margin-left': 10,'margin-right': 10,'margin-top': 10})
+        ],style={'backgroundColor':'#d0f8ce','border-radius': '18px','border-style':'solid','border-color':'white'}),
+        html.Br(style={"line-height": "100px"}),
         # word count
+        html.H1("แผนภูมิจำนวนคำกับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
         html.Div([
+            html.Div([
             html.P("จำนวนคำในประโยค(ขั้นต่ำ):"),
             dcc.Slider(0,200,200/5,value=0,
                 tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_word-names'),
-            ],style={'width': '20%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-        html.Div([
-            html.P("แผนภูมิจำนวนคำกับชื่อผู้ที่มาเเสดงความคิดเห็น"),
+            ],style=css_slider_style),
+            html.Div([
             dcc.Graph(id="line-charts-count_word-graph"),
-            html.P(id ="text_sum_word",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
+           ],style=css_bar_and_line_STYLE),
+        ]),
+        html.P(id ="text_sum_word",style=css_summare_text_v2),
+        html.Br(style={"line-height": "100px"}),
         # like
-         html.Div([
+        html.Div([
+        html.Div([
+        html.H1("แผนภูมิจำนวนยอดไลน์กับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
+        html.Div([
+            html.Div([
             html.P("จำนวน like(ขั้นต่ำ):"),
             dcc.Slider(0, 500, 500/5,
                 value=0,tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_like-names'),
-            ],style={'width': '20%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
-        html.Div([
-            html.P("แผนภูมิจำนวนยอดไลน์กับชื่อผู้ที่มาเเสดงความคิดเห็น"),
+            ],style=css_slider_style),
+            html.Div([
             dcc.Graph(id="line-charts-like-graph"),
-            html.P(id ="text_sum_like",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
-            html.Br(style={"line-height": "5",'border-style':'solid'}),
+            ],style=css_bar_and_line_STYLE),
+        ]),
+        html.P(id ="text_sum_like",style=css_summare_text_v2),
+        ],style={'margin-left': 10,'margin-right': 10,'margin-top': 10})
+        ],style={'backgroundColor':'#d0f8ce','border-radius': '18px','border-style':'solid','border-color':'white'}),
+        html.Div(style={"line-height": "100px"}),
         # reply count
+        html.H1("แผนภูมิจำนวนการตอบกลับกับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
         html.Div([
+            html.Div([
             html.P("จำนวนการตอบกลับ(ขั้นต่ำ):"),
             dcc.Slider(0, 100, 100/5,
                 value=0,tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_rechat-names'),
-            ],style={'width': '20%', 'display': 'inline-block',"float":"left",'border-style':'solid'}),
-        html.Div([
-            html.P("แผนภูมิจำนวนการตอบกลับกับชื่อผู้ที่มาเเสดงความคิดเห็น"),
+            ],style=css_slider_style),
+            html.Div([
             dcc.Graph(id="line-charts-rechat-graph"),
-            html.P(id ="text_sum_reply",style={'whiteSpace': 'pre-line'})],style={'width': '50%','display': 'inline-block','border-style':'solid'}),
+            ],style=css_bar_and_line_STYLE),
+        ]),
+        html.P(id ="text_sum_reply",style=css_summare_text_v2)
             ],
                 id="grid-print-area",
                 ),
                 html.Div(id="dummy"),
-                dbc.Button("Print", id="grid-browser-print-btn",style={'height': '60px','width': '200px','overflowY': 'auto','textAlign': 'center'
-                                                                       ,'background-color': '#04AA6D','color':' white','border-radius': '12px',
-                                                                       'align-items': 'center'}),
-                ],style = {'border-style':'solid'})
-            ])
-    
+                ],style = {'height': '800px','width': '1200px','margin-left': '10%','overflowY': 'auto','box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
+                           'border-radius': '18px'})
+            ]),
+        dbc.Button("Print", id="grid-browser-print-btn",style={'height': '60px','width': '200px','textAlign': 'center'
+                                                        ,'background-color': '#04AA6D','color':' white','border-radius': '12px',
+                                                        'align-items': 'center','font-size': '24px','display': 'flex',
+                                                        'justify-content': 'center','margin-left': '43%','margin-top': 30,'border-color':'white',
+                                                        'box-shadow': '2px 2px 20px 10px #7fecad'}),
+])
+@callback(
+    Output(component_id='interval', component_property='interval'),
+    Input("interval", "n_intervals"),
+)
+def inten_n (n):
+    time_run = pd.read_csv('time_run.csv')
+    if time_run.iloc[0,0] == 0:
+        time_run.iloc[0,0] = 1
+        time_run.to_csv('time_run.csv',index=False)
+        return 10*1000
+    else:
+        return 60*1000
 @callback(
     Output("pie-charts-exp-graph", "figure",allow_duplicate=True),
     Output('pie-charts-Gender-graph', "figure",allow_duplicate=True),
@@ -139,6 +208,7 @@ app.layout = html.Div([
     Output("text_sum_reply", 'children'),
     Output("text_sum_word", 'children'),
     Output('datatable', 'children',allow_duplicate=True),
+    Output("text_sum_bybot", 'children'),
     Input("interval", "n_intervals"),
     Input("pie-charts-exp-names", "value"),
     Input('pie-charts-Gender-names', "value"),
@@ -149,9 +219,10 @@ app.layout = html.Div([
     Input("slider-count_like-names", "value"),
     Input("slider-count_rechat-names", "value"),
     Input('my-numeric-input-1', 'value'),
+    Input('soft_table', 'value'),
     prevent_initial_call=True)
 
-def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_rechat,real_useFul):
+def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_rechat,real_useFul,soft_table):
     import dash_bootstrap_components as dbc
     data_for_dash_facebook = pd.read_csv('data_for_dash_01.csv', encoding='utf-8-sig')
     data_for_dash_facebook['count_plot'] = 1
@@ -200,14 +271,21 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
         plot_data_nonnone=pd.concat([plot_data_non,x_plot_1])
         plot_sym=plot_data_nonnone.drop_duplicates()
         plot_sym = plot_sym[plot_sym['มีการเล่า']!=0]
-    fig_1 = px.pie(nms, values='count_plot', names=nms['defind_exp_with_python'],color_discrete_sequence=px.colors.sequential.Emrld)
-    fig_2 = px.pie(nms, values='count_plot', names=nms['defind_Genden_with_python'],color='defind_Genden_with_python',color_discrete_map={'เพศชาย':'darkblue','เพศหญิง':"magenta",'ไม่ระบุเพศ':'gray','Male':'darkblue','Female':"magenta",'Gender not specified':'gray'})
-    fig_3 = px.histogram(nms, x=nms['defind_cancer_with_nlp'], y='count_plot',barmode='group',text_auto=True)
-    fig_4 = px.pie(nms, values='count_plot', names=nms['use_ful'],color_discrete_sequence=px.colors.sequential.Aggrnyl)
+    fig_1 = px.pie(nms, values='count_plot', names=nms['defind_exp_with_python'],labels={'defind_exp_with_python':'ถูกเล่าจาก ','count_plot':'จำนวนความคิดเห็น '},color_discrete_sequence=px.colors.sequential.Emrld)
+    fig_2 = px.pie(nms, values='count_plot', names=nms['defind_Genden_with_python'],labels={'defind_Genden_with_python':'เพศ ','count_plot':'จำนวนความคิดเห็น '},color='defind_Genden_with_python',color_discrete_map={'เพศชาย':'darkblue','เพศหญิง':"magenta",'ไม่ระบุเพศ':'gray','Male':'darkblue','Female':"magenta",'Gender not specified':'gray'})
+    fig_3 = px.histogram(nms, x=nms['defind_cancer_with_nlp'],labels={'defind_cancer_with_nlp':'โรคที่พบ ','count':'จำนวนความคิดเห็น '},barmode='group',text_auto=True)
+    fig_4 = px.pie(nms, values='count_plot', names=nms['use_ful'],labels={'use_ful':'ความมีประโยชน์ ','count_plot':'จำนวนความคิดเห็น '},color_discrete_sequence=px.colors.sequential.Aggrnyl)
     fig_5 = px.histogram(plot_sym, x='variable', y='มีการเล่า',barmode='group',text_auto=True)
     fig_6 = px.line(nms,x='name', y='ยอดไลค์')
     fig_7 = px.line(nms,x='name', y='จำนวนการตอบกลับ')
     fig_8 = px.line(nms,x='name', y='จำนวนคำ')
+    fig_4.update_layout(paper_bgcolor='#d0f8ce')
+    fig_2.update_layout(paper_bgcolor='#d0f8ce')
+    fig_3.update_layout(xaxis_title="โรคที่พบ",yaxis_title="จำนวนความคิดเห็น")
+    fig_5.update_layout(xaxis_title="อาการที่พบ",yaxis_title="จำนวนความคิดเห็น",paper_bgcolor='#d0f8ce')
+    fig_6.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="ยอดไลค์",paper_bgcolor='#d0f8ce')
+    fig_7.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="จำนวนการตอบกลับ")
+    fig_8.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="จำนวนคำ")
     fig_1.update_layout(clickmode='event+select')
     fig_2.update_layout(clickmode='event+select')
     fig_3.update_layout(clickmode='event+select')
@@ -272,13 +350,23 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     text_8= f'''จากแผนภูมิจะพบว่า จำนวนคำในหัวข้อนี้มีค่ามากที่สุดคือ {nms['จำนวนคำ'].max()}\n
                 จำนวนคำในหัวข้อนี้มีค่าน้อยที่สุดคือ{nms['จำนวนคำ'].min()}\n
                 จำนวนคำในหัวข้อนี้มีค่าเฉลี่ยที่สุดคือ{round(avg_33,2)}\n'''
-    if nms['ยอดไลค์'].sum() > 1:
-        data130 = nms.iloc[:,:4]
-    else :
-        data130 = nms.iloc[:,:2]
-    data_for_export = dash_table.DataTable(data130.to_dict('records'), [{"name": i, "id": i} for i in data130.columns],style_cell={'textAlign': 'left'},sort_action="native",
-        sort_mode="multi",export_format="csv")
-    return [fig_1,fig_2,fig_3,fig_4,fig_5,fig_6,fig_7,fig_8,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,data_for_export]
+    if soft_table == 'มากไปน้อย':
+        nms = nms.sort_values(by='จำนวนคำ',ascending=False)
+        if nms['ยอดไลค์'].sum() > 1:
+            data130 = nms.iloc[:,:4]
+        else :
+            data130 = nms.iloc[:,:2]
+    else:
+        nms = nms.sort_values(by='จำนวนคำ',ascending=True)
+        if nms['ยอดไลค์'].sum() > 1:
+            data130 = nms.iloc[:,:4]
+        else :
+            data130 = nms.iloc[:,:2]
+    data_for_export = dash_table.DataTable(data130.to_dict('records'), [{"name": i, "id": i} for i in data130.columns],style_cell={'textAlign': 'left'},style_header={'backgroundColor': '#04AA6D','color': 'white'},export_format="csv")
+    with open('bot_summarize_comment.txt', 'r',encoding='utf-8-sig') as file:
+        look_orgin = file.read()
+        look = look_orgin.replace('*', '')
+    return [fig_1,fig_2,fig_3,fig_4,fig_5,fig_6,fig_7,fig_8,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,data_for_export,look]
 
 @callback(
     Output('pie-charts-exp-names', "options",allow_duplicate=True),
@@ -305,22 +393,10 @@ def input_tag(n):
     v_2=data_for_dash_facebook['defind_cancer_with_nlp'].unique()
     o_3 = data_for_dash_facebook['defind_Genden_with_python'].unique()
     v_3 = data_for_dash_facebook['defind_Genden_with_python'].unique()
-    o_4 = data_for_dash_facebook['use_ful'].unique()
-    v_4 = data_for_dash_facebook['use_ful'].unique()
+    o_4 = ['อาจมีประโยชน์','ไม่มีประโยชน์']
+    v_4 = ['อาจมีประโยชน์','ไม่มีประโยชน์']
     o_5 = sym_o2_th['variable'].unique()
     return(o_1,v_1,o_2,v_2,o_3,v_3,o_4,v_4,o_5)
-# @callback(
-#     Input('pie-charts-exp-graph', 'clickData'),
-#     Input('pie-charts-exp-graph', 'n_clicks'))
-# def click_exp (data,n):
-#     print (data)
-#     i = 1
-#     if n is None:
-#         i += 1
-#     print(i)
-
-        
-
 
 app.clientside_callback(
             """
