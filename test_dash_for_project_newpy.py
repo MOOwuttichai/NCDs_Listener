@@ -5,7 +5,7 @@ import os
 import dash_bootstrap_components as dbc
 import dash_daq as daq
 app = dash.Dash(__name__)
-data_for_dash_facebook = pd.read_csv('data_pre.csv', encoding='utf-8-sig')
+data_for_dash_facebook = pd.read_csv('เชี่ยงใหม่/test_reddit_pre.csv', encoding='utf-8-sig')
 css_tab_STYLE = {'border-style':'solid','margin-left': '25%','display': 'inline-block','font-family':'THSarabunNew','font-size': '20px'}
 css_tab_STYLE_v2 = {'border-style':'solid','margin-left': '25%','display': 'inline-block','width': '45%','font-family':'THSarabunNew','font-size': '20px'}
 css_pie_STYLE = {'border-style':'solid','width': '90%','margin-left': '3%','font-family':'THSarabunNew','font-size': '20px'}
@@ -187,7 +187,7 @@ def inten_n (n):
     if time_run.iloc[0,0] == 0:
         time_run.iloc[0,0] = 1
         time_run.to_csv('time_run.csv',index=False)
-        return 10*1000
+        return 5*1000
     else:
         return 60*1000
 @callback(
@@ -293,7 +293,7 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     fig_5.update_layout(clickmode='event+select')
     # สรุปกราฟประสบการณ์
     sum_all_exp = nms['defind_exp_with_python']
-    sum_non_exp = nms[nms['defind_exp_with_python'].isin(['ไม่ได้เล่าประสบการณ์',"Didn't tell the experience"]) ]
+    sum_non_exp = nms[nms['defind_exp_with_python'].isin(['ไม่สามารถระบุได้',"Didn't tell the experience"]) ]
     sum_other_exp = nms[nms['defind_exp_with_python'].isin(['เล่าประสบการณ์คนอื่น',"Tell other people's experiences"])]
     sum_self_exp = nms[nms['defind_exp_with_python'].isin(['เล่าประสบการณ์ตัวเอง','Tell about your own experiences'])] 
     value_non_p = (len(sum_non_exp)/len(sum_all_exp))*100

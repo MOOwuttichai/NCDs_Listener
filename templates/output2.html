@@ -53,13 +53,13 @@
                 <a>Data Selection</a></li>
               </button>
             </form>
-
-            <form action="/page2_3.py"  method="post">
-              <button>
-                <li><i class="ri-table-fill"></i>
-                <a>Data Preparation</a></button></li>
+            
+            <form action="/page2_3.py"  method="post" >
+              <button >
+                <li ><i style="color:#000000;" class="ri-table-fill"></i>
+                <a style="color:#000000;">Data Preparation</a></button></li>
             </form>
-          
+
             <form action="/page3_2.py" method="post">
               <button  id='myBtn2' onmousemove="readValue_b2d()" disabled>
                 <li><i class="ri-dashboard-2-fill"></i>
@@ -120,23 +120,23 @@
         <form action = "/ajax_add" method="post" id="reg_form">
           <div class="form-group">
             <label>Enter your disease</label>
-            <input type="text" name="skill" id="skill" class="form-control" style="direction:rtl" />
+            <input type="text" name="skill" id="skill" class="form-control" style="direction:rtl" value="{% for skill in skills %} {{skill}}, {% endfor %}"/>
           </div>
           <div class="form-group">
-            <button type="button" name="select_disease" id="select_disease" class="select_disease"> show all disease</button>
+            <button type="button" name="select_disease" id="select_disease" class="select_disease">  Delete or Extract all disease</button>
           </div>
           <div class="form-group">
             <label>Enter your symptoms</label>
-            <input type="text" name="symptom" id="symptom" class="form-control" style="direction:rtl" />
+            <input type="text" name="symptom" id="symptom" class="form-control" style="direction:rtl" value="{% for symptom in symptoms %} {{symptom}}, {% endfor %}"/>
           </div>
           <div class="form-group">
-            <button type="button" name="select_symptoms" id="select_symptoms" class="select_symptoms"> show all symptoms</button>
+            <button type="button" name="select_symptoms" id="select_symptoms" class="select_symptoms"> Delete or Extract all symptoms</button>
           </div>
           <div class="form-group">
             <input type="hidden" name="sum_ch" id="sum_ch" class="sum_ch" value="3485"/>
           </div>
           <div class="form-group">
-            <button type="button" name="select_all" id="select_all" class="select_all"> show all disease&symptoms</button>
+            <button type="button" name="select_all" id="select_all" class="select_all"> Delete or Extract all Disease & Symptoms</button>
           </div>
           <div class="form-group">
           <button type="submit" name="submit" id="submit" class="btn btn-info">Submit</button>

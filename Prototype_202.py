@@ -118,7 +118,7 @@ def process():
     a_1 = request.form['a']
     aoa_1 =request.form['aoa']
     r_1 = request.form['r']
-    flie_name = 'Data_scraper'
+    flie_name = 'Data_scraper_save.csv'
     # ส่วนของการเก็บข้อมูล ว่าเราดึงจากเว็ปไหน เช่น ดึงจากFacebook ก็จะเป็น www.Facebook.com
     url_chack = str(url).split('/')[2]
     data_soure_a = {'url':[url_chack]}
@@ -338,7 +338,7 @@ def process():
         data['test'] = 101
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
-        data.to_csv(f'{flie_name}.csv', index=False, encoding='utf-8-sig')
+        data.to_csv(f'{flie_name}', index=False, encoding='utf-8-sig')
         browser.close() 
         
     # reddit
@@ -387,9 +387,9 @@ def process():
         data_red = data[data['comments'] != 'comments_miss']
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
-        data.to_csv(f'{flie_name}.csv', index=False, encoding='utf-8-sig')
+        data.to_csv(f'{flie_name}', index=False, encoding='utf-8-sig')
         driver.close() 
-    filename = f'{flie_name}.csv'
+    filename = f'{flie_name}'
     x03 = pd.read_csv('ref_pas.csv')
     x13 = x03['ref'][0]
     x30 = x03['refy'][0]
@@ -400,7 +400,7 @@ def process():
 
 @server.route('/return-files/',methods=['POST','GET'])
 def return_files_tut():
-    data = pd.read_csv('Data_scraper.csv')
+    data = pd.read_csv('Data_scraper_save.csv')
     data = data.drop(['test'], axis=1)
     data.to_csv('Data_scraper_save.csv',index=False,encoding='utf-8-sig')
     # df = pd.read_csv('Data_scraper.csv', encoding='utf-8-sig')
@@ -501,7 +501,13 @@ def success():
         name =['กระเพาะปัสสวะ','กระเพาะปัสสาวะ','เยื่อบุโพรงมดลูก','ปากมดลูก','เม็ดเลือดขาว','กระเพาะอาหาร','กระเพราะอาหาร','ต่อมไทรอยด์','ต่อมไทยรอยด์','ท่อน้ำดี']
         for i in name:
             words.add(i)
-
+        def remove_stopthai(tokens):
+            final = [word.lower()
+                    for word in tokens if word not in thai_stopwords()]
+            return final
+        def remove_bark(tokens):
+            final = [word.lower() for word in tokens if word not in ' ']
+            return final
         # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
         list_token =[]
         count = []
@@ -510,8 +516,9 @@ def success():
             custom_tokenizer = Tokenizer(words)
             Token = custom_tokenizer.word_tokenize(normalize(str(text)))
             Token.append('end')
-            list_token.append(Token)
-            count.append(len(Token))
+            Token_final = remove_bark(remove_stopthai(Token))
+            list_token.append(Token_final)
+            count.append(len(Token)-1)
         comment['จำนวนคำ'] = count
         comment['token'] = list_token
         comment.to_csv('data_tokenizer.csv',encoding='utf-8-sig')
@@ -596,9 +603,10 @@ def success():
         # คำที่ใช้ตรวจสอบว่ามีใครเป็นคนอยู่ในความคิดเห็น
             other = ['พ่อ','บิดา','พี่ชาย','น้องชาย','ลูกชาย','สามี','พัว','ผัว','ปู่','ตา','คุณปู่','คุณตา','คุณพ่อ',
                     'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
-                    'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม''แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว',
+                    'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม','แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว',
                     'ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า','คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า',
-                    'น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้','ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง']
+                    'น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้','ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู'
+                    ,'เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง']
             myself = ['ผมเป็น','ผมเอง','กระผม','พมเป็น','พมเอง','กระพม','หนูเอง','หนู','ดิฉัน','ตัวเอง','ก้อน','คลำ']
             # ตรวจสอบคำในความคิดเห็น
             for keyword in  other:
@@ -670,7 +678,7 @@ def success():
         Data_pre_and_clane.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
         data_show = Data_pre_and_clane.iloc[:,:5]
     elif sorue == 'www.reddit.com':
-        import pandas as pd 
+        import pandas as pd
         # ระบุโรค
         name_cancar_and_symptoms_pd = pd.read_csv('all_data_nameandsym.csv')
         name_cancar_list  = name_cancar_and_symptoms_pd['cancer_names_en_se'].tolist()
@@ -1093,9 +1101,20 @@ def ajax_add():
         import pandas as pd
         skill = request.form['skill']
         symptom  = request.form['symptom']
-        sum_ch = request.form['sum_ch'] 
-        name_cancer=skill.split(', ')
-        name_symptom = symptom.split(', ')
+        sum_ch = request.form['sum_ch']
+        try:
+            skill = skill.replace(',  ', ', ')
+            name_cancer=skill.split(', ')
+        except:
+            name_cancer=skill.split(', ')
+        try:
+            symptom = symptom.replace(',  ', ', ')
+            name_symptom = symptom.split(', ')
+        except:
+            name_symptom = symptom.split(', ')
+        print(name_symptom[-1])
+        print(type(name_symptom[-1]))
+        # name_symptom = name_symptom[:-1]
         soure_b = pd.read_csv('soure_url.csv')
         soure = soure_b['url'][0]
         if name_cancer ==[''] or name_cancer == [] or name_cancer is None :
@@ -1261,7 +1280,7 @@ def ajax_add():
             # คำที่ใช้ตรวจสอบว่ามีใครเป็นคนอยู่ในความคิดเห็น
                 other = ['พ่อ','บิดา','พี่ชาย','น้องชาย','ลูกชาย','สามี','พัว','ผัว','ปู่','ตา','คุณปู่','คุณตา','คุณพ่อ',
                         'ปู่ทวด','ตาทวด','ลุง','อาหนู','คุณอา','คุณลุง','หลายชาย','ลูกเขย','เขย','พี่เขย','น้องเขย',
-                        'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม''แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว',
+                        'พ่อตา','พ่อผม','พ่อหนู','พ่อพม','ชาย','หนุ่ม','แม่','เเม่','คุณแม่','มารดา','พี่สาว','น้องสาว',
                         'ลูกสาว','ภรรยา','เมีย','ย่า','ยาย','คุณย่า','คุณยาย','คุณเเม่','ย่าทวด','ยายทวด','ป้า',
                         'น้า','คุณป้า','คุณน้า','หลายสาว','ลูกสะใถ้','ลูกสะใภ้','สะใภ้','พี่สะใภ้','น้องสะใภ้','เเม่ผม','เเม่หนู','เเม่พม','แม่ผม','แม่หนู','แม่พม','สาว','หญิง']
                 myself = ['ผมเป็น','ผมเอง','กระผม','พมเป็น','พมเอง','กระพม','หนูเอง','หนู','ดิฉัน','ตัวเอง','ก้อน','คลำ']
@@ -1678,7 +1697,7 @@ def ajax_add():
         sorted_data.to_csv('sorted_data.csv',encoding='utf-8-sig')
         tables = sorted_data.to_html(classes='table table-striped', index=False)
         count_user = len(set(sorted_data.iloc[:,0]))
-        count_comment = len(set(sorted_data.iloc[:,1]))
+        count_comment = len(sorted_data.iloc[:,1])
         number_of_rows = len(data)
         number_of_columns = len(data.columns)
             # for found in name_cancarTH_filter:
@@ -1732,7 +1751,7 @@ def index_78():
     number_of_rows = len(data)
     number_of_columns = len(data.columns)
     count_user = len(set(data.iloc[:,0]))
-    count_comment = len(set(data.iloc[:,1]))
+    count_comment = len(data.iloc[:,1])
     if soure == 'www.facebook.com':
         def sort_data(column_name,how_sort):
             if column_name == 'ยอดไลค์':
@@ -1744,7 +1763,7 @@ def index_78():
             else:
                 pass
             return data
-        sort_options = ['ยอดไลค์', 'จำนวนการตอบกลับ', 'จำนวนความยาวตัวอักษร']
+        sort_options = ['ยอดไลค์', 'จำนวนการตอบกลับ', 'จำนวนคำ']
         data_cancer= pd.read_csv('data_name_sym_have.csv')
         name_can = data_cancer['name_cancarTH'].dropna().to_list()
         symptoms_can = data_cancer['Key_symptoms_TH'].dropna().to_list()

@@ -13,6 +13,7 @@ css_grahp_name_style={'text-align': 'center','font-family':'THSarabunNew','font-
 css_summare_text = {'text-align': 'left','font-size': '20px','font-family':'THSarabunNew','width': 'auto','margin-left': '9%','margin-top': '9%'}
 css_summare_text_v2 = {'text-align': 'left','whiteSpace': 'pre-line','font-size': '20px','font-family':'THSarabunNew','width': 'auto','margin-left': '9%','margin-top': '9%'}
 css_summare_text_v = {'box-shadow':' 0 4px 8px 0 rgba(0, 0, 0, 0.2)','border-radius': '18px','backgroundColor':'#d0f8ce','margin-left': '5%'}
+css_label_fillter = {'font-size': '20px','text-shadow': '0 0 6px #66B032','font-weight': 'bold'}
 app = dash.Dash(__name__)
 app.layout =  html.Div([
         html.Div([
@@ -21,56 +22,57 @@ app.layout =  html.Div([
             html.P(id ="text_sum_bybot",style={'whiteSpace': 'pre-line','font-family':'THSarabunNew','font-size': '25px','height': '500px','overflowY': 'auto'}),
         ],style={'margin-left': 10,'margin-right': 10,'margin-top': 10})
         ],style={'backgroundColor':'#d0f8ce','box-shadow':' 0 4px 8px 0 rgba(0, 0, 0, 0.2)','border-radius': '18px'}),
-        html.Div([
-        html.Div([
-        dcc.Interval( id="interval",n_intervals=0,),
-        html.Div(id='datatable',style={'height': '500px','overflowY': 'auto','margin-top': 12}),
-        ]),
+html.Div([
         html.Div([
         html.P('เรียงลำดับข้อมูลในตารางตาม "จำนวนคำ" : ',style={'display': 'inline-block','font-family':'THSarabunNew','font-size': '25px'}),
-        dcc.Dropdown(id='soft_table',options=['มากไปน้อย','น้อยไปมาก'],value ='น้อยไปมาก',style={'width': '300px','display': 'inline-block','margin-left': 10,'font-size': '20px'}),
-            ],style={'margin-left': '25%'}),
+        dcc.Dropdown(id='soft_table',options=['มากไปน้อย','น้อยไปมาก'],value ='น้อยไปมาก',style={'width': '300px','display': 'inline-block','margin-left': 10,'font-size': '20px','font-family':'THSarabunNew'}),
+        ],style={'margin-left': '25%'}),
+        html.Div([
+        dcc.Interval( id="interval",n_intervals=0,),
+        dcc.Interval( id="interval_v_o",n_intervals=0,),
+        html.Div(id='datatable',style={'height': '500px','overflowY': 'auto','margin-top': 12}),
+        ]),
 html.H1("Dashboard",style={'text-align': 'center','font-family':'THSarabunNew'}),
 dbc.Container([
     html.Div([
         html.Div([
-                html.P("ความมีประโยชน์:"),
+                html.P("ความมีประโยชน์:",style=css_label_fillter),
                 dcc.Checklist(id="pie-charts-useful-names"),
                 ],style=css_tab_STYLE),
         html.Div([
-                html.P("จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์:"),
+                html.P("จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์:",style=css_label_fillter),
                 dcc.Input(id='my-numeric-input-1',type= "number",placeholder="จำนวนคำ 'ขั้นต่ำ' ที่มีประโยชน์",value = 3)
                 ],style=css_tab_STYLE),
         html.Div([
-            html.P("ประสบการณ์:"),
+            html.P("ประสบการณ์:",style=css_label_fillter),
             dcc.Checklist(id='pie-charts-exp-names')
             ],style=css_tab_STYLE),
         html.Div([
-            html.P("เพศ:"),
+            html.P("เพศ:",style=css_label_fillter),
             dcc.Checklist(id='pie-charts-Gender-names')
             ],style=css_tab_STYLE),
         html.Div([
-        html.P("โรค:"),
+        html.P("โรค:",style=css_label_fillter),
             dcc.Dropdown(id='pie-charts-cancer-names',multi=True)
             ],style=css_tab_STYLE_v2),
         html.Div([
-            html.P("อาการ:"),
+            html.P("อาการ:",style=css_label_fillter),
             dcc.Dropdown(id='pie-charts-sym-names',multi=True)
             ],style=css_tab_STYLE_v2),
         html.Div([
-            html.P("จำนวนคำในประโยค(ขั้นต่ำ):"),
+            html.P("จำนวนคำในประโยค(ขั้นต่ำ):",style=css_label_fillter),
             dcc.Slider(0,200,200/5,value=0,
                 tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_word-names'),
             ],style=css_slider_style),
         html.Div([
-            html.P("จำนวนการตอบกลับ(ขั้นต่ำ):"),
+            html.P("จำนวนการตอบกลับ(ขั้นต่ำ):",style=css_label_fillter),
             dcc.Slider(0, 100, 100/5,
                 value=0,tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_rechat-names'),
             ],style=css_slider_style),
         html.Div([
-            html.P("จำนวน like(ขั้นต่ำ):"),
+            html.P("จำนวน like(ขั้นต่ำ):",style=css_label_fillter),
             dcc.Slider(0, 500, 500/5,
                 value=0,tooltip={"placement": "bottom", "always_visible": True},
                 id='slider-count_like-names'),
@@ -90,56 +92,56 @@ dbc.Container([
     html.Div([
     dbc.ModalBody([
         html.Div([
-            html.H3("แผนภูมิความมีประโยชน์กับจำนวนความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ ความมีประโยชน์กับจำนวนความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="pie-charts-useful-graph",style=css_pie_STYLE),
             html.Div([
             html.P(id ="text_sum_useful",style=css_summare_text),
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิความมีประโยชน์กับจำนวนความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ การเล่าประสบการณ์กับจำนวนความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="pie-charts-exp-graph",style=css_pie_STYLE),
             html.Div([
             html.P(id = 'text_sum_exp',style=css_summare_text)
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิเพศผู้ป่วยกับจำนวนความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ เพศผู้ป่วยกับจำนวนความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="pie-charts-Gender-graph",style=css_pie_STYLE),
             html.Div([
             html.P(id = 'text_sum_Gender',style=css_summare_text)
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิโรคกับจำนวนความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ โรคกับจำนวนความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="pie-charts-carcer-graph",style=css_tab_STYLE_v2),
             html.Div([
             html.P(id = 'text_sum_cancer',style=css_summare_text_v2)
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิอาการกับจำนวนความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ อาการกับจำนวนความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="his-charts-sym-graph",style=css_tab_STYLE_v2),
             html.Div([
             html.P(id ="text_sum_sym",style=css_summare_text_v2)
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิจำนวนคำกับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ จำนวนคำกับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="line-charts-count_word-graph",style=css_bar_and_line_STYLE),
             html.Div([
             html.P(id ="text_sum_word",style=css_summare_text_v2)
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิจำนวนยอดไลน์กับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ จำนวนยอดไลน์กับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="line-charts-like-graph",style=css_bar_and_line_STYLE),
             html.Div([
             html.P(id ="text_sum_like",style=css_summare_text_v2)
             ],style=css_summare_text_v),
         ],style={'width': 'auto'}),
         html.Div([
-            html.H3("แผนภูมิจำนวนการตอบกลับกับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
+            html.H3("แผนภูมิ จำนวนการตอบกลับกับชื่อผู้ที่มาเเสดงความคิดเห็น",style=css_grahp_name_style),
             dcc.Graph(id="line-charts-rechat-graph",style=css_bar_and_line_STYLE),
             html.Div([
             html.P(id ="text_sum_reply",style=css_summare_text_v2)
@@ -180,9 +182,9 @@ def inten_n (n):
     if time_run.iloc[0,0] == 0:
         time_run.iloc[0,0] = 1
         time_run.to_csv('time_run.csv',index=False)
-        return 10*1000
+        return 5*1000
     else:
-        return 10*1000
+        return 210*1000
 @callback(
     Output('pie-charts-exp-names', "options",allow_duplicate=True),
     Output('pie-charts-exp-names', "value",allow_duplicate=True),
@@ -202,6 +204,7 @@ def input_tag(n):
     sym_o_th = data_for_dash_facebook.iloc[:, 12:]
     sym_o1_th = sym_o_th.melt()
     sym_o2_th = (pd.crosstab(sym_o1_th['variable'], sym_o1_th['value']).rename(columns={0: 'ไม่มีการเล่า', 1: 'มีการเล่า'})).reset_index()
+    sym_o2_th = sym_o2_th[sym_o2_th['มีการเล่า']!=0]
     o_1=data_for_dash_facebook['defind_exp_with_python'].unique()
     v_1=data_for_dash_facebook['defind_exp_with_python'].unique()
     o_2=data_for_dash_facebook['defind_cancer_with_nlp'].unique()
@@ -209,7 +212,7 @@ def input_tag(n):
     o_3 = data_for_dash_facebook['defind_Genden_with_python'].unique()
     v_3 = data_for_dash_facebook['defind_Genden_with_python'].unique()
     o_4 = ['อาจมีประโยชน์','ไม่มีประโยชน์']
-    v_4 = ['อาจมีประโยชน์','ไม่มีประโยชน์']
+    v_4 = ['อาจมีประโยชน์']
     o_5 = sym_o2_th['variable'].unique()
     return (o_1,v_1,o_2,v_2,o_3,v_3,o_4,v_4,o_5) #,
 
@@ -301,22 +304,25 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
         #     # หากไม่พบคำที่บ่งบอกถึงคน
         #     return 'ไม่สามารถระบุได้'
 
-    fig_1 = px.pie(nms, values='count_plot', names=nms['defind_exp_with_python'],labels={'defind_exp_with_python':'ถูกเล่าจาก ','count_plot':'จำนวนความคิดเห็น '},color='defind_exp_with_python',color_discrete_map={'ไม่สามารถระบุได้':'darkblue','เล่าประสบการณ์ตัวเอง':"magenta",'เล่าประสบการณ์คนอื่น':'gray'})
-    fig_2 = px.pie(nms, values='count_plot', names=nms['defind_Genden_with_python'],labels={'defind_Genden_with_python':'เพศ ','count_plot':'จำนวนความคิดเห็น '},color='defind_Genden_with_python',color_discrete_map={'เพศชาย':'darkblue','เพศหญิง':"magenta",'ไม่ระบุเพศ':'gray','Male':'darkblue','Female':"magenta",'Gender not specified':'gray'})
-    fig_3 = px.histogram(nms, x=nms['defind_cancer_with_nlp'],labels={'defind_cancer_with_nlp':'โรคที่พบ ','count':'จำนวนความคิดเห็น '},barmode='group',text_auto=True)
-    fig_4 = px.pie(nms, values='count_plot', names=nms['use_ful'],labels={'use_ful':'ความมีประโยชน์ ','count_plot':'จำนวนความคิดเห็น '},color='use_ful',color_discrete_map={'อาจมีประโยชน์':'green','ไม่มีประโยชน์':"red"})
-    fig_5 = px.histogram(plot_sym, x='variable', y='มีการเล่า',barmode='group',text_auto=True)
+    fig_1 = px.pie(nms, values='count_plot', names=nms['defind_exp_with_python'],labels={'defind_exp_with_python':'ถูกเล่าจาก ','count_plot':'จำนวนความคิดเห็น '},color='defind_exp_with_python',color_discrete_map={'ไม่สามารถระบุได้':'lightcyan','เล่าประสบการณ์ตัวเอง':"royalblue",'เล่าประสบการณ์คนอื่น':'darkblue'}) #,color_discrete_sequence=px.colors.sequential.Teal
+    fig_2 = px.pie(nms, values='count_plot', names=nms['defind_Genden_with_python'],labels={'defind_Genden_with_python':'เพศ ','count_plot':'จำนวนความคิดเห็น '},color_discrete_sequence=px.colors.sequential.Emrld)#,color='defind_Genden_with_python',color_discrete_map={'เพศชาย':'#4424D6','เพศหญิง':"#C21460",'ไม่ระบุเพศ':'#DAD4F7'}
+    fig_3 = px.histogram(nms, x=nms['defind_cancer_with_nlp'],labels={'defind_cancer_with_nlp':'โรคที่พบ ','count':'จำนวนความคิดเห็น '},barmode='group',text_auto=True,color_discrete_sequence=['#7FBD32'])
+    fig_4 = px.pie(nms, values='count_plot', names=nms['use_ful'],labels={'use_ful':'ความมีประโยชน์ ','count_plot':'จำนวนความคิดเห็น '},color='use_ful',color_discrete_map={'อาจมีประโยชน์':'#A33AF2','ไม่มีประโยชน์':"#EFDDFD"})
+    fig_5 = px.histogram(plot_sym, x='variable', y='มีการเล่า',barmode='group',text_auto=True,color_discrete_sequence=['#496D1D'])
     fig_6 = px.line(nms,x='name', y='ยอดไลค์')
     fig_7 = px.line(nms,x='name', y='จำนวนการตอบกลับ')
     fig_8 = px.line(nms,x='name', y='จำนวนคำ')
     fig_1.update_layout(legend=dict( orientation="h"))
     fig_2.update_layout(legend=dict( orientation="h"))
-    fig_3.update_layout(xaxis_title="โรคที่พบ",yaxis_title="จำนวนความคิดเห็น")
+    fig_3.update_layout(xaxis_title="โรคที่พบ",yaxis_title="จำนวนความคิดเห็น",plot_bgcolor="#D9EEBF")
     fig_4.update_layout(legend=dict( orientation="h"))
-    fig_5.update_layout(xaxis_title="อาการที่พบ",yaxis_title="จำนวนความคิดเห็น")
-    fig_6.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="ยอดไลค์")
-    fig_7.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="จำนวนการตอบกลับ")
-    fig_8.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="จำนวนคำ")
+    fig_5.update_layout(xaxis_title="อาการที่พบ",yaxis_title="จำนวนความคิดเห็น",plot_bgcolor="#D9EEBF")
+    fig_6.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="ยอดไลค์",plot_bgcolor="#D9EEBF")
+    fig_7.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="จำนวนการตอบกลับ",plot_bgcolor="#D9EEBF")
+    fig_8.update_layout(xaxis_title="ชื่อผู้เเสดงความคิดเห็น",yaxis_title="จำนวนคำ",plot_bgcolor="#D9EEBF")
+    fig_6.update_traces(line_color='#213409', line_width=2)
+    fig_7.update_traces(line_color='#213409', line_width=2)
+    fig_8.update_traces(line_color='#213409', line_width=2)
     fig_1.update_layout(clickmode='event+select')
     fig_2.update_layout(clickmode='event+select')
     fig_3.update_layout(clickmode='event+select')
@@ -330,10 +336,10 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     value_non_p = (len(sum_non_exp)/len(sum_all_exp))*100
     value_other_p = (len(sum_other_exp)/len(sum_all_exp))*100
     value_self_p = (len(sum_self_exp)/len(sum_all_exp))*100
-    text_1 = f'''ผลจากแผนภูมิ ประสบการณ์กับความคิดเห็น พบว่าความคิดเห็นที่ไม่ได้เล่าประสบการณ์เกี่ยวกับโรคมีจำนวน {len(sum_non_exp)}ความคิดเห็น คิดเป็นร้อยละ {round(value_non_p, 2)} โดยความคิดเห็นที่เป็นการเล่าประสบการณ์เกี่ยวกับโรคสำหรับหัวข้อนี้ส่วนมากเป็น 
-    { f"การเล่าประสบการณ์คนอื่นจำนวน {len(sum_other_exp)} ความคิดเห็นคิดเป็นร้อยละ {round(value_other_p,2)} ในขณะที่อีก{len(sum_self_exp)}ความคิดเห็นคิดเป็นร้อยละ {round(value_self_p,2)} เป็นการเล่าจากประสบการณ์ตนเอง" 
+    text_1 = f'''ผลจากแผนภูมิ ประสบการณ์กับความคิดเห็น พบว่า ความคิดเห็นที่ไม่ได้เล่าประสบการณ์เกี่ยวกับโรคมีจำนวน {len(sum_non_exp)} ความคิดเห็น คิดเป็นร้อยละ {round(value_non_p, 2)} โดยความคิดเห็นที่เป็นการเล่าประสบการณ์เกี่ยวกับโรคสำหรับหัวข้อนี้ส่วนมากเป็น 
+    { f"การเล่าประสบการณ์คนอื่นจำนวน {len(sum_other_exp)} ความคิดเห็นคิดเป็นร้อยละ {round(value_other_p,2)} ในขณะที่อีก {len(sum_self_exp)} ความคิดเห็นคิดเป็นร้อยละ {round(value_self_p,2)} เป็นการเล่าจากประสบการณ์ตนเอง" 
     if len(sum_other_exp) > len(sum_self_exp) else 
-    f"การเล่าประสบการณ์ตัวเองจำนวน {len(sum_self_exp)} ความคิดเห็นคิดเป็นร้อยละ {round(value_self_p,2)} ในขณะที่อีก {len(sum_other_exp)}ความคิดเห็นคิดเป็นร้อยละ {round(value_other_p,2)} เป็นการเล่าจากประสบการณ์คนอื่น"}'''
+    f"การเล่าประสบการณ์ตัวเองจำนวน {len(sum_self_exp)} ความคิดเห็นคิดเป็นร้อยละ {round(value_self_p,2)} ในขณะที่อีก {len(sum_other_exp)} ความคิดเห็นคิดเป็นร้อยละ {round(value_other_p,2)} เป็นการเล่าจากประสบการณ์คนอื่น"}'''
     #สรุปกราฟเพศ 
     sum_all_gen = nms['defind_Genden_with_python']
     sum_female_gen = nms[nms['defind_Genden_with_python'].isin(['เพศหญิง','Female'])]
@@ -343,9 +349,9 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     value_male_p_gen = (len(sum_male_gen)/len(sum_all_gen))*100
     value_non_p_gen = (len(sum_non_gen)/len(sum_all_gen))*100
     text_2 = f'''ผลจากแผนภูมิ เพศกับความคิดเห็น พบว่า ความคิดเห็นที่ไม่สามารถระบุเพศได้มีจำนวน {len(sum_non_gen)} ความคิดเห็น คิดเป็นร้อยละ {round(value_non_p_gen, 2)} โดยความคิดเห็นที่มีการระบุเพศ สำหรับหัวข้อนี้ส่วนมากเป็น 
-    { f"เพศชายจำนวน {len(sum_male_gen)}ความคิดเห็น คิดเป็นร้อยละ{round(value_male_p_gen,2)} ในขณะที่อีก{len(sum_female_gen)}ความคิดเห็น คิดเป็นร้อยละ {round(value_female_p_gen,2)} เป็นเพศหญิง" 
+    { f"เพศชายจำนวน {len(sum_male_gen)} ความคิดเห็น คิดเป็นร้อยละ {round(value_male_p_gen,2)} ในขณะที่อีก {len(sum_female_gen)} ความคิดเห็น คิดเป็นร้อยละ {round(value_female_p_gen,2)} เป็นเพศหญิง" 
         if len(sum_male_gen) > len(sum_female_gen) else 
-        f"เพศหญิงจำนวน {len(sum_female_gen)}ความคิดเห็น คิดเป็นร้อยละ{round(value_female_p_gen,2)} ในขณะที่อีก{len(sum_male_gen)}ความคิดเห็น คิดเป็นร้อยละ {round(value_male_p_gen,2)} เป็นเพศชาย"}'''
+        f"เพศหญิงจำนวน {len(sum_female_gen)} ความคิดเห็น คิดเป็นร้อยละ {round(value_female_p_gen,2)} ในขณะที่อีก {len(sum_male_gen)} ความคิดเห็น คิดเป็นร้อยละ {round(value_male_p_gen,2)} เป็นเพศชาย"}'''
     # สรุปกราฟโรค
     nms_can = nms[['defind_cancer_with_nlp','count_plot']]
     nms_gro_cancer = nms_can.groupby('defind_cancer_with_nlp').sum().reset_index().sort_values(by='count_plot',ascending=False)
@@ -359,10 +365,10 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     sum_not_useful = nms[nms['use_ful'].isin(['ไม่มีประโยชน์','Not useful or not giving too much information'])]
     value_have_useful_p = (len(sum_have_useful)/len(sum_all_useful))*100
     value_not_useful_p = (len(sum_not_useful)/len(sum_all_useful))*100
-    text_4= f'''ผลจากแผนภูมิ ความมีประโยชน์กับความคิดเห็น พบว่าส่วนมากเป็นความคิดเห็นที่
-    {f"อาจมีประโยชน์จำนวน {len(sum_have_useful)}ความคิดเห็น คิดเป็นร้อยละ{round(value_have_useful_p,2)} ในขณะที่อีก{len(sum_not_useful)}ความคิดเห็น คิดเป็นร้อยละ {round(value_not_useful_p,2)} ความคิดเห็นที่ไม่มีประโยชน์" 
+    text_4= f'''ผลจากแผนภูมิ ความมีประโยชน์กับความคิดเห็น พบว่า ส่วนมากเป็นความคิดเห็นที่
+    {f"อาจมีประโยชน์จำนวน {len(sum_have_useful)} ความคิดเห็น คิดเป็นร้อยละ {round(value_have_useful_p,2)} ในขณะที่อีก {len(sum_not_useful)} ความคิดเห็น คิดเป็นร้อยละ {round(value_not_useful_p,2)} ความคิดเห็นที่ไม่มีประโยชน์" 
         if len(sum_have_useful) > len(sum_not_useful) else 
-        f"ไม่มีประโยชน์จำนวน {len(sum_not_useful)}ความคิดเห็น คิดเป็นร้อยละ{round(value_not_useful_p,2)} ในขณะที่อีก{len(sum_have_useful)}ความคิดเห็น คิดเป็นร้อยละ {round(value_have_useful_p,2)} ความคิดเห็นที่อาจมีประโยชน์"}'''
+        f"ไม่มีประโยชน์จำนวน {len(sum_not_useful)} ความคิดเห็น คิดเป็นร้อยละ {round(value_not_useful_p,2)} ในขณะที่อีก {len(sum_have_useful)} ความคิดเห็น คิดเป็นร้อยละ {round(value_have_useful_p,2)} ความคิดเห็นที่อาจมีประโยชน์"}'''
     #อาการ
     text_5 ='อาการทั้งหมดที่พบในหัวข้อนี้ได้เเก่ \n'
     for filler in range(len(plot_sym)):
@@ -372,15 +378,15 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
     avg_11=nms['ยอดไลค์'].mean()
     avg_22=nms['จำนวนการตอบกลับ'].mean()
     avg_33=nms['จำนวนคำ'].mean()
-    text_6 = f'''จากแผนภูมิจะพบว่า ยอดไลค์ในหัวข้อนี้มีค่ามากที่สุดคือ {nms['ยอดไลค์'].max()}
-                ยอดไลค์ในหัวข้อนี้มีค่าน้อยที่สุดคือ {nms['ยอดไลค์'].min()}
-                ยอดไลค์ในหัวข้อนี้มีค่าเฉลี่ยที่สุดคือ {round(avg_11,2)}'''
-    text_7= f'''จากแผนภูมิจะพบว่า จำนวนการตอบกลับในหัวข้อนี้มีค่ามากที่สุดคือ {nms['จำนวนการตอบกลับ'].max()}
-                จำนวนการตอบกลับในหัวข้อนี้มีค่าน้อยที่สุดคือ{nms['จำนวนการตอบกลับ'].min()}
-                จำนวนการตอบกลับในหัวข้อนี้มีค่าเฉลี่ยที่สุดคือ{round(avg_22,2)}'''
-    text_8= f'''จากแผนภูมิจะพบว่า จำนวนคำในหัวข้อนี้มีค่ามากที่สุดคือ {nms['จำนวนคำ'].max()}
-                จำนวนคำในหัวข้อนี้มีค่าน้อยที่สุดคือ{nms['จำนวนคำ'].min()}
-                จำนวนคำในหัวข้อนี้มีค่าเฉลี่ยที่สุดคือ{round(avg_33,2)}'''
+    text_6 = f'''จากแผนภูมิจะพบว่า ยอดไลค์ในหัวข้อนี้มีค่ามากที่สุด คือ {nms['ยอดไลค์'].max()}
+                ยอดไลค์ในหัวข้อนี้มีค่าน้อยที่สุด คือ {nms['ยอดไลค์'].min()}
+                ยอดไลค์ในหัวข้อนี้มีค่าเฉลี่ยที่สุด คือ {round(avg_11,2)}'''
+    text_7= f'''จากแผนภูมิจะพบว่า จำนวนการตอบกลับในหัวข้อนี้มีค่ามากที่สุด คือ {nms['จำนวนการตอบกลับ'].max()}
+                จำนวนการตอบกลับในหัวข้อนี้มีค่าน้อยที่สุด คือ {nms['จำนวนการตอบกลับ'].min()}
+                จำนวนการตอบกลับในหัวข้อนี้มีค่าเฉลี่ยที่สุด คือ {round(avg_22,2)}'''
+    text_8= f'''จากแผนภูมิจะพบว่า จำนวนคำในหัวข้อนี้มีค่ามากที่สุด คือ {nms['จำนวนคำ'].max()}
+                จำนวนคำในหัวข้อนี้มีค่าน้อยที่สุด คือ {nms['จำนวนคำ'].min()}
+                จำนวนคำในหัวข้อนี้มีค่าเฉลี่ยที่สุด คือ {round(avg_33,2)}'''
     if soft_table == 'มากไปน้อย':
         nms = nms.sort_values(by='จำนวนคำ',ascending=False)
         if nms['ยอดไลค์'].sum() > 1:
@@ -422,4 +428,4 @@ app.clientside_callback(
         )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
