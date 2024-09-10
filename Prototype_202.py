@@ -25,7 +25,7 @@ import os
 from wordcloud import WordCloud # ใช้ทำ Word Cloud
 import matplotlib.pyplot as plt # ใช้ Visualize Word Cloud
 from pythainlp.tokenize import word_tokenize # เป็นตัวตัดคำของภาษาไทย
-from pythainlp.corpus import thai_stopwords # เป็นคลัง Stop Words ของภาษาไทย
+
 
 #dash
 import schedule
@@ -218,11 +218,20 @@ def process():
                     pass
             list_like_1 = []
             list_like_2 = []
+            list_like_3 = []
+            list_like_4 = []
+            list_like_5 = []
             for i in range(9999):
                 aoa_1 = f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div/div/div'
                 list_like_1.append(aoa_1)
                 aoa_2 = f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div/div/span/div/div[2]/div'
                 list_like_2.append(aoa_2)
+                aoa_3 = f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div[1]/div/div[2]/div[1]/div[1]/div/div/div/span/div/div[3]/div'
+                list_like_2.append(aoa_3)
+                aoa_4 = f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div[1]/div/div[2]/div[1]/div[1]/div/div/div/span/div/div/div'
+                list_like_4.append(aoa_4)
+                aoa_5 = f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i}]/div/div[1]/div/div[2]/div[1]/div[1]/div/div/div/span/div/div[2]/div'
+                list_like_5.append(aoa_5)
             for g in range(1000):
                 try:
                     more_1 = browser.find_element(By.XPATH,list_like_1[g])
@@ -234,6 +243,30 @@ def process():
             for g in range(1000):
                 try:
                     more_2 = browser.find_element(By.XPATH,list_like_2[g])
+                    more_2.click()
+                    time.sleep(1)
+                except:
+                    pass
+            browser.execute_script("window.scrollTo(0,0);")
+            for g in range(1000):
+                try:
+                    more_2 = browser.find_element(By.XPATH,list_like_3[g])
+                    more_2.click()
+                    time.sleep(1)
+                except:
+                    pass
+            browser.execute_script("window.scrollTo(0,0);")
+            for g in range(1000):
+                try:
+                    more_2 = browser.find_element(By.XPATH,list_like_4[g])
+                    more_2.click()
+                    time.sleep(1)
+                except:
+                    pass
+            browser.execute_script("window.scrollTo(0,0);")
+            for g in range(1000):
+                try:
+                    more_2 = browser.find_element(By.XPATH,list_like_5[g])
                     more_2.click()
                     time.sleep(1)
                 except:
@@ -276,7 +309,8 @@ def process():
             x1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
             x2 = dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
             y1=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[2]/div/div/div[2]/div[2]/span/span/div/div[4]/text()')
-            z1=x1+y1+x2
+            y2=dom.xpath(f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div[2]/div/div/div[2]/div[2]/span/span/text()')
+            z1=x1+y1+x2+y2
             try:
                 re_chat_all.append((re.findall(r'\b\d+\b',z1[0]))[0])
             except:
@@ -285,7 +319,12 @@ def process():
         for i in range(len(result)):
             x2=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
             x3=dom.xpath(f'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
-            sum_like = x2+x3
+            x4=dom.xpath(f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[2]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div[1]/div[2]/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+            x5=dom.xpath(f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[2]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div[1]/div[2]/div/div[2]/div/div/div/span/div/div[1]/span/text()')
+            x6=dom.xpath(f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div[1]/div/div[2]/div[2]/div/div/div/span/div/div[1]/span/text()')
+            x7=dom.xpath(f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div[1]/div[2]/div[2]/div/div/div/div/span/div/div[1]/span/text()')
+            x8=dom.xpath(f'/html/body/div[1]/div/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[4]/div/div/div/div/div/div/div[1]/div/div/div/div/div/div/div/div/div/div/div[2]/div/div/div[4]/div/div/div[2]/div[3]/div[{i+2}]/div/div[1]/div/div/div/div/div/div/span/div/div[1]/span/text()')
+            sum_like = x2+x3+x4+x5+x6+x7+x8
             try:
                 like_kk.append(sum_like[0])
             except:
@@ -450,9 +489,9 @@ def success():
     import pandas as pd
     use_ur_or_fi = pd.read_csv('use_F_or_U.csv')
     if use_ur_or_fi.iloc[0,0] == 1:
-        data = pd.read_csv('Data_scraper.csv')   
+        data = pd.read_csv('Data_scraper_save.csv')   
         data = data.drop(['test'], axis=1)
-        data.to_csv('Data_scraper.csv',index=False,encoding='utf-8-sig')
+        data.to_csv('Data_scraper_save.csv',index=False,encoding='utf-8-sig')
         data.to_csv('Data_prepo.csv',index=False,encoding='utf-8-sig')   
     elif use_ur_or_fi.iloc[0,0] == 0:
         data_file_path = session.get('uploaded_data_file_path', None)
@@ -496,17 +535,17 @@ def success():
         comment=data.groupby('name').sum().reset_index()
 
         # สร้าง set ข้อมูลภาษาไทย
+        from pythainlp.corpus import thai_stopwords # เป็นคลัง Stop Words ของภาษาไทย
         words = set(thai_words())
         words.remove("โรคมะเร็ง")
         name =['กระเพาะปัสสวะ','กระเพาะปัสสาวะ','เยื่อบุโพรงมดลูก','ปากมดลูก','เม็ดเลือดขาว','กระเพาะอาหาร','กระเพราะอาหาร','ต่อมไทรอยด์','ต่อมไทยรอยด์','ท่อน้ำดี']
         for i in name:
             words.add(i)
         def remove_stopthai(tokens):
-            final = [word.lower()
-                    for word in tokens if word not in thai_stopwords()]
+            final = [word for word in tokens if word not in thai_stopwords()]
             return final
         def remove_bark(tokens):
-            final = [word.lower() for word in tokens if word not in ' ']
+            final = [word for word in tokens if word not in [' ','(',')','@','#','-','...','.','=','+','..','1','2','3','4','5','6','7','8','9','0','*']]
             return final
         # สร้าง list เก็บตัว nlp เพิ่อนำไปวิเคราะห์โรค อาการ เเละเพศ
         list_token =[]
@@ -517,6 +556,10 @@ def success():
             Token = custom_tokenizer.word_tokenize(normalize(str(text)))
             Token.append('end')
             Token_final = remove_bark(remove_stopthai(Token))
+            try:
+                Token_final=ast.literal_eval(Token_final)
+            except:
+                Token_final = Token_final
             list_token.append(Token_final)
             count.append(len(Token)-1)
         comment['จำนวนคำ'] = count
@@ -876,6 +919,10 @@ def success():
         all_reddit_data['defind_exp_with_python'] = k3
         all_reddit_data['use_ful'] = 'non'
         all_reddit_data['symptoms_colcan_en'] = symptoms_colcan_en
+        # สร้างเงื่อนไขสำหรับการแก้ไขข้อมูล
+        condition = all_reddit_data['defind_cancer_with_nlp'].isin(['breast cancer', 'ovarian cancer', 'cervical cancer','uterine cancer','endometrial cancer'])
+        # แก้ไขข้อมูลในคอลัมน์ 'defind_Genden_with_python' ตามเงื่อนไข
+        all_reddit_data.loc[condition, 'defind_Genden_with_python'] = 'เพศหญิง'
         label_symptoms_en=all_reddit_data['symptoms_colcan_en'].str.join(sep='*').str.get_dummies(sep='*')
         all_reddit_data = all_reddit_data.join(label_symptoms_en)
         all_reddit_data.to_csv('data_pre.csv', index=False, encoding='utf-8-sig')
