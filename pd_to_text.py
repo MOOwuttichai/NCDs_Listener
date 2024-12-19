@@ -78,3 +78,5 @@ with open('bot_summarize_comment.txt', 'w',encoding='utf-8-sig') as file:
 # with open('bot_summarize_comment.txt', 'r',encoding='utf-8-sig') as file:
 #     look = file.read()
 #     print(look)
+
+# question = "คุณสรุปคอมเม้นให้ฉันได้มั้ย ว่ามีโรคอะไรอาการของโรคเป็นยังไงบ้าง? เเละข้อมูลที่น่าสนใจอื่น? ไม่ต้องแสดงว่าเป็นคอมเมนต์ที่เท่าไหร่ สรุปให้อยู่ในบรรทัดสวยงาม"

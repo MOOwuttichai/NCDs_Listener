@@ -304,16 +304,18 @@ def generate_chart(n,exp,Gender,carcer,useful,sym,count_word,count_like,count_re
         #     # หากไม่พบคำที่บ่งบอกถึงคน
         #     return 'ไม่สามารถระบุได้'
 
-    fig_1 = px.pie(nms, values='count_plot', names=nms['defind_exp_with_python'],labels={'defind_exp_with_python':'ถูกเล่าจาก ','count_plot':'จำนวนความคิดเห็น '},color='defind_exp_with_python',color_discrete_map={'ไม่สามารถระบุได้':'lightcyan','เล่าประสบการณ์ตัวเอง':"royalblue",'เล่าประสบการณ์คนอื่น':'darkblue'}) #,color_discrete_sequence=px.colors.sequential.Teal
-    fig_2 = px.pie(nms, values='count_plot', names=nms['defind_Genden_with_python'],labels={'defind_Genden_with_python':'เพศ ','count_plot':'จำนวนความคิดเห็น '},color_discrete_sequence=px.colors.sequential.Emrld)#,color='defind_Genden_with_python',color_discrete_map={'เพศชาย':'#4424D6','เพศหญิง':"#C21460",'ไม่ระบุเพศ':'#DAD4F7'}
-    fig_3 = px.histogram(nms, x=nms['defind_cancer_with_nlp'],labels={'defind_cancer_with_nlp':'โรคที่พบ ','count':'จำนวนความคิดเห็น '},barmode='group',text_auto=True,color_discrete_sequence=['#7FBD32'])
+    fig_1 = px.pie(nms, values='count_plot', names=nms['defind_exp_with_python'],labels={'defind_exp_with_python':'ถูกเล่าจาก ','count_plot':'จำนวนความคิดเห็น '},hole=.5,color='defind_exp_with_python',color_discrete_map={'ไม่สามารถระบุได้':'lightcyan','เล่าประสบการณ์ตัวเอง':"royalblue",'เล่าประสบการณ์คนอื่น':'darkblue'}) #,color_discrete_sequence=px.colors.sequential.Teal
+    fig_2 = px.pie(nms, values='count_plot', names=nms['defind_Genden_with_python'],color='defind_Genden_with_python',labels={'defind_Genden_with_python':'Gender ','count_plot':'จำนวนความคิดเห็น '},color_discrete_sequence=px.colors.sequential.Emrld)#,color='defind_Genden_with_python',color_discrete_map={'เพศชาย':'#4424D6','เพศหญิง':"#C21460",'ไม่ระบุเพศ':'#DAD4F7'}
+    fig_3 = px.histogram(nms, y='defind_cancer_with_nlp',color='defind_cancer_with_nlp',text_auto='auto',labels={'defind_cancer_with_nlp':'Diseases found ','count':'จำนวนความคิดเห็น '},height=1000,color_discrete_sequence=px.colors.qualitative.Light24)
     fig_4 = px.pie(nms, values='count_plot', names=nms['use_ful'],labels={'use_ful':'ความมีประโยชน์ ','count_plot':'จำนวนความคิดเห็น '},color='use_ful',color_discrete_map={'อาจมีประโยชน์':'#A33AF2','ไม่มีประโยชน์':"#EFDDFD"})
     fig_5 = px.histogram(plot_sym, x='variable', y='มีการเล่า',barmode='group',text_auto=True,color_discrete_sequence=['#496D1D'])
     fig_6 = px.line(nms,x='name', y='ยอดไลค์')
     fig_7 = px.line(nms,x='name', y='จำนวนการตอบกลับ')
     fig_8 = px.line(nms,x='name', y='จำนวนคำ')
     fig_1.update_layout(legend=dict( orientation="h"))
+    fig_1.update_traces(textposition='inside', textinfo='percent',textfont_size=30)
     fig_2.update_layout(legend=dict( orientation="h"))
+    fig_2.update_traces(textposition='inside', textinfo='percent+label',textfont_size=15,marker=dict(line=dict(color='#000000', width=2)))
     fig_3.update_layout(xaxis_title="โรคที่พบ",yaxis_title="จำนวนความคิดเห็น",plot_bgcolor="#D9EEBF")
     fig_4.update_layout(legend=dict( orientation="h"))
     fig_5.update_layout(xaxis_title="อาการที่พบ",yaxis_title="จำนวนความคิดเห็น",plot_bgcolor="#D9EEBF")
